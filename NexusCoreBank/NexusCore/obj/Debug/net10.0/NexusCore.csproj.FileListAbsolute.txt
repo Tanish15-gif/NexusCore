@@ -171,8 +171,6 @@ C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\De
 C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\compressed\3lgljdopht-{0}-54hs084j3s-54hs084j3s.gz
 C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\compressed\vrqr2l0odm-{0}-nwvvs79pse-nwvvs79pse.gz
 C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\compressed\cfrqp249n2-{0}-3n4gok65ej-3n4gok65ej.gz
-C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\compressed\4wm3nx9270-{0}-boezwid3aa-boezwid3aa.gz
-C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\compressed\rbq1og764w-{0}-l464w9t0fh-l464w9t0fh.gz
 C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\compressed\xsyqthh801-{0}-rte84vaqdp-rte84vaqdp.gz
 C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\compressed\iwodowonhi-{0}-38dywkcgnp-38dywkcgnp.gz
 C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\compressed\nifvvr42wk-{0}-bv0yegsazu-bv0yegsazu.gz
@@ -199,3 +197,5 @@ C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\De
 C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\NexusCore.pdb
 C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\NexusCore.genruntimeconfig.cache
 C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\ref\NexusCore.dll
+C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\compressed\4wm3nx9270-{0}-t5t7cf4pnx-t5t7cf4pnx.gz
+C:\Users\Tanish.S.Gupta\All C# Programs\NexusMart\NexusCoreBank\NexusCore\obj\Debug\net10.0\compressed\rbq1og764w-{0}-q5u9kki7rt-q5u9kki7rt.gz
