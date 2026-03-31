@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreBank\\NexusCore\\NexusCore.csproj": {}
+    "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreBank\\NexusCore\\NexusCore.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreBank\\NexusCore\\NexusCore.csproj": {
+    "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreBank\\NexusCore\\NexusCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreBank\\NexusCore\\NexusCore.csproj",
+        "projectUniqueName": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreBank\\NexusCore\\NexusCore.csproj",
         "projectName": "NexusCore",
-        "projectPath": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreBank\\NexusCore\\NexusCore.csproj",
+        "projectPath": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreBank\\NexusCore\\NexusCore.csproj",
         "packagesPath": "C:\\Users\\Tanish.S.Gupta\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreBank\\NexusCore\\obj\\",
+        "outputPath": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreBank\\NexusCore\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tanish.S.Gupta\\AppData\\Roaming\\NuGet\\NuGet.Config"
