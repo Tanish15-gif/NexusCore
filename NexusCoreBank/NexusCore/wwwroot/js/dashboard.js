@@ -131,39 +131,40 @@ document.addEventListener("DOMContentLoaded", () => {
             card.className = "account-card";
 
             card.innerHTML = `
-                    <div class="account-header">
-                        <span class="account-type">${account.accountType}</span>
-                        <span class="account-status ${account.status.toLowerCase()}">
-                            ${account.status}
-                        </span>
-                    </div>
+        <div class="account-header">
+            <span class="account-type">${account.accountType}</span>
+            <span class="account-status ${account.status.toLowerCase()}">
+                ${account.status}
+            </span>
+        </div>
 
-                    <div class="account-number">
-                        ${account.accountNumber}
-                    </div>
+        <div class="account-number">
+            ${account.accountNumber}
+        </div>
 
-                    <div class="account-balance">
-                        <div class="balance-label">Balance</div>
-                        <div class="balance-amount">₹${account.balance.toFixed(2)}</div>
-                    </div>
+        ${getAccountPerkBadge(account.accountType)}
 
-                    <div class="account-actions">
-                        <button class="btn btn-primary deposit-btn" data-id="${account.accountId}"
-                            ${["Pending", "Frozen", "Closed", "Rejected"].includes(account.status) ? "disabled" : ""}>
-                            <i class="fa-solid fa-plus"></i> Deposit
-                        </button>
-                        <button class="btn btn-outline withdraw-btn" data-id="${account.accountId}"
-                            ${["Pending", "Frozen", "Closed", "Rejected"].includes(account.status) ? "disabled" : ""} 
-                            style="color: #ff4d4d; border-color: #ff4d4d;">
-                            <i class="fa-solid fa-minus"></i> Withdraw
-                        </button>
+        <div class="account-balance" style="margin-top: 10px;">
+            <div class="balance-label">Balance</div>
+            <div class="balance-amount">₹${account.balance.toFixed(2)}</div>
+        </div>
 
-                        <button class="btn btn-outline transfer-btn" data-id="${account.accountId}"
-                            ${["Pending", "Frozen", "Closed", "Rejected"].includes(account.status) ? "disabled" : ""}>
-                        <i class="fa-solid fa-right-left"></i> Transfer
-                        </button>
-                    </div>
-                    `;
+        <div class="account-actions">
+            <button class="btn btn-primary deposit-btn" data-id="${account.accountId}"
+                ${["Pending", "Frozen", "Closed", "Rejected"].includes(account.status) ? "disabled" : ""}>
+                <i class="fa-solid fa-plus"></i> Deposit
+            </button>
+            <button class="btn btn-outline withdraw-btn" data-id="${account.accountId}"
+                ${["Pending", "Frozen", "Closed", "Rejected"].includes(account.status) ? "disabled" : ""} 
+                style="color: #ff4d4d; border-color: #ff4d4d;">
+                <i class="fa-solid fa-minus"></i> Withdraw
+            </button>
+            <button class="btn btn-outline transfer-btn" data-id="${account.accountId}"
+                ${["Pending", "Frozen", "Closed", "Rejected"].includes(account.status) ? "disabled" : ""}>
+            <i class="fa-solid fa-right-left"></i> Transfer
+            </button>
+        </div>
+    `;
             accountCards.appendChild(card);
         });
 
@@ -510,6 +511,23 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         totalWealth.innerText = "₹" + total.toFixed(2);
+
+        const userTierElement = document.querySelector('.tier-badge');
+        if (userTierElement) {
+            if (total >= 1000000) { 
+                userTierElement.innerHTML = `<i class="fa-solid fa-gem"></i> Nexus Diamond`;
+                userTierElement.style.color = '#a855f7'; 
+                userTierElement.style.background = 'rgba(168, 85, 247, 0.2)'; 
+            } else if (total >= 500000) { 
+                userTierElement.innerHTML = `<i class="fa-solid fa-star"></i> Nexus Gold`;
+                userTierElement.style.color = '#fbbf24'; 
+                userTierElement.style.background = 'rgba(251, 191, 36, 0.2)'; 
+            } else { 
+                userTierElement.innerHTML = `Tier 1: Customer`;
+                userTierElement.style.color = '#3b82f6'; 
+                userTierElement.style.background = 'rgba(59, 130, 246, 0.2)'; 
+            }
+        }
     }
 
     openAccountBtn?.addEventListener("click", () => {
@@ -581,4 +599,21 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDashboard();
     fetchMyAccounts();
     fetchTransactions();
+    // --- NEW: Account Perk Helper Function ---
+    function getAccountPerkBadge(accountType) {
+        if (!accountType) return '';
+        const type = accountType.toLowerCase();
+
+        if (type.includes('savings')) {
+            return `<div class="perk-badge perk-savings"><i class="fa-solid fa-tag"></i> 5% Mart Cashback</div>`;
+        } else if (type.includes('current')) {
+            return `<div class="perk-badge perk-current"><i class="fa-solid fa-bolt"></i> 15% Wholesale Discount</div>`;
+        } else if (type.includes('fixed') || type.includes('fd') || type.includes('deposit')) {
+            // Includes RecurringDeposit and FixedDeposit
+            return `<div class="perk-badge perk-fd"><i class="fa-solid fa-crown"></i> VIP Unlocked</div>`;
+        } else if (type.includes('loan')) {
+            return `<div class="perk-badge perk-loan"><i class="fa-solid fa-percent"></i> AI-Reduced EMI</div>`;
+        }
+        return '';
+    }
 });

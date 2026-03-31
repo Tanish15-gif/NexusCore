@@ -40,7 +40,7 @@ namespace NexusCore.AccountOperation
                             {
                                 inscmd.Parameters.AddWithValue("@aid",amount.AccountId);
                                 inscmd.Parameters.AddWithValue("@amount",amount.Amount);
-                                inscmd.Parameters.AddWithValue("@merchant",amount.MerchantName);
+                                inscmd.Parameters.AddWithValue("@merchant",amount.MerchantName ?? "SYSTEM_WITHDRAW");
                                 
                                 inscmd.ExecuteNonQuery();
                             }

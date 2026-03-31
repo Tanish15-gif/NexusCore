@@ -62,7 +62,7 @@ namespace NexusCore.AccountOperation
                             {
                                 string transactionsql = @"
                                         Insert into Transactions(AccountId,TransactionType,Amount,Status,MerchantName)
-                                        Values(@aid,'Deposit',@amount,'Completed');
+                                        Values(@aid,'Deposit',@amount,'Completed','SYSTEM_DEPOSIT');
                                         ";
                                 using (var insertcmd = new SqlCommand(transactionsql, connect, transaction))
                                 {
