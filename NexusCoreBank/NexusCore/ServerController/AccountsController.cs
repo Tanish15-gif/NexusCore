@@ -143,7 +143,7 @@ namespace AuthorizeController.Controllers
                     cmd.Parameters.AddWithValue("@name", dto.FullName);
 
                     await connect.OpenAsync();
-                    int count = (int)await cmd.ExecuteScalarAsync();
+                    int count = (int?)await cmd.ExecuteScalarAsync() ?? 0;
                     if (count > 0)
                     {
                         return Ok(new { isValid = true });
