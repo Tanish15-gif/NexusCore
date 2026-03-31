@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AuthorizeController.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class AccountController : ControllerBase
@@ -125,6 +125,7 @@ namespace AuthorizeController.Controllers
             return Ok(list);
         }
         [HttpPost("verify-account")]
+        [AllowAnonymous]
         public async Task<IActionResult> VerifyAccount(LinkBankAccount dto)
         {
             string sql = @"
@@ -158,6 +159,7 @@ namespace AuthorizeController.Controllers
             }
         }
         [HttpPost("deduct-funds")]
+        [AllowAnonymous]
         public async Task<IActionResult> PaytoMart([FromBody] DeductRequest deductRequest)
         {
             using (var connect = new SqlConnection(_connectionstring))

@@ -65,6 +65,7 @@ namespace NexusMart.Controllers
             }
         } 
         [HttpGet("me")]
+        [Authorize]
         public IActionResult GetCustomerDetails()
         {
             int secureid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
