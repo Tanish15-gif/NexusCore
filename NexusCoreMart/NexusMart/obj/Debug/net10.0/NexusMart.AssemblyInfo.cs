@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NexusMart")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0ad04976a3a1ed90122a05e23e3d9dcd8bf4d093")]
 [assembly: System.Reflection.AssemblyProductAttribute("NexusMart")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NexusMart")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

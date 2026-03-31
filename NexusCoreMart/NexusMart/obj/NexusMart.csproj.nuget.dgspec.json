@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreMart\\NexusMart\\NexusMart.csproj": {}
+    "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreMart\\NexusMart\\NexusMart.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreMart\\NexusMart\\NexusMart.csproj": {
+    "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreMart\\NexusMart\\NexusMart.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreMart\\NexusMart\\NexusMart.csproj",
+        "projectUniqueName": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreMart\\NexusMart\\NexusMart.csproj",
         "projectName": "NexusMart",
-        "projectPath": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreMart\\NexusMart\\NexusMart.csproj",
+        "projectPath": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreMart\\NexusMart\\NexusMart.csproj",
         "packagesPath": "C:\\Users\\Tanish.S.Gupta\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreMart\\NexusMart\\obj\\",
+        "outputPath": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreMart\\NexusMart\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tanish.S.Gupta\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XQkA0s0y/yw=",
+  "dgSpecHash": "RNGAtW4XKzA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusCoreMart\\NexusMart\\NexusMart.csproj",
+  "projectFilePath": "C:\\Users\\Tanish.S.Gupta\\All C# Programs\\NexusMart\\NexusCoreMart\\NexusMart\\NexusMart.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tanish.S.Gupta\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\Tanish.S.Gupta\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.5\\microsoft.aspnetcore.authentication.jwtbearer.10.0.5.nupkg.sha512",
