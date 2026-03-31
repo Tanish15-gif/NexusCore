@@ -19,6 +19,7 @@ namespace NexusCore.AccountOperation
                 var transaction = connect.BeginTransaction();
                 try
                 {
+                    Console.WriteLine($"UID: {userid}, AID: {amount.AccountId}, AMOUNT: {amount.Amount}");
                     string sql = @"
                                 Update Accounts Set Balance = Balance - @amount
                                 where AccountId = @aid and UserId = @uid and AccountStatus = 'Active' and Balance >= @amount;
@@ -32,6 +33,7 @@ namespace NexusCore.AccountOperation
                         int rows = cmd.ExecuteNonQuery();
                         if(rows > 0)
                         {
+                            Console.WriteLine(amount.MerchantName);
                             string transactionsql = @"
                                             Insert into Transactions(AccountId,TransactionType,Amount,Status,MerchantName)
                                             Values(@aid,'Withdrawal',@amount,'Completed',@merchant);
@@ -40,7 +42,7 @@ namespace NexusCore.AccountOperation
                             {
                                 inscmd.Parameters.AddWithValue("@aid",amount.AccountId);
                                 inscmd.Parameters.AddWithValue("@amount",amount.Amount);
-                                inscmd.Parameters.AddWithValue("@merchant",amount.MerchantName);
+                                inscmd.Parameters.AddWithValue("@merchant",amount.MerchantName ?? "SYSTEM_WITHDRAW");
                                 
                                 inscmd.ExecuteNonQuery();
                             }

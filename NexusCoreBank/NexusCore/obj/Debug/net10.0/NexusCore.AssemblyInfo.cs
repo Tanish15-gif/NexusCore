@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NexusCore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b6633f38679b8720de27370990bcf161c670af8e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e9eeebc00f43dd2534ed70cd4bba2d4ad2c87d37")]
 [assembly: System.Reflection.AssemblyProductAttribute("NexusCore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NexusCore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
