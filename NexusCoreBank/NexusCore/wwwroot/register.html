@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | NexusCore Bank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-layer-group"></i> NexusCore
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="features.html">Features</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="register.html" class="btn btn-primary">Open Account</a>
+            </div>
+
+            <div class="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <section class="auth-section">
+        <div class="container auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Create Account</h2>
+                    <p>Join NexusCore and start banking smarter</p>
+                </div>
+
+                <form class="auth-form" id="register-form">
+                    <div class="form-group">
+                        <label for="fullname">Full Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="fullname" name="FullName" placeholder="Tanish" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-calendar"></i>
+                            <input type="date" id="dob" name="DateofBirth" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="email" name="Email" placeholder="name@example.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="tel" id="phone" name="PhoneNumber" placeholder="+1 (555) 000-0000" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Full Address</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-map-marker-alt"></i>
+                            <input type="text" id="address" name="Address" placeholder="123 Nexus Server Lane" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" name="Password" placeholder="Create a strong password"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" required> I agree to the <a href="#">Terms & Conditions</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" id="Registerbtn">Create Account</button>
+                    <p id="error-message"></p>
+                </form>
+                
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="login.html">Login Here</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+    <button id="backToTop" class="back-to-top" aria-label="Scroll to top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <div class="container footer-container">
+        <div class="footer-brand footer-section">
+            <h2>NexusCore Bank</h2>
+            <p>Empowering your financial future with technology.</p>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Security</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Contact</h4>
+            <ul>
+                <li><a href="mailto:support@nexuscore.com">support@nexuscore.com</a></li>
+                <li><a href="tel:+18001234567">+1 (800) 123-4567</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="footer-bottom">
+            &copy; 2026 NexusCore Bank. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/register.js"></script>
+</body>
+
+</html>

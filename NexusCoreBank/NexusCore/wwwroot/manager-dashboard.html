@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusCore Admin | Executive Branch</title>
+    <link rel="stylesheet" href="employee-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-building-columns"></i> NexusCore Executive
+            </div>
+            <nav class="nav-menu">
+                <a href="#" id="nav-pending" class="nav-link active">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Pending Deposits
+                </a>
+                <a href="#" id="nav-ledger" class="nav-link">
+                    <i class="fa-solid fa-book-open"></i> Global Ledger
+                </a>
+                <a href="#" id="nav-security" class="nav-link">
+                    <i class="fa-solid fa-shield-halved"></i> Security & Operations
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="profile-info">
+                    <span class="tier-badge" style="color: #f59e0b; background: rgba(245, 158, 11, 0.2);">Tier 2: Branch
+                        Manager</span>
+                </div>
+                <button id="logout-btn" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i>
+                    Logout</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <h1>Welcome, <span id="dashname">Manager</span></h1>
+
+                <button id="theme-toggle" class="theme-btn">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                </button>
+            </header>
+
+            <div class="content-wrapper">
+                <div id="view-ledger" class="hidden">
+                    <div class="section-header" style="text-align: left;">
+                        <h2>Branch Global Ledger</h2>
+                        <p>Complete oversight of all active, frozen, and closed customer accounts.</p>
+                    </div>
+
+                    <div class="action-card" style="overflow-x: auto;">
+                        <table class="nexus-table" style="width: 100%; min-width: 800px;">
+                            <thead>
+                                <tr>
+                                    <th>Sys ID</th>
+                                    <th>Account Number</th>
+                                    <th>Customer Name</th>
+                                    <th>Type</th>
+                                    <th>Balance</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledger-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="view-security" class="hidden">
+                    <div class="section-header" style="text-align: left;">
+                        <h2>Security & Overrides</h2>
+                        <p>Execute account freezes and manage high-value authorizations.</p>
+                    </div>
+
+                    <div class="account-cards-container">
+                        <div class="account-card">
+                            <h3 style="margin-bottom: 1rem; color: var(--danger-red);"><i class="fa-solid fa-lock"></i>
+                                The Kill Switch</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Instantly freeze a compromised
+                                account to prevent all transfers and withdrawals.</p>
+                            <div class="search-bar">
+                                <input type="number" id="freeze-input" placeholder="Enter Account Number..."
+                                    style="width: 100%;">
+                                <button id="btn-freeze" class="btn btn-primary"
+                                    style="background: var(--danger-red);">Freeze</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="view-audit-logs" class="dashboard-section ">
+                        <div class="section-header">
+                            <h2>System Audit Logs</h2>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Real-time tracking of all employee
+                                approval and rejection actions.</p>
+                        </div>
+
+                        <div class="table-container"
+                            style="overflow-x: auto; background: var(--bg-surface); border: 1px solid var(--border-dark); border-radius: 8px; margin-top: 1rem;">
+                            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                                <thead
+                                    style="background-color: var(--bg-main); border-bottom: 2px solid var(--border-dark);">
+                                    <tr>
+                                        <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Log ID
+                                        </th>
+                                        <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Date &
+                                            Time
+                                        </th>
+                                        <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Employee
+                                            Name
+                                        </th>
+                                        <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Action
+                                        </th>
+                                        <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Action
+                                            Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="audit-logs-body">
+                                    <tr>
+                                        <td colspan="5"
+                                            style="padding: 2rem; text-align: center; color: var(--text-muted);">
+                                            <i class="fa-solid fa-spinner fa-spin" style="margin-right: 0.5rem;"></i>
+                                            Loading logs...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div id="view-pending">
+                    <div class="section-header" style="text-align: left; margin-bottom: 1.5rem;">
+                        <h2>Pending Deposit Queue</h2>
+                        <p style="color: var(--text-muted);">Review and authorize high-value transactions flagged by the
+                            Bouncer Engine.</p>
+                    </div>
+
+                    <div class="action-card" style="overflow-x: auto;">
+                        <table class="nexus-table"
+                            style="width: 100%; min-width: 800px; border-collapse: collapse; text-align: left;">
+                            <thead
+                                style="background-color: var(--bg-main); border-bottom: 2px solid var(--border-dark);">
+                                <tr>
+                                    <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Txn ID</th>
+                                    <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Customer Name
+                                    </th>
+                                    <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Account No.
+                                    </th>
+                                    <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Amount</th>
+                                    <th style="padding: 1rem; color: var(--text-muted); font-weight: 600;">Date</th>
+                                    <th
+                                        style="padding: 1rem; color: var(--text-muted); font-weight: 600; text-align: center;">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pending-deposits-body">
+                                <tr>
+                                    <td colspan="6"
+                                        style="padding: 2rem; text-align: center; color: var(--text-muted);">
+                                        <i class="fa-solid fa-spinner fa-spin" style="margin-right: 0.5rem;"></i>
+                                        Loading pending requests...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="review-modal" class="modal-overlay hidden">
+                    <div class="modal-content action-card">
+                        <div class="modal-header">
+                            <h2><i class="fa-solid fa-user-shield"></i> Executive Override</h2>
+                            <button id="close-modal" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1.1rem;">
+                                Managing Account ID: <span id="modal-account-id"
+                                    style="font-weight: bold; color: var(--text-light);">Loading...</span>
+                            </p>
+                            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                                Old Email: <span id="modal-account-Email"
+                                    style="font-weight: bold; color: var(--text-light);">Loading...</span>
+                            </p>
+
+                            <div class="edit-group" style="margin-bottom: 2rem;">
+                                <label
+                                    style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Update
+                                    Registered Email</label>
+                                <div class="search-bar" style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                                    <input type="email" id="edit-email-input" placeholder="Enter new email address..."
+                                        style="width: 100%; padding: 0.6rem; border-radius: 4px; border: 1px solid var(--border-dark); background: var(--bg-main); color: var(--text-light);">
+                                    <button id="btn-update-email" class="btn btn-primary"
+                                        style="padding: 0.6rem 1.2rem;">Update</button>
+                                </div>
+                            </div>
+
+                            <div class="edit-group"
+                                style="border-top: 1px solid var(--border-dark); padding-top: 1.5rem;">
+                                <label
+                                    style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Security
+                                    Status</label>
+                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Lock down
+                                    compromised accounts or restore access.</p>
+
+                                <div class="security-actions" style="display: flex; gap: 1rem;">
+                                    <button id="btn-modal-freeze" class="btn-security-danger">
+                                        <i class="fa-solid fa-lock"></i> Freeze Account
+                                    </button>
+                                    <button id="btn-modal-unfreeze" class="btn-security-safe">
+                                        <i class="fa-solid fa-unlock"></i> Unfreeze Account
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    <script src="js/script.js"></script>
+    <script src="js/manager-dashboard.js"></script>
+</body>
+
+</html>

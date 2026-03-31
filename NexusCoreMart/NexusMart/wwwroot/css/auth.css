@@ -1,0 +1,193 @@
+.auth-split-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--bg-main);
+    position: relative;
+}
+
+.theme-btn-absolute {
+    position: absolute; 
+    top: 2rem; 
+    right: 2rem; 
+    background: none; 
+    border: none; 
+    color: var(--text-main); 
+    font-size: 1.5rem; 
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* The Solid Branding Panel */
+.auth-banner {
+    flex: 1;
+    background-color: var(--primary-accent); /* Solid blue/indigo */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    text-align: center;
+}
+
+.banner-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+}
+
+.banner-content p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* The Form Side */
+.auth-form-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: var(--bg-surface); /* Pure White or Pure Black depending on theme */
+}
+
+.auth-form-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-header {
+    margin-bottom: 2.5rem;
+}
+
+.auth-header h2 {
+    color: var(--text-main);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.auth-header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+/* Sharp, Solid Inputs */
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 2px solid var(--border-color); /* Thicker, solid border */
+    border-radius: 4px; /* Sharper corners */
+    background: var(--bg-main);
+    color: var(--text-main);
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-accent);
+}
+
+/* Flat, Solid Button */
+.btn-solid-primary {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 1rem;
+}
+
+.btn-solid-primary:hover {
+    opacity: 0.9;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+.auth-footer a {
+    color: var(--primary-accent);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .auth-banner {
+        display: none; 
+    }
+
+    .auth-form-side {
+        background: linear-gradient(135deg, var(--bg-main) 0%, rgba(99, 102, 241, 0.1) 100%);
+        padding: 1.5rem;
+    }
+
+    .auth-form-container {
+        background: var(--bg-surface);
+        padding: 2.5rem 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); /* Deep shadow for 3D pop */
+        border: 1px solid rgba(255, 255, 255, 0.05); /* Subtle glass edge */
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Add a glowing accent line to the top of the mobile card */
+    .auth-form-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--primary-accent);
+    }
+
+    .auth-header {
+        text-align: center; /* Center the text for mobile flow */
+        margin-bottom: 2rem;
+    }
+
+    .auth-header h2 {
+        font-size: 2.2rem;
+        /* Give the title a slick text gradient */
+        background: linear-gradient(135deg, var(--text-main) 0%, var(--primary-accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Optimize inputs and buttons for fat thumbs */
+    .input-group input {
+        padding: 1rem;
+        border-radius: 8px; /* Softer edges look better on mobile */
+    }
+
+    .btn-solid-primary {
+        border-radius: 8px;
+        padding: 1.1rem; /* Taller button for easier tapping */
+        margin-top: 0.5rem;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+}

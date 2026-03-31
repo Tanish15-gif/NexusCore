@@ -1,0 +1,210 @@
+/* --- Auth Section Layout --- */
+.auth-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background-color: var(--bg-color);
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 450px;
+}
+
+.auth-card {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-header h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.auth-header p {
+    color: var(--text-muted);
+}
+
+/* --- Form Styling --- */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 15px;
+    color: var(--text-muted);
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.forgot-link {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.btn-block {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-muted);
+}
+
+.auth-footer a {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 30px 20px;
+    }
+}
+
+/* --- Error Message Styling --- */
+#error-message {
+    margin-top: 15px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+/* Error State */
+#error-message.error {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+    border-color: #f44336;
+}
+
+/* Success State */
+#error-message.success {
+    background-color: rgba(0, 200, 83, 0.1);
+    color: #00C853;
+    border-color: #00C853;
+}
+
+/* Warning State */
+#error-message.warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border-color: #ffc107;
+}
+
+/* Info State */
+#error-message.info {
+    background-color: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+    border-color: #2196f3;
+}
+
+/* Error Message with Icon */
+#error-message::before {
+    content: '';
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 1rem;
+}
+
+/* Dark Mode Error Message */
+body.dark-mode #error-message.error {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: #ff5252;
+}
+
+body.dark-mode #error-message.success {
+    background-color: rgba(0, 200, 83, 0.2);
+    color: #69F0AE;
+}
+
+body.dark-mode #error-message.warning {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #ffca28;
+}
+
+body.dark-mode #error-message.info {
+    background-color: rgba(33, 150, 243, 0.2);
+    color: #64b5f6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #error-message {
+        font-size: 0.85rem;
+        padding: 10px 12px;
+    }
+}
+
+.admin-card {
+    margin-top: 40px;
+}

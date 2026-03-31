@@ -1,0 +1,125 @@
+/* Update your base.css with these exact variables */
+/* =========================================
+   Global Box Model & Viewport Lock
+   ========================================= */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+:root {
+    --bg-main: #f8fafc;
+    --bg-surface: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --primary-accent: #4f46e5;
+    /* Modern Indigo */
+    --primary-hover: #4338ca;
+    --border-color: #e2e8f0;
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    --danger-red: #ef4444;
+    --google-green: #34A853;
+    --google-green-light: #81C995;
+    --google-green-dark: #1E8E3E;
+}
+
+/* --- MOBILE RESPONSIVENESS (Screens under 768px) --- */
+@media (max-width: 768px) {
+
+    /* Make all flex containers stack vertically instead of side-by-side */
+    .nav-actions {
+        gap: 10px;
+        /* Reduce space between moon icon and cart */
+    }
+
+    /* Make modals fit small screens */
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+}
+
+::selection {
+    background: var(--google-green);
+    color: white;
+}
+
+::-moz-selection {
+    background: var(--google-green);
+    color: white;
+}
+
+body.dark-mode {
+    --bg-main: #0f172a;
+    /* Deep Slate */
+    --bg-surface: #1e293b;
+    /* Elevated Slate */
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary-accent: #6366f1;
+    /* Bright Indigo */
+    --primary-hover: #818cf8;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+.message-box {
+    margin-top: 15px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+/* Types */
+.message-box.error {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+    border-color: #f44336;
+}
+
+.message-box.success {
+    background-color: rgba(0, 200, 83, 0.1);
+    color: #00C853;
+    border-color: #00C853;
+}
+
+.message-box.warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border-color: #ffc107;
+}
+
+.message-box.info {
+    background-color: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+    border-color: #2196f3;
+}

@@ -1,0 +1,1323 @@
+.global-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header-left .logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-center .greeting {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.header-center .greeting i {
+    font-size: 1.3rem;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.wealth-indicator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 10px 20px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.wealth-indicator:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.02);
+}
+
+.wealth-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.wealth-label {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.wealth-amount {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+.dashboard-main {
+    padding: 40px 0;
+    min-height: calc(100vh - 80px);
+    background-color: var(--bg-color);
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.empty-state-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-state-icon {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--accent-color), #60a5fa);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    font-size: 3rem;
+    color: white;
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+    }
+}
+
+.empty-state h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.empty-state p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.pending-state {
+    margin-bottom: 30px;
+    animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pending-alert {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    border: 2px solid #ffc107;
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.pending-alert::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #ffc107;
+}
+
+body.dark-mode .pending-alert {
+    background: linear-gradient(135deg, #443800, #665200);
+    border-color: #ffca28;
+}
+
+.pending-icon {
+    width: 60px;
+    height: 60px;
+    background: #ffc107;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    flex-shrink: 0;
+    animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.pending-content h3 {
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+.pending-content p {
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    line-height: 1.5;
+}
+
+.pending-note {
+    font-size: 0.9rem;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.section-header {
+    margin-bottom: 30px;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.section-header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.accounts-grid {
+    margin-top: 30px;
+    animation: fadeIn 0.5s ease;
+}
+
+.account-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.account-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 25px;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.account-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), #60a5fa);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.account-card:hover::before {
+    opacity: 1;
+}
+
+.account-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+}
+
+.account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.account-type {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.account-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.account-status.pending {
+    background: #facc15;
+    color: #000;
+    font-weight: 600;
+}
+
+.account-status.active {
+    background: #16a34a;
+    color: #fff;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.account-status.closed {
+    background: #64748b;
+    color: #fff;
+}
+
+.account-status.rejected {
+    background: #ef4444;
+    color: #fff;
+}
+
+.account-status.frozen {
+    background: rgba(244, 67, 54, 0.15);
+    color: #f44336;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+
+.account-card.pending .account-actions button,
+.account-card.frozen .account-actions button,
+.account-card.closed .account-actions button,
+.account-card.rejected .account-actions button {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.account-number {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+}
+
+.account-balance {
+    margin-bottom: 25px;
+}
+
+.balance-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.balance-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    line-height: 1.2;
+}
+
+.account-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.account-actions .btn {
+    flex: 1;
+    padding: 10px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.fab {
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #00C853, #69F0AE);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4);
+    transition: all 0.3s ease;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fab:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 15px 40px rgba(0, 200, 83, 0.6);
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--accent-color);
+}
+
+.modal-body {
+    padding: 10px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group input::placeholder {
+    color: var(--text-muted);
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 992px) {
+    .header-container {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .header-center {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .header-right {
+        order: 2;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .wealth-indicator {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .account-cards-container {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .global-header {
+        padding: 12px 0;
+    }
+
+    .header-left .logo {
+        font-size: 1.2rem;
+    }
+
+    .header-center .greeting {
+        font-size: 0.95rem;
+    }
+
+    .wealth-amount {
+        font-size: 1rem;
+    }
+
+    .dashboard-main {
+        padding: 30px 0;
+    }
+
+    .empty-state {
+        padding: 60px 15px;
+    }
+
+    .empty-state-icon {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+    }
+
+    .empty-state h2 {
+        font-size: 1.5rem;
+    }
+
+    .pending-alert {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .pending-icon {
+        margin: 0 auto;
+    }
+
+    .account-cards-container {
+        grid-template-columns: 1fr;
+    }
+
+    .fab {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .modal-content {
+        padding: 20px;
+        margin: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-right {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .wealth-indicator {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-sm {
+        width: 100%;
+    }
+
+    .account-actions {
+        flex-direction: column;
+    }
+
+    .account-actions .btn {
+        width: 100%;
+    }
+}
+
+body.dark-mode .global-header {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .wealth-indicator {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .wealth-indicator:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .account-card {
+    background: linear-gradient(135deg, var(--card-bg), rgba(30, 41, 59, 0.8));
+}
+
+body.dark-mode .account-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .modal-content {
+    background: var(--card-bg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .modal {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    z-index: 3000;
+    animation: slideInRight 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.toast.success {
+    background: #00C853;
+}
+
+.toast.error {
+    background: #f44336;
+}
+
+.toast.warning {
+    background: #ffc107;
+    color: #333;
+}
+
+.toast.info {
+    background: #2196f3;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #60a5fa;
+}
+
+@media print {
+
+    .fab,
+    .modal,
+    .global-header {
+        display: none;
+    }
+
+    .dashboard-main {
+        padding: 0;
+    }
+
+    .account-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+*:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-1 {
+    margin-top: 0.5rem;
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+.mt-3 {
+    margin-top: 1.5rem;
+}
+
+.mt-4 {
+    margin-top: 2rem;
+}
+
+.mb-1 {
+    margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+    margin-bottom: 1rem;
+}
+
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+.mb-4 {
+    margin-bottom: 2rem;
+}
+
+.p-1 {
+    padding: 0.5rem;
+}
+
+.p-2 {
+    padding: 1rem;
+}
+
+.p-3 {
+    padding: 1.5rem;
+}
+
+.p-4 {
+    padding: 2rem;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.bounce {
+    animation: bounce 0.5s ease-in-out;
+}
+
+.account-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), #60a5fa);
+    transition: width 0.3s ease;
+}
+
+.account-card:hover::after {
+    width: 100%;
+}
+
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.btn:hover::after {
+    width: 300px;
+    height: 300px;
+}
+
+.form-group input:valid {
+    border-color: #00C853;
+}
+
+.form-group input:invalid:not(:placeholder-shown) {
+    border-color: #f44336;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+}
+
+.loading-overlay.hidden {
+    display: none;
+}
+
+.transactions-section {
+    margin-top: 40px;
+}
+
+.table-container {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow-x: auto;
+}
+
+
+.nexus-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.nexus-table th {
+    text-align: left;
+    padding: 16px;
+    font-weight: 600;
+    color: #444;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.nexus-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.nexus-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.nexus-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* Color rules for money movement */
+.amount-out {
+    color: #ff4d4d;
+    /* Bright Red for sending/withdrawing */
+    font-weight: bold;
+}
+
+.amount-in {
+    color: #4CAF50;
+    /* Green for deposits */
+    font-weight: bold;
+}
+
+.amount-transfer-in {
+    color: #4da6ff;
+    /* Bright Blue for receiving transfers */
+    font-weight: bold;
+}
+
+.txn-deposit {
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.txn-withdrawal {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.txn-transfer {
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.status-success {
+    color: #16a34a;
+    background: #dcfce7;
+}
+
+.status-pending {
+    color: #ca8a04;
+    background: #fef9c3;
+}
+
+.status-failed {
+    color: #dc2626;
+    background: #fee2e2;
+}
+
+.status-success,
+.status-pending,
+.status-failed {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+
+.dark-mode .table-container {
+    background: linear-gradient(145deg, #1a2a44, #0f1c2f);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .nexus-table {
+    color: #e6edf5;
+}
+
+.dark-mode .nexus-table th {
+    color: #9fb3c8;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .nexus-table td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .nexus-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.dark-mode .status-success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+.empty-transactions {
+    text-align: center;
+    padding: 30px;
+    color: #888;
+    font-style: italic;
+}
+
+/* =========================================
+   Customer Dashboard Mobile Fix
+   ========================================= */
+@media (max-width: 768px) {
+
+    /* 1. Stack the Layout & Kill the Squeeze */
+    .dashboard-layout {
+        flex-direction: column !important;
+        height: auto !important;
+        overflow-x: hidden;
+    }
+
+    /* 2. Transform Sidebar into a Horizontal Swipe Track */
+    .dashboard-sidebar {
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        flex-direction: row !important;
+        align-items: center;
+        overflow-x: auto !important;
+        padding: 15px !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color);
+        background: var(--bg-color);
+
+        /* Hide scrollbar but keep swipe */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .dashboard-sidebar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 3. Hide the Sidebar Logo on Mobile (Since you have a top header) */
+    .dashboard-sidebar .brand,
+    .dashboard-sidebar h2 {
+        display: none !important;
+    }
+
+    /* 4. Turn the links into touch-friendly pills */
+    .dashboard-sidebar a,
+    .dashboard-sidebar .nav-item {
+        flex-shrink: 0;
+        /* Prevents squishing */
+        white-space: nowrap;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        margin-right: 12px;
+        padding: 10px 20px !important;
+        border-radius: 50px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    /* Highlight the active tab */
+    .dashboard-sidebar a.active,
+    .dashboard-sidebar .nav-item.active {
+        background: var(--accent-color);
+        color: white;
+        border-color: var(--accent-color);
+    }
+
+    /* Make the Logout button match the horizontal flow */
+    .dashboard-sidebar .logout-btn {
+        margin-top: 0 !important;
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* 5. Un-squish the Main Content */
+    .dashboard-main {
+        width: 100% !important;
+        flex: 1;
+        padding: 20px 15px !important;
+        min-width: 0;
+        /* Crucial: stops the blowout! */
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* 1. Stack Master Layout */
+    .dashboard-layout {
+        flex-direction: column !important;
+        height: auto !important;
+        overflow-x: hidden;
+    }
+
+    /* 2. The Master Swipe Track (This is what was missing!) */
+    .sidebar {
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        /* CRUCIAL: Stops elements from stacking vertically */
+        align-items: center !important;
+        padding: 12px 15px !important;
+        overflow-x: auto !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color);
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .sidebar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 3. The Brand Logo in the Track */
+    .sidebar-header {
+        display: flex !important;
+        align-items: center !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        font-size: 1.2rem !important;
+        color: var(--accent-color) !important;
+        padding-right: 15px !important;
+        margin-right: 15px !important;
+        border-right: 2px solid var(--border-color) !important;
+        border-bottom: none !important;
+    }
+
+    /* 4. The Swipeable Nav Links */
+    .nav-menu {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 10px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .nav-link {
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        padding: 8px 16px !important;
+        border-radius: 50px !important;
+    }
+
+    /* 5. Hide Bulky Profile, keep Logout in the track */
+    .profile-info {
+        display: none !important;
+    }
+
+    .sidebar-footer {
+        display: flex !important;
+        margin-left: 10px !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+    .btn-logout {
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        padding: 8px 16px !important;
+        border-radius: 50px !important;
+        margin: 0 !important;
+    }
+
+    /* 6. Un-squish Main Content */
+    .main-content {
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 20px 15px !important;
+    }
+
+    /* 7. Premium Welcome & Wealth Card Fix */
+    .top-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 20px !important;
+        height: auto !important;
+        padding: 0 0 25px 0 !important;
+        border-bottom: none !important;
+    }
+
+    .greeting h1 {
+        font-size: 1.6rem !important;
+        line-height: 1.3 !important;
+        margin: 0 !important;
+    }
+
+    /* Turns the right side into a sleek solid card */
+    .header-right {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        background: var(--card-bg) !important;
+        padding: 15px 20px !important;
+        border-radius: 12px !important;
+        border: 1px solid var(--border-color) !important;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .wealth-indicator {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+
+    .wealth-amount {
+        font-size: 1.4rem !important;
+    }
+}

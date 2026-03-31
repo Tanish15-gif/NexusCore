@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | NexusCore Bank</title>
+    <link rel="stylesheet" href="customer-dashboard.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="employee-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-layout">
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-building-columns"></i> NexusCore Bank
+            </div>
+            <nav class="nav-menu">
+                <a href="#" id="nav-accounts" class="nav-link active">
+                    <i class="fa-solid fa-wallet"></i> Your Accounts
+                </a>
+                <a href="#" id="nav-transactions" class="nav-link">
+                    <i class="fa-solid fa-money-check-dollar"></i> Recent Transactions
+                </a>
+                <a href="#" id="nav-ai-advisor" class="nav-link">
+                    <i class="fa-solid fa-robot"></i> AI Advisor
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="profile-info">
+                    <span class="tier-badge" style="color: #3b82f6; background: rgba(59, 130, 246, 0.2);">Tier 1:
+                        Customer</span>
+                </div>
+                <button id="logout-btn" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i>
+                    Logout</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="greeting">
+                    <h1>Welcome, <span id="dashname-header" style="color: var(--primary-blue);">Customer</span></h1>
+                </div>
+
+                <div class="header-right" style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div class="wealth-indicator" style="display: flex; align-items: center; gap: 0.8rem;">
+                        <i class="fa-solid fa-chart-line" style="color: #34d399; font-size: 1.2rem;"></i>
+                        <div class="wealth-info" style="display: flex; flex-direction: column;">
+                            <span class="wealth-label"
+                                style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Total
+                                Wealth</span>
+                            <span class="wealth-amount" id="total-wealth"
+                                style="font-weight: bold; color: var(--text-light);">₹0.00</span>
+                        </div>
+                    </div>
+
+                    <button id="theme-toggle" class="theme-btn">
+                        <i id="theme-icon" class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+
+                <div id="view-accounts">
+
+                    <div id="empty-state" class="empty-state hidden action-card"
+                        style="text-align: center; padding: 4rem 2rem;">
+                        <div class="empty-state-icon"
+                            style="font-size: 3rem; color: var(--primary-blue); margin-bottom: 1rem;">
+                            <i class="fa-solid fa-vault"></i>
+                        </div>
+                        <h2>No Accounts Yet</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 2rem;">You don't have any linked accounts
+                            yet. Let's get your wealth working for you.</p>
+                        <button class="btn btn-primary" id="open-account-btn">
+                            <i class="fa-solid fa-plus"></i> Open an Account
+                        </button>
+                    </div>
+
+                    <div id="pending-state" class="pending-state hidden">
+                        <div class="pending-alert">
+                            <div class="pending-icon">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div class="pending-content">
+                                <h3>Account Pending Approval</h3>
+                                <p>Your <span id="pending-account-type"></span> account is currently under review.</p>
+                                <p class="pending-note">You cannot deposit or transfer money until approved.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="accounts-grid" class="accounts-grid hidden">
+                        <div class="section-header"
+                            style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div style="text-align: left;">
+                                <h2>Your Accounts</h2>
+                                <p>Manage all your financial accounts in one place</p>
+                            </div>
+                            <button class="fab" id="fab-open-account" title="Open New Account">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+
+                        <div class="account-cards-container" id="account-cards">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-transactions" class="hidden">
+                    <div class="section-header" style="text-align: left;">
+                        <h2>Recent Transactions</h2>
+                        <p>Track your money flow and ledger receipts</p>
+                    </div>
+
+                    <div class="action-card" style="overflow-x: auto;">
+                        <table class="nexus-table" style="width: 100%; min-width: 600px;">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Account ID</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactions-body">
+                                <tr id="no-transactions">
+                                    <td colspan="5" style="text-align: center; color: var(--text-muted);">No
+                                        Transactions Yet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="view-ai-advisor" class="hidden">
+                    <h2>NexusCore AI Financial Advisor</h2>
+                    <p style="color: #9ca3af; margin-bottom: 20px;">Ask questions about your ledger, spending habits, or
+                        account balance.</p>
+
+                    <div class="ai-chat-card"
+                        style="background: #1a1e29; border-radius: 8px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); height: 60vh; display: flex; flex-direction: column;">
+
+                        <div id="ai-chat-history"
+                            style="flex: 1; overflow-y: auto; background: #0f1219; border-radius: 6px; padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px;">
+                            <div style="color: #9ca3af; font-size: 0.9rem;">
+                                <em>AI: Hello <span id="dashname-ai" style="color: var(--primary-blue);">Customer</span> I'm synced with your NexusCore ledger. How can I help you manage
+                                    your wealth today?</em>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="ai-chat-input" placeholder="e.g., How much did I spend at NexusMart?"
+                                style="flex: 1; padding: 12px; border-radius: 6px; border: 1px solid #374151; background: #1f2937; color: white;">
+                            <button id="ai-send-btn"
+                                style="padding: 12px 24px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="account-modal" class="modal-overlay hidden">
+        <div class="modal-content action-card">
+            <div class="modal-header">
+                <h2>Open New Account</h2>
+                <button class="icon-btn" id="modal-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="new-account-form">
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="color: var(--text-muted); font-size: 0.9rem;">Account Type</label>
+                        <select id="account-type" required
+                            style="width: 100%; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); margin-top: 0.5rem;">
+                            <option value="">Select Account Type</option>
+                            <option value="Savings">Savings Account</option>
+                            <option value="Current">Current Account</option>
+                            <option value="FixedDeposit">Fixed Deposit</option>
+                            <option value="RecurringDeposit">Recurring Deposit</option>
+                            <option value="Loan">Personal Loan</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="color: var(--text-muted); font-size: 0.9rem;">Initial Deposit (₹)</label>
+                        <input type="number" id="initial-deposit" placeholder="0.00" min="0" step="0.01"
+                            style="width: 100%; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); margin-top: 0.5rem;">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="deposit-modal" class="modal-overlay hidden">
+        <div class="modal-content action-card">
+            <div class="modal-header">
+                <h2>Deposit Funds</h2>
+                <button class="icon-btn" id="deposit-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="deposit-form">
+                    <input type="hidden" id="deposit-account-id">
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="color: var(--text-muted); font-size: 0.9rem;">Amount (₹)</label>
+                        <input type="number" id="deposit-amount" placeholder="0.00" min="0" step="0.01" required
+                            style="width: 100%; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); margin-top: 0.5rem;">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Deposit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="withdraw-modal" class="modal-overlay hidden">
+        <div class="modal-content action-card">
+            <div class="modal-header">
+                <h2>Withdraw Funds</h2>
+                <button class="icon-btn" id="withdraw-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="withdraw-form">
+                    <input type="hidden" id="withdraw-account-id">
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="color: var(--text-muted); font-size: 0.9rem;">Amount (₹)</label>
+                        <input type="number" id="withdraw-amount" placeholder="0.00" min="0" step="0.01" required
+                            style="width: 100%; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); margin-top: 0.5rem;">
+                    </div>
+                    <button type="submit" class="btn btn-primary"
+                        style="width: 100%; background-color: var(--danger-red);">Withdraw</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="transfer-modal" class="modal-overlay hidden">
+        <div class="modal-content action-card">
+            <div class="modal-header">
+                <h2>Transfer Funds</h2>
+                <button class="icon-btn" id="transfer-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="transfer-form">
+                    <input type="hidden" id="transfer-from-account-id">
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="color: var(--text-muted); font-size: 0.9rem;">Destination Account Number</label>
+                        <input type="number" id="transfer-to-account" placeholder="Enter Account Number" required
+                            style="width: 100%; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); margin-top: 0.5rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="color: var(--text-muted); font-size: 0.9rem;">Amount (₹)</label>
+                        <input type="number" id="transfer-amount" placeholder="0.00" min="0" step="0.01" required
+                            style="width: 100%; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); margin-top: 0.5rem;">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Transfer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

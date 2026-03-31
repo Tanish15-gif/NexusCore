@@ -1,0 +1,654 @@
+.admin-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.admin-sidebar {
+    width: 250px;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-color);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-sidebar h2 {
+    color: var(--primary-accent);
+    margin-bottom: 2rem;
+}
+
+.admin-sidebar a {
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 1rem 0;
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-sidebar a:hover,
+.admin-sidebar a.active {
+    color: var(--primary-accent);
+}
+
+.admin-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    min-width: 0; 
+    overflow-x: auto; 
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.btn-add {
+    background: var(--primary-accent);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-surface);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table th {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--primary-accent);
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 0.8rem;
+    font-size: 1.1rem;
+}
+
+.text-blue {
+    color: var(--primary-accent);
+}
+
+.text-red {
+    color: var(--danger-red);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--bg-surface);
+    padding: 2.5rem;
+    border-radius: 12px;
+    width: 400px;
+    border: 1px solid var(--border-color);
+}
+
+.modal-content h2 {
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-main);
+    color: var(--text-main);
+    outline: none;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-cancel {
+    flex: 1;
+    background: var(--bg-main);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-actions .btn-add {
+    flex: 1;
+}
+
+/* Admin Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--bg-surface, #1e1e2f);
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #a0a0b0;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 10px;
+    background: #2a2a3f;
+    border: 1px solid #3a3a55;
+    border-radius: 6px;
+    color: white;
+}
+
+.input-group input[type="file"] {
+    padding: 7px;
+    background: #1e1e2f;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.btn-cancel {
+    background: transparent;
+    border: 1px solid #555;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-add {
+    background: #4caf50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-add:disabled {
+    background: #2e6030;
+    cursor: not-allowed;
+}
+
+/* =========================================
+   1. The Ghost Pill Table Button
+   ========================================= */
+.btn-pill-primary {
+    background: rgba(59, 130, 246, 0.1) !important;
+    /* Extremely subtle blue background */
+    color: #3b82f6 !important;
+    /* Bright blue text */
+    border: 1px solid transparent !important;
+    border-radius: 50px !important;
+    /* Pill shape */
+    padding: 6px 16px !important;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-pill-primary:hover {
+    background: #3b82f6 !important;
+    /* Solid blue on hover */
+    color: #ffffff !important;
+    /* White text on hover */
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* =========================================
+   2. Elevated Modal Inputs (The Carved Look)
+   ========================================= */
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: #151521;
+    /* Slightly darker than the modal itself */
+    border: 1px solid #2a2a3f;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    outline: none;
+    /* Removes the ugly default browser outline */
+}
+
+/* The exact moment the user clicks into an input */
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    border-color: #3b82f6;
+    background: #1e1e2f;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    /* The glowing blue halo */
+}
+
+:root {
+    /* Light Mode Defaults (Clean & Crisp) */
+    --input-bg: #f8fafc;
+    --input-border: #e2e8f0;
+    --input-text: #1e293b;
+    --input-focus-bg: #ffffff;
+
+    --btn-cancel-bg: #f1f5f9;
+    --btn-cancel-text: #475569;
+    --btn-cancel-hover: #e2e8f0;
+    --btn-cancel-hover-text: #0f172a;
+}
+
+body.dark-mode {
+    /* Dark Mode Overrides (Sleek & Carved) */
+    --input-bg: #151521;
+    --input-border: #2a2a3f;
+    --input-text: #ffffff;
+    --input-focus-bg: #1e1e2f;
+
+    --btn-cancel-bg: #2a2a3f;
+    --btn-cancel-text: #a0a0b0;
+    --btn-cancel-hover: #3a3a55;
+    --btn-cancel-hover-text: #ffffff;
+}
+
+/* =========================================
+   3. Strict Visual Hierarchy (Modal Footer)
+   ========================================= */
+
+/* The Destructive Action (Delete) */
+#delete-product-btn {
+    background: transparent;
+    color: #ff4d4d;
+    border: 1px solid transparent;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#delete-product-btn:hover {
+    background: rgba(255, 77, 77, 0.1);
+    border-color: rgba(255, 77, 77, 0.3);
+}
+
+/* The Secondary Action (Cancel) */
+.btn-cancel {
+    background: #2a2a3f;
+    color: #a0a0b0;
+    border: 1px solid transparent;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: #3a3a55;
+    color: #ffffff;
+}
+
+/* The Primary Action (Save) */
+.btn-add {
+    background: #10b981;
+    /* Premium Emerald Green */
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+
+.btn-add:hover {
+    background: #059669;
+    /* Slightly darker green on hover */
+    box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+    transform: translateY(-1px);
+    /* Moves up 1 pixel to feel tactile */
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    color: var(--input-text);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    background: var(--input-focus-bg);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.btn-cancel {
+    background: var(--btn-cancel-bg);
+    color: var(--btn-cancel-text);
+    border: 1px solid transparent;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: var(--btn-cancel-hover);
+    color: var(--btn-cancel-hover-text);
+}
+
+/* =========================================
+   Theme Variables (Light & Dark Mode)
+   ========================================= */
+:root {
+    /* Light Mode (High Contrast, Sharp) */
+    --modal-label: #475569;
+    /* Slate 600 */
+    --input-text: #0f172a;
+    /* Slate 900 - Very Dark */
+    --input-bg: rgba(0, 0, 0, 0.02);
+    --input-border: rgba(0, 0, 0, 0.1);
+    --input-focus-border: #6366f1;
+    --file-upload-text: #475569;
+}
+
+body.dark-mode {
+    /* Dark Mode (Stealthy, Clean) */
+    --modal-label: #94a3b8;
+    /* Slate 400 */
+    --input-text: #f8fafc;
+    /* Slate 50 */
+    --input-bg: rgba(255, 255, 255, 0.03);
+    --input-border: rgba(255, 255, 255, 0.08);
+    --input-focus-border: #6366f1;
+    --file-upload-text: #94a3b8;
+}
+
+/* =========================================
+   Applying the Variables to the Clean UI
+   ========================================= */
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: var(--modal-label);
+    /* Automatically swaps! */
+    font-weight: 500;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    color: var(--input-text);
+    /* Dark text in light mode, light text in dark mode */
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+/* =========================================
+   1. The Dropdown Visibility Fix
+   ========================================= */
+/* Browsers require SOLID colors for options, no transparency! */
+body.dark-mode .input-group select option {
+    background-color: #1e1e2f;
+    /* Solid dark slate */
+    color: #f8fafc;
+}
+
+/* Light mode fallback */
+:root .input-group select option {
+    background-color: #ffffff;
+    color: #0f172a;
+}
+
+/* =========================================
+   2. The Chrome/Edge Autofill Hijack
+   ========================================= */
+/* Forces autofilled inputs to stay dark and keep white text */
+body.dark-mode .input-group input:-webkit-autofill,
+body.dark-mode .input-group input:-webkit-autofill:hover,
+body.dark-mode .input-group input:-webkit-autofill:focus,
+body.dark-mode .input-group input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #1e1e2f inset !important;
+    /* Fills the box with dark color */
+    -webkit-text-fill-color: #ffffff !important;
+    /* Forces text to stay white */
+    transition: background-color 5000s ease-in-out 0s;
+    /* Prevents background flashing */
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Light mode autofill fix */
+:root .input-group input:-webkit-autofill,
+:root .input-group input:-webkit-autofill:hover,
+:root .input-group input:-webkit-autofill:focus,
+:root .input-group input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #f8fafc inset !important;
+    -webkit-text-fill-color: #0f172a !important;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    border-color: var(--input-focus-border);
+    background: transparent;
+}
+
+.clean-file-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--input-bg);
+    border: 1px dashed var(--input-border);
+    border-radius: 6px;
+    color: var(--file-upload-text);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.clean-file-upload:hover {
+    background: rgba(99, 102, 241, 0.05);
+    border-color: #6366f1;
+    color: #6366f1;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#delete-product-btn {
+    background: rgba(239, 68, 68, 0.1);
+    /* Soft red background */
+    color: #ef4444;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#delete-product-btn:hover {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-cancel {
+    background: transparent;
+    color: #94a3b8;
+    border: none;
+    padding: 10px 18px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    color: white;
+}
+
+.btn-add {
+    background: #6366f1;
+    /* Modern Indigo */
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-add:hover {
+    background: #4f46e5;
+}
+/* =========================================
+   Admin Dashboard Mobile Responsiveness
+   ========================================= */
+@media (max-width: 768px) {
+    /* Stack the sidebar and content vertically */
+    .admin-layout {
+        flex-direction: column;
+        height: auto; /* Let it scroll normally on phones */
+        overflow: visible;
+    }
+
+    /* Transform Sidebar into a swipeable top-nav */
+    .admin-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 1rem;
+        flex-direction: row; /* Horizontal layout */
+        align-items: center;
+        overflow-x: auto;
+        scrollbar-width: none; /* Hide ugly scrollbars */
+    }
+    .admin-sidebar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide the big 'MartAdmin' text to save space */
+    .admin-sidebar h2 {
+        display: none; 
+    }
+
+    /* Turn links into horizontal pills */
+    .admin-sidebar a {
+        padding: 0.5rem 1rem;
+        border-bottom: none;
+        white-space: nowrap;
+        border-radius: 50px;
+        margin-right: 10px;
+        background: var(--bg-main);
+    }
+    .admin-sidebar a.active {
+        background: var(--primary-accent);
+        color: white;
+    }
+
+    /* Shrink padding for the main table area */
+    .admin-content {
+        padding: 1rem;
+    }
+    
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}

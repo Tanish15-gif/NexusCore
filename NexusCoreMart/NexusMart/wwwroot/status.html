@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Status | NexusMart</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/nexusmart.css">
+    <link rel="stylesheet" href="css/status.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar" style="display: flex; justify-content: space-between; padding: 1rem 2rem;">
+        <div class="brand">
+            <a href="index.html" style="text-decoration: none; color: var(--text-main);">
+                <i class="fa-solid fa-store"></i> NexusMart
+            </a>
+        </div>
+        <div class="nav-actions">
+            <button id="theme-toggle" class="icon-btn">
+                <i id="theme-icon" class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="status-wrapper">
+        <div class="status-card" id="status-card-ui">
+            <div class="icon-circle" id="status-icon-container">
+                <i class="fa-solid fa-check" id="status-icon"></i>
+            </div>
+
+            <h2 class="status-title" id="status-title-text">Payment Successful!</h2>
+            <p class="status-desc" id="status-message">Your payment has been securely routed and approved by NexusCore
+                Bank.</p>
+
+            <div class="order-ref" id="order-ref-box">
+                Order ID: #NXM-<span id="random-id">89241</span>
+            </div>
+
+            <a href="profile.html" class="btn-return">Return to Profile</a>
+        </div>
+    </div>
+
+    <script src="js/theme-engine.js"></script>
+    <script src="js/status.js"></script>
+    <script src="js/auth-state.js"></script>
+</body>
+
+</html>

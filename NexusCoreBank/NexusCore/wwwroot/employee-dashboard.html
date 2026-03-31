@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusCore Staff | Branch Operations</title>
+    <link rel="stylesheet" href="employee-dashboard.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="customer-dashboard.css">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-building-columns"></i> NexusCore Staff
+            </div>
+            <nav class="nav-menu">
+                <a href="#" id="nav-pending" class="nav-link active">
+                    <i class="fa-solid fa-clipboard-check"></i> Pending Approvals
+                </a>
+                <a href="#" id="nav-lookup" class="nav-link">
+                    <i class="fa-solid fa-magnifying-glass"></i> Customer Lookup
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="profile-info">
+                    <span class="tier-badge">Tier 1: Employee</span>
+                </div>
+                <button id="logout-btn" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i>
+                    Logout</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <h1>Welcome, <span id="dashname">Loading...</span></h1>
+
+                <button id="theme-toggle" class="theme-btn">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                </button>
+            </header>
+            </header>
+
+            <div class="content-wrapper">
+
+                <div id="view-pending">
+                    <div class="section-header">
+                        <h2>Action Required: Pending Accounts</h2>
+                        <p>Review and approve new customer accounts</p>
+                    </div>
+
+                    <div id="empty-state" class="empty-state hidden">
+                        <div class="empty-state-content">
+                            <div class="empty-state-icon"><i class="fa-solid fa-circle-check"></i></div>
+                            <h2>No Pending Accounts</h2>
+                            <p>The approval queue is clear.</p>
+                        </div>
+                    </div>
+
+                    <div id="accounts-grid" class="accounts-grid">
+                        <div class="account-cards-container" id="account-cards">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-lookup" class="hidden">
+                    <div class="action-card">
+                        <h2>Customer Search</h2>
+                        <div class="search-bar">
+                            <input type="number" id="search-input" placeholder="Enter 10-digit account number...">
+                            <button id="btn-search" class="btn btn-primary"><i class="fa-solid fa-search"></i>
+                                Find</button>
+                        </div>
+                    </div>
+
+                    <div id="search-result-card" class="action-card hidden">
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/Employee-dashboard.js"></script>
+    <script src="js/EmployeeDetails.js"></script>
+</body>
+
+</html>

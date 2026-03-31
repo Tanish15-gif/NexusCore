@@ -1,0 +1,6 @@
+@NexusMart_HostAddress = http://localhost:5168
+
+GET {{NexusMart_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

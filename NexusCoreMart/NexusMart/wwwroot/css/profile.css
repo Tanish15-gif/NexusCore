@@ -1,0 +1,540 @@
+
+
+.profile-layout {
+    display: flex;
+    min-height: calc(100vh - 70px);
+    background: var(--bg-main);
+}
+
+.profile-sidebar {
+    width: 280px;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info {
+    padding: 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--primary-accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 1rem;
+}
+
+.user-info h3 {
+    color: var(--text-main);
+    font-size: 1.2rem;
+}
+
+.user-info p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+    flex: 1;
+}
+
+.nav-item {
+    padding: 1rem 2rem;
+    background: none;
+    border: none;
+    text-align: left;
+    color: var(--text-main);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-item:hover {
+    background: rgba(79, 70, 229, 0.05);
+}
+
+.nav-item.active {
+    border-left-color: var(--primary-accent);
+    color: var(--primary-accent);
+    background: rgba(79, 70, 229, 0.1);
+}
+
+.text-red {
+    color: var(--danger-red);
+}
+
+.profile-content {
+    flex: 1;
+    padding: 3rem 5%;
+    overflow-y: auto;
+}
+
+.view-section h2 {
+    color: var(--text-main);
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+/* Overview Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background: var(--bg-surface);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.stat-card i {
+    font-size: 2rem;
+    color: var(--primary-accent);
+}
+
+.stat-info h4 {
+    color: var(--text-main);
+    margin-bottom: 0.3rem;
+}
+
+.stat-info p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Order Cards */
+.order-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.order-id {
+    font-weight: bold;
+    color: var(--text-main);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.order-date {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.badge-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-green);
+    border: 1px solid var(--success-green);
+}
+
+.order-body p {
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+/* Wallet Bank Card */
+.bank-card {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 2rem;
+    color: white;
+    max-width: 400px;
+    position: relative;
+    box-shadow: var(--card-shadow);
+}
+
+.bank-logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #cbd5e1;
+}
+
+.bank-details p {
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.btn-remove-bank {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border: 1px solid #ef4444;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+/* Forms (Reusing solid styles from auth) */
+.settings-form {
+    max-width: 500px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-main);
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+}
+
+.btn-solid-primary {
+    padding: 1rem;
+    background: var(--primary-accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    width: 100%;
+}
+
+.btn-solid-primary:hover {
+    opacity: 0.9;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--bg-surface);
+    padding: 2.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content h3 {
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.modal-content p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-ghost {
+    padding: 1rem;
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    flex: 1;
+    transition: 0.2s;
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.modal-actions .btn-solid-primary {
+    flex: 1;
+    margin: 0;
+}
+
+/* Core State Class */
+.hidden {
+    display: none !important;
+}
+
+/* Layout Styles */
+.profile-section {
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-top: 20px;
+    background-color: #fcfcfc;
+}
+
+.status-text {
+    color: #666;
+    font-size: 0.95em;
+    margin-bottom: 15px;
+}
+
+
+/* Modern Bank Card Surface */
+.bank-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #1e293b;
+    /* Elevated navy surface layer */
+    border: 1px solid #334155;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.bank-info-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.bank-icon {
+    font-size: 24px;
+    color: #94a3b8;
+    /* Muted slate */
+}
+
+/* High-Contrast Typography */
+.bank-name {
+    margin: 0;
+    font-weight: 600;
+    color: #f8fafc;
+    /* Pure white */
+    font-size: 1.1rem;
+}
+
+.bank-acc {
+    margin: 4px 0 0 0;
+    color: #94a3b8;
+    /* Slate gray */
+    font-family: monospace;
+    font-size: 0.95rem;
+}
+
+/* Ghost Disconnect Button */
+.btn-danger {
+    padding: 8px 16px;
+    background-color: transparent;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-danger:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+}
+
+/* Sleek Pill Primary Button */
+.btn-pill-primary {
+    padding: 12px 24px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    /* Creates the pill shape */
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-pill-primary:hover {
+    background-color: #2563eb;
+}
+
+/* The clickable order summary card */
+.order-card {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.order-card:hover {
+    border-color: var(--primary-accent);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* The hidden details section that slides open */
+.order-details-drawer {
+    display: none;
+    /* Hidden by default */
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border-color);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.receipt-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.receipt-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: #fff;
+}
+
+.receipt-info {
+    flex-grow: 1;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* --- MOBILE RESPONSIVENESS (Screens under 768px) --- */
+@media (max-width: 768px) {
+    /* 1. Stack the layout */
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    /* 2. Fix the Content Padding & Prevent Overflow */
+    .profile-content {
+        padding: 1.5rem 1rem; /* Shrinks the massive desktop padding */
+        overflow-x: hidden; /* Stops horizontal scrolling */
+    }
+
+    /* 3. Stack the Dashboard Header & Button */
+    .dashboard-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 15px; /* Adds space between text and the button */
+    }
+
+    /* 4. Shrink Mobile Typography */
+    .dashboard-header h1 {
+        font-size: 1.8rem !important;
+    }
+    
+    .view-section h2 {
+        font-size: 1.5rem !important;
+    }
+
+    /* 5. Make the sidebar span the full width */
+    .profile-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 10px;
+    }
+
+    /* 6. Turn the vertical sidebar links into a horizontal scrolling row */
+    .sidebar-nav {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto; 
+        padding-bottom: 10px;
+        /* Hide scrollbar for a cleaner look */
+        scrollbar-width: none; 
+    }
+    .sidebar-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-item {
+        white-space: nowrap; 
+        margin-top: 0 !important; 
+        padding: 0.8rem 1.2rem; /* Tighter padding for mobile buttons */
+    }
+
+    /* 7. Stack the stat cards */
+    .stats-grid {
+        grid-template-columns: 1fr; 
+    }
+}

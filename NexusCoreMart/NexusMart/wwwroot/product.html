@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sony WH-1000XM5 | Nexusmart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <main class="store-container">
+        <div class="breadcrumbs">
+            <a href="#">Home</a> &gt; <a href="#">Electronics</a> &gt; <span>Audio</span>
+        </div>
+
+        <section class="pdp-layout">
+            <div class="product-gallery">
+                <div class="main-image-container">
+                    <img id="main-product-image" src="https://via.placeholder.com/600x600?text=Main+Product+Image" alt="Product">
+                </div>
+                <div class="thumbnail-row">
+                    <img class="thumb active" src="https://via.placeholder.com/600x600?text=Main+Product+Image" onclick="changeImage(this)">
+                    <img class="thumb" src="https://via.placeholder.com/600x600/38bdf8/fff?text=Side+Angle" onclick="changeImage(this)">
+                    <img class="thumb" src="https://via.placeholder.com/600x600/1e293b/fff?text=Back+Angle" onclick="changeImage(this)">
+                </div>
+            </div>
+
+            <div class="product-details">
+                <h1 class="pdp-title">Sony WH-1000XM5 Wireless Noise Canceling Headphones</h1>
+                <div class="rating"><i class="fas fa-star"></i> 4.8 (2,145 reviews)</div>
+                
+                <div class="price-block">
+                    <span class="pdp-price">₹29,990</span>
+                    <span class="pdp-mrp">₹34,990</span>
+                    <span class="discount-badge">Save 14%</span>
+                </div>
+
+                <div class="variant-selector">
+                    <h3>Color: <span id="selected-color">Black</span></h3>
+                    <div class="color-options">
+                        <button class="color-btn active" style="background-color: #000;" onclick="selectColor('Black', this)"></button>
+                        <button class="color-btn" style="background-color: #e2e8f0;" onclick="selectColor('Silver', this)"></button>
+                        <button class="color-btn" style="background-color: #0c4a6e;" onclick="selectColor('Midnight Blue', this)"></button>
+                    </div>
+                </div>
+
+                <div class="stock-status in-stock"><i class="fas fa-check-circle"></i> In Stock - Ships Tomorrow</div>
+
+                <div class="action-buttons">
+                    <button class="btn-primary btn-large"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                    <button class="btn-secondary btn-large">Buy Now</button>
+                </div>
+                
+                <div class="security-badges">
+                    <span><i class="fas fa-shield-alt"></i> 1 Year Warranty</span>
+                    <span><i class="fas fa-undo"></i> 7-Day Replacement</span>
+                    <span><i class="fas fa-lock"></i> Secure Transaction</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/pdp.js"></script>
+    <script src="js/auth-state.js"></script>
+</body>
+</html>

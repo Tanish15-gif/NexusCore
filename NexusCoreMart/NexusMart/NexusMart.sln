@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexusMart", "NexusMart.csproj", "{6CC97479-CD11-6382-8DA8-6D4667F0A0DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6CC97479-CD11-6382-8DA8-6D4667F0A0DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CC97479-CD11-6382-8DA8-6D4667F0A0DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CC97479-CD11-6382-8DA8-6D4667F0A0DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CC97479-CD11-6382-8DA8-6D4667F0A0DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29AADBBB-8C7F-4025-93DB-23F795C02631}
+	EndGlobalSection
+EndGlobal
