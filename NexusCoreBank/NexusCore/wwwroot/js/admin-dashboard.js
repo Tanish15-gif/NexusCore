@@ -304,8 +304,13 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchSystemMetrics();
     fetchStaffRoster();
     fetchAuditLogs();
-    document.getElementById("logout-btn").addEventListener("click", () => {
-        localStorage.removeItem("nexus_token");
-        window.location.href = "login.html";
+    const logoutBtn = document.getElementById("logout-btn");
+    logoutBtn?.addEventListener("click", () => {
+        if (confirm("Are you sure you want to log out?")) {
+            alert("Logged out SuccessFully");
+            localStorage.removeItem("nexus_token");
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
     });
 });

@@ -260,10 +260,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     });
-    logoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("nexus_token");
-        alert("Logged out");
-        window.location.href = "login.html";
+    logoutBtn?.addEventListener("click", () => {
+        if (confirm("Are you sure you want to log out?")) {
+            alert("Logged out SuccessFully");
+            localStorage.removeItem("nexus_token");
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
     });
     fetchPendingAccounts();
 });

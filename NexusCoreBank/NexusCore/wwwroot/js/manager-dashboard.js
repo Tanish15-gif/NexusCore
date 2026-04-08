@@ -144,27 +144,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function executeTransaction(txId, action) {
         let targetUrl = '';
-        if(action === 'approve'){
+        if (action === 'approve') {
             targetUrl = `http://localhost:5066/Manager/approve/${txId}`
         }
-        else if(action === 'reject'){
+        else if (action === 'reject') {
             targetUrl = `http://localhost:5066/Manager/reject/${txId}`
         }
         try {
-            const response = await fetch(targetUrl,{
-                method : 'PUT',
-                headers : {
-                    'Content-Type' : 'application/json',
-                    'Authorization' : `Bearer ${token}` 
+            const response = await fetch(targetUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             const data = await response.json();
-            if(response.ok)
-            {
+            if (response.ok) {
                 alert(data.message);
                 loadPendingDeposits();
             }
-            else{
+            else {
                 alert(data.message);
             }
         } catch (error) {
@@ -403,10 +402,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error(error);
         }
     }
-    document.getElementById("logout-btn")
-        .addEventListener("click", () => {
-            alert("logged out");
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn?.addEventListener("click", () => {
+        if (confirm("Are you sure you want to log out?")) {
+            alert("Logged out SuccessFully");
             localStorage.removeItem("nexus_token");
-            window.location.href = "login.html";
-        });
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+    });
 });

@@ -514,18 +514,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const userTierElement = document.querySelector('.tier-badge');
         if (userTierElement) {
-            if (total >= 1000000) { 
+            if (total >= 1000000) {
                 userTierElement.innerHTML = `<i class="fa-solid fa-gem"></i> Nexus Diamond`;
-                userTierElement.style.color = '#a855f7'; 
-                userTierElement.style.background = 'rgba(168, 85, 247, 0.2)'; 
-            } else if (total >= 500000) { 
+                userTierElement.style.color = '#a855f7';
+                userTierElement.style.background = 'rgba(168, 85, 247, 0.2)';
+            } else if (total >= 500000) {
                 userTierElement.innerHTML = `<i class="fa-solid fa-star"></i> Nexus Gold`;
-                userTierElement.style.color = '#fbbf24'; 
-                userTierElement.style.background = 'rgba(251, 191, 36, 0.2)'; 
-            } else { 
+                userTierElement.style.color = '#fbbf24';
+                userTierElement.style.background = 'rgba(251, 191, 36, 0.2)';
+            } else {
                 userTierElement.innerHTML = `Tier 1: Customer`;
-                userTierElement.style.color = '#3b82f6'; 
-                userTierElement.style.background = 'rgba(59, 130, 246, 0.2)'; 
+                userTierElement.style.color = '#3b82f6';
+                userTierElement.style.background = 'rgba(59, 130, 246, 0.2)';
             }
         }
     }
@@ -586,11 +586,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const logoutBtn = document.getElementById("logout-btn");
     logoutBtn?.addEventListener("click", () => {
-        localStorage.removeItem("nexus_token");
-
-        localStorage.clear();
-
-        window.location.href = "login.html";
+        if (confirm("Are you sure you want to log out?")) {
+            alert("Logged out SuccessFully");
+            localStorage.removeItem("nexus_token");
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
     });
 
     viewAccounts.classList.remove("hidden");
@@ -599,7 +600,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDashboard();
     fetchMyAccounts();
     fetchTransactions();
-    // --- NEW: Account Perk Helper Function ---
     function getAccountPerkBadge(accountType) {
         if (!accountType) return '';
         const type = accountType.toLowerCase();
@@ -609,7 +609,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (type.includes('current')) {
             return `<div class="perk-badge perk-current"><i class="fa-solid fa-bolt"></i> 15% Wholesale Discount</div>`;
         } else if (type.includes('fixed') || type.includes('fd') || type.includes('deposit')) {
-            // Includes RecurringDeposit and FixedDeposit
             return `<div class="perk-badge perk-fd"><i class="fa-solid fa-crown"></i> VIP Unlocked</div>`;
         } else if (type.includes('loan')) {
             return `<div class="perk-badge perk-loan"><i class="fa-solid fa-percent"></i> AI-Reduced EMI</div>`;
