@@ -8,6 +8,18 @@ async function RegisterForm(event){
     const Phone = document.getElementById('phone').value;
     const address = document.getElementById('address').value;
     const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    if(password !== confirmPassword)
+    {
+        showError("Password do not match");
+        return;
+    }
+
+    if(password.length < 8){
+        showError("Password must be at least 8 characters");
+        return;
+    }
     
     const registerData = {
         FullName : name ,

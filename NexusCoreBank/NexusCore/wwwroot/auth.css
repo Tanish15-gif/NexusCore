@@ -42,7 +42,24 @@
     flex-direction: column;
     gap: 20px;
 }
+.input-wrapper textarea {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    resize: vertical; /* allows resize only vertically */
+    min-height: 100px;
+    transition: border-color 0.3s ease;
+}
 
+/* Focus effect (same as input) */
+.input-wrapper textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
 .form-group {
     display: flex;
     flex-direction: column;
