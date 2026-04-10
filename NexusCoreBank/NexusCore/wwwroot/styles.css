@@ -917,7 +917,7 @@ body.dark-mode .selection-card:hover {
         font-weight: 600;
     }
 
-    /* Tweak the Login/Open Account buttons to match */
+    /* Tweak the Login/Create Account buttons to match */
     .nav-actions .btn {
         padding: 10px 24px;
         border-radius: 50px;

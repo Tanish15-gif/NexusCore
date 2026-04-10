@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded",async function () {
         {
             const data = await response.json();
             document.getElementById('dashname').innerText = data.fullName;
-            console.log(data);
         }else{
             console.log('Failed to fetch details');
         }

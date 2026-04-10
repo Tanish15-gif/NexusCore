@@ -19,7 +19,6 @@ async function Login(event) {
             body: JSON.stringify(LoginData)
 
         });
-        console.log(response);
         if (response.ok) {
             const successmsg = await response.json();
             const token = successmsg.token;
@@ -35,7 +34,6 @@ async function Login(event) {
                 payloadObject.role ||
                 payloadObject.Role ||
                 payloadObject["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-            console.log(role);
             setTimeout(() => {
 
                 if (role === "Employee") {

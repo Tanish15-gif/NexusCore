@@ -8,8 +8,37 @@
     <link rel="stylesheet" href="customer-dashboard.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="employee-dashboard.css">
+    <link rel="stylesheet" href="auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        function getCookie(name) {
+            let matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        }
+
+        const tempToken = getCookie('temp_nexus_token');
+        const tempName = getCookie('temp_nexus_name');
+
+        if (tempToken) {
+            localStorage.setItem('nexus_token', tempToken);
+
+            if (tempName) {
+                localStorage.setItem('nexus_google_name', tempName);
+            }
+            try {
+                const payloadObject = JSON.parse(atob(tempToken.split('.')[1]));
+                const userId = payloadObject.UserId || payloadObject.userid || payloadObject["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+                localStorage.setItem("userid", userId);
+            } catch (error) {
+                console.error("Token decode failed", error);
+            }
+
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
 </head>
 
 <body>
@@ -150,7 +179,8 @@
                         <div id="ai-chat-history"
                             style="flex: 1; overflow-y: auto; background: #0f1219; border-radius: 6px; padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px;">
                             <div style="color: #9ca3af; font-size: 0.9rem;">
-                                <em>AI: Hello <span id="dashname-ai" style="color: var(--primary-blue);">Customer</span> I'm synced with your NexusCore ledger. How can I help you manage
+                                <em>AI: Hello <span id="dashname-ai" style="color: var(--primary-blue);">Customer</span>
+                                    I'm synced with your NexusCore ledger. How can I help you manage
                                     your wealth today?</em>
                             </div>
                         </div>
@@ -263,6 +293,40 @@
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Transfer</button>
                 </form>
             </div>
+        </div>
+    </div>
+    <div id="kyc-modal" class="modal hidden"
+        style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+        <div class="clerk-card" style="width: 100%; max-width: 450px; position: relative;">
+
+            <div class="clerk-header">
+                <h2>Complete Your Profile</h2>
+                <p>NexusCore requires KYC details to open your account.</p>
+            </div>
+
+            <form id="kyc-form" class="clerk-form">
+                <div class="clerk-form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="kyc-fullname" required>
+                </div>
+
+                <div class="clerk-form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" id="kyc-dob" required>
+                </div>
+
+                <div class="clerk-form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="kyc-phone" required placeholder="+91 98765 43210">
+                </div>
+
+                <div class="clerk-form-group">
+                    <label>Home Address</label>
+                    <input type="text" id="kyc-address" required placeholder="123 Nexus Street, Mumbai">
+                </div>
+
+                <button type="submit" class="clerk-btn-primary">Submit KYC Data</button>
+            </form>
         </div>
     </div>
 

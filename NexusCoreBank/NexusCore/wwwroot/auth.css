@@ -42,6 +42,7 @@
     flex-direction: column;
     gap: 20px;
 }
+
 .input-wrapper textarea {
     width: 100%;
     padding: 12px 15px 12px 45px;
@@ -50,7 +51,8 @@
     background-color: var(--bg-color);
     color: var(--text-color);
     font-size: 1rem;
-    resize: vertical; /* allows resize only vertically */
+    resize: vertical;
+    /* allows resize only vertically */
     min-height: 100px;
     transition: border-color 0.3s ease;
 }
@@ -60,6 +62,7 @@
     outline: none;
     border-color: var(--accent-color);
 }
+
 .form-group {
     display: flex;
     flex-direction: column;
@@ -113,6 +116,246 @@
     gap: 8px;
     color: var(--text-muted);
     cursor: pointer;
+}
+/* --- CLERK UI AESTHETIC (SYNCED WITH NATIVE VARIABLES) --- */
+
+.clerk-bg {
+    /* Uses your global background to stay synced perfectly */
+    background-color: var(--bg-color); 
+    min-height: calc(100vh - 80px); /* Adjusts for navbar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.clerk-container {
+    width: 100%;
+    max-width: 420px; /* Perfect width for auth cards */
+}
+
+/* The iconic Card */
+.clerk-card {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    padding: 40px 32px;
+    transition: all 0.3s ease;
+}
+
+/* User's Custom Dark Mode Request: True Black Card */
+body.dark-mode .clerk-card {
+    background-color: #0a0a0a; /* Forces the box to be black */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Header & Typography */
+.clerk-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.clerk-logo-placeholder {
+    width: 45px;
+    height: 45px;
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+}
+
+.clerk-header h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0 0 6px 0;
+}
+
+.clerk-header p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Social Buttons */
+.clerk-btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 16px;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.clerk-btn-social:hover {
+    background-color: rgba(150, 150, 150, 0.1);
+}
+
+.social-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+}
+
+/* The elegant divider */
+.clerk-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 24px 0;
+}
+
+.clerk-divider::before,
+.clerk-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.clerk-divider span {
+    padding: 0 12px;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Form Inputs */
+.clerk-form-group {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.clerk-form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.clerk-form-group input {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    outline: none;
+    transition: all 0.2s;
+}
+
+.clerk-form-group input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Primary Button */
+.clerk-btn-primary {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: var(--primary-color);
+    color: var(--bg-color); /* Automatically flips black/white based on theme! */
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    margin-top: 10px;
+}
+
+.clerk-btn-primary:hover {
+    opacity: 0.9;
+}
+
+.clerk-btn-primary:active {
+    transform: scale(0.98);
+}
+
+/* Footer Links */
+.clerk-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.clerk-footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.clerk-footer a:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+.clerk-error {
+    color: #ef4444;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 12px;
+    min-height: 20px;
+}
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #9ca3af;
+}
+
+/* Hide default checkbox */
+.checkbox-label input {
+    display: none;
+}
+
+/* Custom box */
+.checkbox-label span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-label span::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    border: 2px solid #4b5563;
+    border-radius: 5px;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+/* Checked state */
+.checkbox-label input:checked + span::before {
+    content: "✔";
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    border-color: #3b82f6;
+    color: white;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .forgot-link {

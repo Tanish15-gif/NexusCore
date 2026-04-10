@@ -1,9 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem('nexus_token');
+
+    if (token == null || token == undefined || token === "") {
+        window.location.href = 'login.html';
+        return;
+    }
     const themeToggle = document.getElementById("theme-toggle");
     const themeIcon = document.getElementById("theme-icon");
     const headerName = document.getElementById("dashname-header");
     const aiName = document.getElementById("dashname-ai");
+
+    const kycModal = document.getElementById("kyc-modal");
+    const kycForm = document.getElementById("kyc-form");
+    const kycFullNameInput = document.getElementById("kyc-fullname");
+
+    const savedGoogleName = localStorage.getItem('nexus_google_name');
+    if (savedGoogleName) {
+        const cleanName = decodeURIComponent(savedGoogleName).replace(/%20/g, ' ');
+        if (headerName) headerName.innerText = cleanName;
+        if (aiName) aiName.innerText = cleanName;
+    }
 
     themeToggle.addEventListener("click", () => {
 
@@ -16,10 +32,86 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     });
-    if (token == null || token == undefined) {
-        window.location.href = 'login.html';
-        return;
+
+    async function verifyKycStatus() {
+        try {
+            const response = await fetch("http://localhost:5066/Users/check-kyc", {
+                method: 'GET',
+                headers: {
+                    'Authorization': "Bearer " + token
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                if (data.needsProfile && kycModal) {
+                    kycModal.classList.remove("hidden");
+
+                    const savedGoogleName = localStorage.getItem('nexus_google_name');
+                    if (savedGoogleName) {
+                        kycFullNameInput.value = decodeURIComponent(savedGoogleName).replace(/%20/g, ' ');
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("KYC Check failed to connect to server.", error);
+        }
     }
+    verifyKycStatus();
+
+    kycForm?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const profileData = {
+            FullName: document.getElementById("kyc-fullname").value,
+            DateOfBirth: document.getElementById("kyc-dob").value,
+            PhoneNumber: document.getElementById("kyc-phone").value,
+            Address: document.getElementById("kyc-address").value
+        };
+
+        try {
+            const response = await fetch("http://localhost:5066/Users/complete-profile", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify(profileData)
+            });
+
+            if (response.ok) {
+                alert("Profile Completed! Welcome to NexusCore.");
+                kycModal.classList.add("hidden");
+            } else {
+                const err = await response.json();
+                alert("Error: " + err.message);
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Network error while submitting KYC.");
+        }
+    });
+
+    async function fetchUserProfile() {
+        try {
+            const response = await fetch("http://localhost:5066/Users/profile", {
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                if (headerName) headerName.innerText = data.fullName;
+                if (aiName) aiName.innerText = data.fullName;
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     const mobileSidebar = document.querySelector('.sidebar');
     const activeLink = document.querySelector('.nav-link.active');
 
@@ -53,7 +145,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchMyAccounts() {
         try {
-            const response = await fetch(`http://localhost:5066/Account/my-accounts`, {
+            const BaseUrl = window.location.origin;
+            const response = await fetch(`${BaseUrl}/Account/my-accounts`, {
                 method: 'GET',
                 headers: {
                     'Authorization': "Bearer " + token
@@ -61,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             if (response.ok) {
                 const fetchedAccounts = await response.json();
-                if (fetchedAccounts.length > 0) {
+                if (fetchedAccounts.length > 0 && fetchedAccounts[0].fullName) {
                     const name = fetchedAccounts[0].fullName;
 
                     if (headerName) headerName.innerText = name;
@@ -106,12 +199,9 @@ document.addEventListener("DOMContentLoaded", () => {
         accountsGrid.classList.add("hidden");
 
         if (accounts.length === 0) {
-
             emptyState.classList.remove("hidden");
             return;
-
         }
-
         const hasPending = accounts.some(acc => acc.status === "Pending");
 
         if (hasPending) {
@@ -359,10 +449,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function formatDescription(rawString) {
         if (!rawString) return "System Transaction";
 
-        // Replace underscores with spaces
         let cleanString = rawString.replace(/_/g, ' ');
 
-        // Capitalize first letter of each word (Title Case)
         return cleanString.replace(/\w\S*/g, function (txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
@@ -393,9 +481,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const displayDescription = formatDescription(txn.merchantName)
 
             let symbol = "";
-            let amountColorClass = ""; // New variable to hold our CSS color class
+            let amountColorClass = "";
 
-            // The Logic Engine for Colors and Symbols
             if (type === "deposit") {
                 symbol = "+";
                 amountColorClass = "amount-in";
@@ -405,18 +492,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 amountColorClass = "amount-out";
             }
             else if (type === "transfer") {
-                // Read the custom string from your C# Backend!
                 if (merchant.includes("TRANSFER_OUT")) {
                     symbol = "-";
-                    amountColorClass = "amount-out"; // Red
+                    amountColorClass = "amount-out";
                 }
                 else if (merchant.includes("TRANSFER_IN")) {
                     symbol = "+";
-                    amountColorClass = "amount-transfer-in"; // Blue
+                    amountColorClass = "amount-transfer-in";
                 }
                 else {
                     symbol = "→";
-                    amountColorClass = "amount-transfer-in"; // Default Blue
+                    amountColorClass = "amount-transfer-in";
                 }
             }
 
@@ -458,14 +544,11 @@ document.addEventListener("DOMContentLoaded", () => {
         inputField.value = '';
         chatHistory.scrollTop = chatHistory.scrollHeight;
 
-        // Show a loading state
         const loadingId = "loading-" + Date.now();
         chatHistory.innerHTML += `<div id="${loadingId}" style="color: #9ca3af;"><em>AI is analyzing your ledger...</em></div>`;
         chatHistory.scrollTop = chatHistory.scrollHeight;
 
         try {
-            // 2. Fetch the C# AI Endpoint
-            // Make sure the port matches your Bank API!
             const response = await fetch('http://localhost:5066/AiChat/ask', {
                 method: 'POST',
                 headers: {
@@ -475,7 +558,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ UserMessage: userMessage })
             });
 
-            // Remove loading text
             document.getElementById(loadingId).remove();
 
             if (response.ok) {
@@ -596,7 +678,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     viewAccounts.classList.remove("hidden");
     viewTransactions.classList.add("hidden");
-
+    fetchUserProfile();
     updateDashboard();
     fetchMyAccounts();
     fetchTransactions();

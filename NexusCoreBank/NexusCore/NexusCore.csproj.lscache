@@ -90,7 +90,9 @@ CustomerOperations/
  CustomerDetailsDTO.cs
  CustomerLogin.cs
  CustomerLoginDto.cs
+ CustomerProfileViaGoogleDto.cs
  CustomerSignUp.cs
+ GoogleLogin.cs
  LoginResponseDto.cs
  Security.cs
 EmployeeDto's/
@@ -439,6 +441,7 @@ ServerController/
  azure.core/1.50.0/lib/net8.0/Azure.Core.dll
  azure.identity/1.17.1/lib/net8.0/Azure.Identity.dll
  bcrypt.net-next/4.1.0/lib/net10.0/BCrypt.Net-Next.dll
+ microsoft.aspnetcore.authentication.google/10.0.5/lib/net10.0/Microsoft.AspNetCore.Authentication.Google.dll
  microsoft.aspnetcore.authentication.jwtbearer/10.0.3/lib/net10.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
  microsoft.aspnetcore.openapi/10.0.1/lib/net10.0/Microsoft.AspNetCore.OpenApi.dll
  microsoft.bcl.asyncinterfaces/8.0.0/lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll

@@ -75,5 +75,19 @@ namespace NexusCore.CustomerOperation
                 return result;
             }
         }
+        public string GetProfile(int userid)
+        {
+            using (var connect = new SqlConnection(conn))
+            {
+                connect.Open();
+                string sql = "Select FullName from CustomerProfiles where UserId = @uid";
+                using (var cmd = new SqlCommand(sql, connect))
+                {
+                    cmd.Parameters.AddWithValue("@uid", userid);
+                    string name = cmd.ExecuteScalar()?.ToString() ?? "Customer";
+                    return name;
+                }
+            }
+        }
     }
 }

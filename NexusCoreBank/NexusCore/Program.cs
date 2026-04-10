@@ -22,6 +22,11 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = "Google"; 
+});
 
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
@@ -44,9 +49,16 @@ builder.Services.AddAuthentication(options =>
 
         ValidateLifetime = true
     };
+})
+.AddCookie("Cookies")
+.AddGoogle("Google",googleOptions =>
+{
+    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
 });
 builder.Services.AddScoped<NexusCore.CustomerOperation.RegistrationOperation>();
 builder.Services.AddScoped<NexusCore.CustomerOperation.CustomerLogin>();
+builder.Services.AddScoped<NexusCore.CustomerOperation.RegisterViaGoogle>();
 builder.Services.AddScoped<NexusCore.CustomerOperation.TokenService>();
 builder.Services.AddScoped<NexusCore.AccountOperation.CreateAccount>();
 builder.Services.AddScoped<NexusCore.AccountOperation.GetCustomerAccount>();
