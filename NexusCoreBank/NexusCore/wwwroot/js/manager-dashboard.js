@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     fetchGlobalLedger();
     fetchAuditLogs();
+
+    const BaseUrl = window.location.origin;
     const navPending = document.getElementById('nav-pending');
     const viewPending = document.getElementById('view-pending');
 
@@ -73,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
             const token = localStorage.getItem('nexus_token');
-            const response = await fetch('http://localhost:5066/Manager/Pending-Deposit', {
+            const response = await fetch(`${BaseUrl}/Manager/Pending-Deposit`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -145,10 +147,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function executeTransaction(txId, action) {
         let targetUrl = '';
         if (action === 'approve') {
-            targetUrl = `http://localhost:5066/Manager/approve/${txId}`
+            targetUrl = `${BaseUrl}/Manager/approve/${txId}`
         }
         else if (action === 'reject') {
-            targetUrl = `http://localhost:5066/Manager/reject/${txId}`
+            targetUrl = `${BaseUrl}/Manager/reject/${txId}`
         }
         try {
             const response = await fetch(targetUrl, {
@@ -212,7 +214,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
         if (!confirmFreeze) return;
         try {
-            const response = await fetch(`http://localhost:5066/Manager/freeze/${currentReviewAccountNumber}`, {
+            const response = await fetch(`${BaseUrl}/Manager/freeze/${currentReviewAccountNumber}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -243,7 +245,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
         if (!confirmRestore) return;
         try {
-            const response = await fetch(`http://localhost:5066/Manager/unfreeze/${currentReviewAccountNumber}`, {
+            const response = await fetch(`${BaseUrl}/Manager/unfreeze/${currentReviewAccountNumber}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -278,7 +280,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const confirmUpdateEmail = confirm("Are you sure you want to override the registered email for this user?");
         if (!confirmUpdateEmail) return;
         try {
-            const response = await fetch(`http://localhost:5066/Manager/update-email/${currentReviewAccountId}`, {
+            const response = await fetch(`${BaseUrl}/Manager/update-email/${currentReviewAccountId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -302,7 +304,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     async function fetchGlobalLedger() {
         try {
-            const response = await fetch(`http://localhost:5066/Manager/global-ledger`, {
+            const response = await fetch(`${BaseUrl}/Manager/global-ledger`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -359,7 +361,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     async function fetchAuditLogs() {
         try {
-            const response = await fetch(`http://localhost:5066/Manager/audit-logs`, {
+            const response = await fetch(`${BaseUrl}/Manager/audit-logs`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

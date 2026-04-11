@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded",async function () {
     const token = localStorage.getItem('nexus_token');
     const userid = localStorage.getItem("userid");
+    const BaseUrl = window.location.origin;
     try {
-        const response = await fetch(`http://localhost:5066/Employee/fetchdetails`,{
+        const response = await fetch(`${BaseUrl}/Employee/fetchdetails`,{
             method : 'GET',
             headers : {
                 "Authorization" : "Bearer " + token

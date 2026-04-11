@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | NexusCore Bank</title>
-    <link rel="stylesheet" href="customer-dashboard.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="employee-dashboard.css">
-    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="css/customer-dashboard.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/employee-dashboard.css">
+    <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
@@ -322,8 +322,10 @@
 
                 <div class="clerk-form-group">
                     <label>Home Address</label>
-                    <input type="text" id="kyc-address" required placeholder="123 Nexus Street, Mumbai">
-                </div>
+                    <textarea type="text" id="kyc-address" 
+                    style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none; transition: all 0.2s; box-sizing: border-box; background: inherit; color: inherit; resize: vertical; min-height: 80px;"
+                    required placeholder="123 Nexus Street, Mumbai"></textarea>
+                </div> 
 
                 <button type="submit" class="clerk-btn-primary">Submit KYC Data</button>
             </form>

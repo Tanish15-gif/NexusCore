@@ -310,35 +310,43 @@ body.dark-mode .logo i {
 
 .image-placeholder {
     width: 100%;
-    /* Remove the hardcoded max-width so it shrinks naturally */
     height: 300px;
-    /* Modern, subtle gradient instead of the harsh bright one */
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(15, 23, 42, 0.8));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    /* Glass edge */
+    /* Light mode default gradient using your variables */
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), var(--border-color));
+    border: 1px solid var(--border-color);
     border-radius: 24px;
-    /* Smoother, modern curves */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--accent-color);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    /* FIX: Force text to use the high-contrast theme text color */
+    color: var(--text-color);
+    box-shadow: var(--shadow);
     backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+/* Ensure the headings and paragraphs inside inherit the proper theme colors */
+.image-placeholder h1,
+.image-placeholder h2 {
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.image-placeholder p {
+    color: var(--text-muted);
 }
 
 .image-placeholder i {
     font-size: 4rem;
     margin-bottom: 15px;
-    /* Make the icon solid white so it pops against the dark glass */
-    color: #ffffff;
+    color: var(--accent-color);
+    /* Keep the icon blue so it pops */
 }
 
-.image-placeholder span {
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
+/* Dark Mode Override for the gradient depth */
+body.dark-mode .image-placeholder {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(15, 23, 42, 0.9));
 }
 
 /* --- Stats Section --- */
@@ -831,6 +839,134 @@ body.dark-mode .selection-card:hover {
 
     color: #aaa;
 
+}
+
+/* =========================================
+   ENTERPRISE FOOTER GRID
+   ========================================= */
+.footer {
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 60px 0 20px 0;
+    position: relative;
+    font-family: inherit;
+}
+
+.footer-grid {
+    display: grid;
+    /* 2 fractions for the brand, 1 fraction for each list */
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+/* Brand Column */
+.footer-brand-col h2 {
+    color: var(--accent-color);
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-brand-col p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    color: white;
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+/* Links Columns */
+.footer-links-col h4 {
+    color: var(--text-color);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.footer-links-col ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-links-col ul li a {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+.footer-links-col ul li a:hover {
+    color: var(--accent-color);
+}
+
+/* Footer Bottom Bar */
+.footer-bottom {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.footer-bottom .disclaimer {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+/* Responsive Stacking for Mobile */
+@media (max-width: 900px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        /* 2 columns on tablet */
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        /* 1 column on phones */
+        text-align: center;
+    }
+
+    .footer-brand-col p {
+        margin: 0 auto 20px auto;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
 }
 
 @media (max-width: 768px) {

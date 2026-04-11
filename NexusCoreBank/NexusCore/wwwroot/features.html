@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Features | NexusCore Bank</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="features.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/features.css">
 </head>
+
 <body>
 
     <!-- Navigation Bar -->
@@ -16,7 +18,7 @@
             <a href="index.html" class="logo">
                 <i class="fa-solid fa-layer-group"></i> NexusCore
             </a>
-            
+
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
@@ -31,7 +33,7 @@
                 <a href="login.html" class="btn btn-outline">Login</a>
                 <a href="register.html" class="btn btn-primary">Create Account</a>
             </div>
-            
+
             <div class="menu-toggle">
                 <i class="fa-solid fa-bars"></i>
             </div>
@@ -51,17 +53,20 @@
                 <div class="detail-card">
                     <div class="detail-icon"><i class="fa-solid fa-fingerprint"></i></div>
                     <h3>Biometric Security</h3>
-                    <p>Access your account with FaceID or TouchID. We use multi-factor authentication to ensure only you can access your funds.</p>
+                    <p>Access your account with FaceID or TouchID. We use multi-factor authentication to ensure only you
+                        can access your funds.</p>
                 </div>
                 <div class="detail-card">
                     <div class="detail-icon"><i class="fa-solid fa-bolt"></i></div>
                     <h3>Instant Transfers</h3>
-                    <p>Send money to anyone, anywhere in the world instantly. No hidden fees, no waiting periods for international transfers.</p>
+                    <p>Send money to anyone, anywhere in the world instantly. No hidden fees, no waiting periods for
+                        international transfers.</p>
                 </div>
                 <div class="detail-card">
                     <div class="detail-icon"><i class="fa-solid fa-robot"></i></div>
                     <h3>AI Budgeting</h3>
-                    <p>Our AI analyzes your spending habits to suggest savings goals and categorize expenses automatically.</p>
+                    <p>Our AI analyzes your spending habits to suggest savings goals and categorize expenses
+                        automatically.</p>
                 </div>
                 <div class="detail-card">
                     <div class="detail-icon"><i class="fa-solid fa-globe"></i></div>
@@ -71,7 +76,8 @@
                 <div class="detail-card">
                     <div class="detail-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
                     <h3>Smart Invoicing</h3>
-                    <p>For freelancers and businesses: Generate professional invoices directly from the app and get paid faster.</p>
+                    <p>For freelancers and businesses: Generate professional invoices directly from the app and get paid
+                        faster.</p>
                 </div>
                 <div class="detail-card">
                     <div class="detail-icon"><i class="fa-solid fa-headset"></i></div>
@@ -82,74 +88,74 @@
         </div>
     </section>
 
-    <section class="account-tiers" style="padding: 5rem 0; background: var(--bg-darker, #0f1219);">
+    <section class="account-tiers">
         <div class="container">
-            <div style="text-align: center; margin-bottom: 3rem;">
-                <h2 style="color: #60a5fa; font-size: 2.5rem; margin-bottom: 10px;">Elite Account Tiers</h2>
-                <p style="color: #9ca3af; font-size: 1.1rem;">Gamified banking. Unlock exclusive perks across NexusCore Bank and NexusMart.</p>
+            <div class="tiers-header">
+                <h2>Elite Account Tiers</h2>
+                <p>Gamified banking. Unlock exclusive perks across NexusCore Bank and NexusMart.</p>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                
-                <div class="tier-card" style="background: #1f2937; border-radius: 12px; padding: 30px; border: 1px solid #374151; transition: transform 0.3s ease;">
-                    <div style="font-size: 2.5rem; color: #3b82f6; margin-bottom: 15px;"><i class="fa-solid fa-piggy-bank"></i></div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 5px; color: #f3f4f6;">Savings Account</h3>
-                    <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">The Everyday Tier</p>
-                    <ul style="list-style: none; padding: 0; margin-bottom: 30px; color: #d1d5db; line-height: 1.8;">
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> 4.5% Annual Interest</li>
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> 5% NexusMart Grocery Cashback</li>
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> Free AI Wealth Manager</li>
+            <div class="tiers-grid">
+
+                <div class="tier-card savings-tier">
+                    <div class="tier-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+                    <h3>Savings Account</h3>
+                    <p class="tier-subtitle">The Everyday Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> 4.5% Annual Interest</li>
+                        <li><i class="fa-solid fa-check"></i> 5% NexusMart Grocery Cashback</li>
+                        <li><i class="fa-solid fa-check"></i> Free AI Wealth Manager</li>
                     </ul>
-                    <a href="register.html?tier=savings" class="btn btn-outline" style="display: block; text-align: center; width: 100%; border: 1px solid #3b82f6; color: #3b82f6; padding: 10px; border-radius: 6px; text-decoration: none;">Open Savings</a>
+                    <a href="register.html?tier=savings" class="btn btn-outline tier-btn">Open Savings</a>
                 </div>
 
-                <div class="tier-card" style="background: #1f2937; border-radius: 12px; padding: 30px; border: 2px solid #60a5fa; position: relative; transform: scale(1.05); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);">
-                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #3b82f6; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">MOST POPULAR</div>
-                    <div style="font-size: 2.5rem; color: #60a5fa; margin-bottom: 15px;"><i class="fa-solid fa-briefcase"></i></div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 5px; color: #f3f4f6;">Current Account</h3>
-                    <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">The Business & Creator Tier</p>
-                    <ul style="list-style: none; padding: 0; margin-bottom: 30px; color: #d1d5db; line-height: 1.8;">
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> Zero Transaction Fees</li>
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> ₹50,000 Overdraft Limit</li>
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> 15% NexusMart Wholesale Discount</li>
+                <div class="tier-card current-tier popular">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <div class="tier-icon"><i class="fa-solid fa-briefcase"></i></div>
+                    <h3>Current Account</h3>
+                    <p class="tier-subtitle">The Business & Creator Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> Zero Transaction Fees</li>
+                        <li><i class="fa-solid fa-check"></i> ₹50,000 Overdraft Limit</li>
+                        <li><i class="fa-solid fa-check"></i> 15% NexusMart Wholesale Discount</li>
                     </ul>
-                    <a href="register.html?tier=current" class="btn btn-primary" style="display: block; text-align: center; width: 100%; background: #3b82f6; color: white; padding: 10px; border-radius: 6px; text-decoration: none;">Open Current</a>
+                    <a href="register.html?tier=current" class="btn btn-primary tier-btn">Open Current</a>
                 </div>
 
-                <div class="tier-card" style="background: #1f2937; border-radius: 12px; padding: 30px; border: 1px solid #374151; transition: transform 0.3s ease;">
-                    <div style="font-size: 2.5rem; color: #a855f7; margin-bottom: 15px;"><i class="fa-solid fa-vault"></i></div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 5px; color: #f3f4f6;">Fixed Deposit</h3>
-                    <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">The Vault Tier</p>
-                    <ul style="list-style: none; padding: 0; margin-bottom: 30px; color: #d1d5db; line-height: 1.8;">
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> 8.5% Guaranteed Return</li>
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> Instant 90% Value Loans</li>
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> NexusMart Prime VIP Upgrade</li>
+                <div class="tier-card fd-tier">
+                    <div class="tier-icon"><i class="fa-solid fa-vault"></i></div>
+                    <h3>Fixed Deposit</h3>
+                    <p class="tier-subtitle">The Vault Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> 8.5% Guaranteed Return</li>
+                        <li><i class="fa-solid fa-check"></i> Instant 90% Value Loans</li>
+                        <li><i class="fa-solid fa-check"></i> NexusMart Prime VIP Upgrade</li>
                     </ul>
-                    <a href="register.html?tier=fd" class="btn btn-outline" style="display: block; text-align: center; width: 100%; border: 1px solid #a855f7; color: #a855f7; padding: 10px; border-radius: 6px; text-decoration: none;">Lock Wealth</a>
+                    <a href="register.html?tier=fd" class="btn btn-outline tier-btn">Lock Wealth</a>
                 </div>
 
-                <div class="tier-card" style="background: #1f2937; border-radius: 12px; padding: 30px; border: 1px solid #374151; transition: transform 0.3s ease;">
-                    <div style="font-size: 2.5rem; color: #10b981; margin-bottom: 15px;"><i class="fa-solid fa-rotate"></i></div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 5px; color: #f3f4f6;">Recurring Deposit</h3>
-                    <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">The Milestone Tier</p>
-                    <ul style="list-style: none; padding: 0; margin-bottom: 30px; color: #d1d5db; line-height: 1.8;">
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> 7.0% Growing Interest</li>
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> ₹2,500 12-Month Streak Bonus</li>
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> Unlock Profile Badges</li>
+                <div class="tier-card rd-tier">
+                    <div class="tier-icon"><i class="fa-solid fa-rotate"></i></div>
+                    <h3>Recurring Deposit</h3>
+                    <p class="tier-subtitle">The Milestone Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> 7.0% Growing Interest</li>
+                        <li><i class="fa-solid fa-check"></i> ₹2,500 12-Month Streak Bonus</li>
+                        <li><i class="fa-solid fa-check"></i> Unlock Profile Badges</li>
                     </ul>
-                    <a href="register.html?tier=rd" class="btn btn-outline" style="display: block; text-align: center; width: 100%; border: 1px solid #10b981; color: #10b981; padding: 10px; border-radius: 6px; text-decoration: none;">Start Milestone</a>
+                    <a href="register.html?tier=rd" class="btn btn-outline tier-btn">Start Milestone</a>
                 </div>
 
-                <div class="tier-card" style="background: #1f2937; border-radius: 12px; padding: 30px; border: 1px solid #374151; transition: transform 0.3s ease;">
-                    <div style="font-size: 2.5rem; color: #ef4444; margin-bottom: 15px;"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 5px; color: #f3f4f6;">Nexus Loan</h3>
-                    <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">The Leverage Tier</p>
-                    <ul style="list-style: none; padding: 0; margin-bottom: 30px; color: #d1d5db; line-height: 1.8;">
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> 1-Click NexusMart Financing</li>
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> AI-Reduced EMI Rates</li>
-                        <li><i class="fa-solid fa-check" style="color: #34d399; margin-right: 10px;"></i> Zero Early Repayment Penalty</li>
+                <div class="tier-card loan-tier">
+                    <div class="tier-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <h3>Nexus Loan</h3>
+                    <p class="tier-subtitle">The Leverage Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> 1-Click NexusMart Financing</li>
+                        <li><i class="fa-solid fa-check"></i> AI-Reduced EMI Rates</li>
+                        <li><i class="fa-solid fa-check"></i> Zero Early Repayment Penalty</li>
                     </ul>
-                    <a href="register.html?tier=loan" class="btn btn-outline" style="display: block; text-align: center; width: 100%; border: 1px solid #ef4444; color: #ef4444; padding: 10px; border-radius: 6px; text-decoration: none;">Apply Now</a>
+                    <a href="register.html?tier=loan" class="btn btn-outline tier-btn">Apply Now</a>
                 </div>
 
             </div>
@@ -187,41 +193,59 @@
     </section>
     <br>
     <footer class="footer">
-    <button id="backToTop" class="back-to-top" aria-label="Scroll to top">
-        <i class="fa-solid fa-arrow-up"></i>
-    </button>
+        <button id="backToTop" class="back-to-top" aria-label="Scroll to top">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
 
-    <div class="container footer-container">
-        <div class="footer-brand footer-section">
-            <h2>NexusCore Bank</h2>
-            <p>Empowering your financial future with technology.</p>
-        </div>
-        
-        <div class="footer-section">
-            <h4>Quick Links</h4>
-            <ul>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Security</a></li>
-            </ul>
-        </div>
-        
-        <div class="footer-section">
-            <h4>Contact</h4>
-            <ul>
-                <li><a href="mailto:support@nexuscore.com">support@nexuscore.com</a></li>
-                <li><a href="tel:+18001234567">+1 (800) 123-4567</a></li>
-            </ul>
-        </div>
-    </div>
-    
-    <div class="container">
-        <div class="footer-bottom">
-            &copy; 2026 NexusCore Bank. All rights reserved.
-        </div>
-    </div>
-</footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand-col">
+                    <h2><i class="fa-solid fa-layer-group"></i> NexusCore</h2>
+                    <p>Empowering your financial future with technology.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                    </div>
+                </div>
 
+                <div class="footer-links-col">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="register.html?tier=savings">Savings Account</a></li>
+                        <li><a href="register.html?tier=current">Current Account</a></li>
+                        <li><a href="register.html?tier=fd">Fixed Deposits</a></li>
+                        <li><a href="register.html?tier=loan">Nexus Loans</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="mailto:support@nexuscore.com">support@nexuscore.com</a></li>
+                        <li><a href="tel:+919867606713">+91 9867606713</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 NexusCore Bank. All rights reserved.</p>
+                <p class="disclaimer">NexusCore is a financial technology company, not a traditional bank. Banking
+                    services provided by our licensed partner institutions.</p>
+            </div>
+        </div>
+    </footer>
     <script src="js/script.js"></script>
 </body>
 </html>

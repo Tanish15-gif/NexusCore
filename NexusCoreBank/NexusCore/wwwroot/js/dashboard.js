@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (headerName) headerName.innerText = cleanName;
         if (aiName) aiName.innerText = cleanName;
     }
+    const BaseUrl = window.location.origin;
 
     themeToggle.addEventListener("click", () => {
 
@@ -35,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function verifyKycStatus() {
         try {
-            const response = await fetch("http://localhost:5066/Users/check-kyc", {
+            const response = await fetch(`${BaseUrl}/Users/check-kyc`, {
                 method: 'GET',
                 headers: {
                     'Authorization': "Bearer " + token
@@ -71,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-            const response = await fetch("http://localhost:5066/Users/complete-profile", {
+            const response = await fetch(`${BaseUrl}/Users/complete-profile`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchUserProfile() {
         try {
-            const response = await fetch("http://localhost:5066/Users/profile", {
+            const response = await fetch(`${BaseUrl}/Users/profile`, {
                 headers: {
                     "Authorization": "Bearer " + token
                 }
@@ -145,7 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchMyAccounts() {
         try {
-            const BaseUrl = window.location.origin;
             const response = await fetch(`${BaseUrl}/Account/my-accounts`, {
                 method: 'GET',
                 headers: {
@@ -300,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
             InitialDeposit: deposit
         };
         try {
-            const response = await fetch(`http://localhost:5066/Account/create`, {
+            const response = await fetch(`${BaseUrl}/Account/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
             Amount: amount
         }
         try {
-            const response = await fetch(`http://localhost:5066/Account/deposit`, {
+            const response = await fetch(`${BaseUrl}/Account/deposit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -362,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
             Amount: amount
         }
         try {
-            const response = await fetch(`http://localhost:5066/Account/withdraw`, {
+            const response = await fetch(`${BaseUrl}/Account/withdraw`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -401,7 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:5066/Account/transfer`, {
+            const response = await fetch(`${BaseUrl}/Account/transfer`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -430,7 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchTransactions() {
         try {
-            const response = await fetch(`http://localhost:5066/Account/transactions`, {
+            const response = await fetch(`${BaseUrl}/Account/transactions`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -549,7 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
         chatHistory.scrollTop = chatHistory.scrollHeight;
 
         try {
-            const response = await fetch('http://localhost:5066/AiChat/ask', {
+            const response = await fetch(`${BaseUrl}/AiChat/ask`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

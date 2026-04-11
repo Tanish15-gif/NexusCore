@@ -32,7 +32,8 @@ async function RegisterForm(event){
     showInfo('Sending to Server');
     Registerbtn.disabled =  true;
     try {
-        const response = await fetch(`http://localhost:5066/Users/register`, {
+        const BaseUrl = window.location.origin;
+        const response = await fetch(`${BaseUrl}/Users/register`, {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json'

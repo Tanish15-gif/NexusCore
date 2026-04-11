@@ -4,28 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services | NexusCore Bank</title>
+    <title>Contact Us | NexusCore Bank</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/services.css">
+    <link rel="stylesheet" href="css/contact.css">
 </head>
 
 <body>
 
-    <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="container nav-container">
             <a href="index.html" class="logo">
                 <i class="fa-solid fa-layer-group"></i> NexusCore
             </a>
-
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="services.html">Services</a></li>
                 <li><a href="features.html">Features</a></li>
             </ul>
-
             <div class="nav-actions">
                 <button id="theme-toggle" class="icon-btn" aria-label="Toggle Dark Mode">
                     <i class="fa-solid fa-moon"></i>
@@ -33,96 +30,101 @@
                 <a href="login.html" class="btn btn-outline">Login</a>
                 <a href="register.html" class="btn btn-primary">Create Account</a>
             </div>
-
             <div class="menu-toggle">
                 <i class="fa-solid fa-bars"></i>
             </div>
         </div>
     </nav>
+    <br>
 
-    <!-- Page Header -->
-    <header class="page-header">
-        <div class="container">
-            <h1>Our Services</h1>
-            <p>Comprehensive financial solutions tailored to your needs.</p>
+    <header class="image-placeholder">
+        <div class="container" style="text-align: center;">
+            <h1>Get in Touch</h1>
+            <p>We're here to help, 24/7. Reach out to our support team.</p>
         </div>
     </header>
 
-    <!-- Services Grid -->
-    <section class="services-section">
-        <div class="container">
-            <div class="services-grid">
-                <!-- Service 1 -->
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fa-solid fa-wallet"></i>
+    <section class="contact-section">
+        <div class="container contact-grid">
+
+            <div class="contact-info">
+                <div class="info-card emergency">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div>
+                        <h3>Lost or Stolen Card?</h3>
+                        <p>Call us immediately. Available 24/7.</p>
+                        <a href="tel:+18009999999" class="highlight-text">+1 (800) 999-9999</a>
                     </div>
-                    <h3>Personal Banking</h3>
-                    <p>Checking and savings accounts with high-yield interest rates and zero monthly fees.</p>
-                    <a href="#" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
 
-                <!-- Service 2 -->
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fa-solid fa-briefcase"></i>
+                <div class="info-card">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <h3>Email Support</h3>
+                        <p>For general inquiries and account help.</p>
+                        <a href="mailto:support@nexuscore.com">support@nexuscore.com</a>
                     </div>
-                    <h3>Business Solutions</h3>
-                    <p>Payroll, merchant services, and business loans designed to help your company grow.</p>
-                    <a href="#" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
 
-                <!-- Service 3 -->
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fa-solid fa-house-chimney"></i>
+                <div class="info-card">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <div>
+                        <h3>Headquarters</h3>
+                        <p>123 Financial District,<br>Mumbai, Maharashtra 400001</p>
                     </div>
-                    <h3>Mortgages</h3>
-                    <p>Competitive rates for home loans, refinancing, and home equity lines of credit.</p>
-                    <a href="#" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="clerk-card">
+                <div class="clerk-card-header">
+                    <h2>Secure Message</h2>
+                    <p>End-to-end encrypted. We typically reply in 2 hours.</p>
                 </div>
 
-                <!-- Service 4 -->
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fa-solid fa-chart-pie"></i>
+                <form id="contactForm" class="clerk-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First name</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last name</label>
+                            <input type="text" id="lastName" required>
+                        </div>
                     </div>
-                    <h3>Wealth Management</h3>
-                    <p>Expert investment advice and portfolio management to secure your financial future.</p>
-                    <a href="#" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
 
-                <!-- Service 5 -->
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fa-solid fa-credit-card"></i>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" required>
                     </div>
-                    <h3>Credit Cards</h3>
-                    <p>Rewards cards, cash back offers, and travel perks with no annual fees.</p>
-                    <a href="#" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
 
-                <!-- Service 6 -->
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fa-solid fa-shield-cat"></i>
+                    <div class="form-group">
+                        <label for="department">Topic</label>
+                        <div class="select-wrapper">
+                            <select id="department" required>
+                                <option value="" disabled selected>Select a topic...</option>
+                                <option value="account">Account Management</option>
+                                <option value="loans">Loans & Mortgages</option>
+                                <option value="fraud">Report Suspicious Activity</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down select-icon"></i>
+                        </div>
                     </div>
-                    <h3>Insurance</h3>
-                    <p>Protect what matters most with our comprehensive life, auto, and home insurance.</p>
-                    <a href="#" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none; transition: all 0.2s; box-sizing: border-box; background: inherit; color: inherit; resize: vertical; min-height: 80px;"
+                            required></textarea>
+                    </div>
+
+                    <button type="submit" class="clerk-btn">
+                        Send Message <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </section>
-
-    <section class="image-placeholder" style="text-align: center;">
-        <div class="container cta-container">
-            <h2>Ready to experience the difference?</h2>
-            <p>Join millions of customers who trust NexusCore with their finances.</p>
-            <a href="register.html" class="btn btn-primary btn-lg">Open an Account</a>
-        </div>
-    </section>
-    <br>
 
     <footer class="footer">
         <button id="backToTop" class="back-to-top" aria-label="Scroll to top">
@@ -181,4 +183,5 @@
 
     <script src="js/script.js"></script>
 </body>
+
 </html>

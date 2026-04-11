@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-            const response = await fetch("http://localhost:5066/Admin/register-staff", {
+            const response = await fetch(`http://localhost:5066/Admin/register-staff`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
         submitBtn.disabled = true;
 
         try {
-            const response = await fetch("http://localhost:5066/Admin/promote-staff", {
+            const response = await fetch(`http://localhost:5066/Admin/promote-staff`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchSystemMetrics() {
         try {
-            const response = await fetch("http://localhost:5066/Admin/system-metrics", {
+            const response = await fetch(`http://localhost:5066/Admin/system-metrics`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     async function fetchStaffRoster() {
         try {
-            const response = await fetch("http://localhost:5066/Admin/staff-list", {
+            const response = await fetch(`http://localhost:5066/Admin/staff-list`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`

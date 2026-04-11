@@ -11,7 +11,8 @@ async function Login(event) {
     showInfo('Contacting to Server...');
     loginbtn.disabled = true;
     try {
-        const response = await fetch(`http://localhost:5066/Users/Login`, {
+        const BaseUrl = window.location.origin;
+        const response = await fetch(`${BaseUrl}/Users/Login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

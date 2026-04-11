@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "login.html";
         return;
     }
+
+    const BaseUrl = window.location.origin;
     const emptyState = document.getElementById("empty-state");
     const accountsGrid = document.getElementById("accounts-grid");
     const accountCards = document.getElementById("account-cards");
@@ -56,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function fetchPendingAccounts() {
 
         try {
-            const response = await fetch("http://localhost:5066/Employee/pending-accounts", {
+            const response = await fetch(`${BaseUrl}/Employee/pending-accounts`, {
                 method: "GET",
                 headers: {
                     "Authorization": "Bearer " + token
@@ -138,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const confirmApprove = confirm("Approve this account?");
                 if (!confirmApprove) return;
                 try {
-                    const response = await fetch("http://localhost:5066/Employee/approve", {
+                    const response = await fetch(`${BaseUrl}/Employee/approve`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -168,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const confirmReject = confirm("Reject this account?");
                 if (!confirmReject) return;
                 try {
-                    const response = await fetch("http://localhost:5066/Employee/reject", {
+                    const response = await fetch(`${BaseUrl}/Employee/reject`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -207,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            const response = await fetch(`http://localhost:5066/Employee/search/${accountNumber}`, {
+            const response = await fetch(`${BaseUrl}/Employee/search/${accountNumber}`, {
                 method: "GET",
                 headers: {
                     "Authorization": "Bearer " + token
