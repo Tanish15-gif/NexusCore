@@ -110,6 +110,34 @@
     font-size: 0.9rem;
 }
 
+/* The Fast Spinner Animation */
+.spinner-icon {
+    font-size: 1.2rem;
+    animation: fast-spin 0.8s linear infinite;
+}
+
+@keyframes fast-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* The Lock-Down State */
+.clerk-btn-social.is-loading {
+    opacity: 0.8;
+    cursor: not-allowed;
+    pointer-events: none;
+    /* CRITICAL: Stops double-clicking! */
+}
+
+.hidden {
+    display: none !important;
+}
+
 .checkbox-label {
     display: flex;
     align-items: center;
@@ -117,12 +145,14 @@
     color: var(--text-muted);
     cursor: pointer;
 }
+
 /* --- CLERK UI AESTHETIC (SYNCED WITH NATIVE VARIABLES) --- */
 
 .clerk-bg {
     /* Uses your global background to stay synced perfectly */
-    background-color: var(--bg-color); 
-    min-height: calc(100vh - 80px); /* Adjusts for navbar */
+    background-color: var(--bg-color);
+    min-height: calc(100vh - 80px);
+    /* Adjusts for navbar */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -131,7 +161,8 @@
 
 .clerk-container {
     width: 100%;
-    max-width: 420px; /* Perfect width for auth cards */
+    max-width: 420px;
+    /* Perfect width for auth cards */
 }
 
 /* The iconic Card */
@@ -146,7 +177,8 @@
 
 /* User's Custom Dark Mode Request: True Black Card */
 body.dark-mode .clerk-card {
-    background-color: #0a0a0a; /* Forces the box to be black */
+    background-color: #0a0a0a;
+    /* Forces the box to be black */
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
@@ -270,7 +302,8 @@ body.dark-mode .clerk-card {
     width: 100%;
     padding: 12px 16px;
     background-color: var(--primary-color);
-    color: var(--bg-color); /* Automatically flips black/white based on theme! */
+    color: var(--bg-color);
+    /* Automatically flips black/white based on theme! */
     border: none;
     border-radius: 8px;
     font-size: 0.9rem;
@@ -315,6 +348,7 @@ body.dark-mode .clerk-card {
     margin-top: 12px;
     min-height: 20px;
 }
+
 .checkbox-label {
     display: flex;
     align-items: center;
@@ -347,7 +381,7 @@ body.dark-mode .clerk-card {
 }
 
 /* Checked state */
-.checkbox-label input:checked + span::before {
+.checkbox-label input:checked+span::before {
     content: "✔";
     background: linear-gradient(135deg, #3b82f6, #6366f1);
     border-color: #3b82f6;

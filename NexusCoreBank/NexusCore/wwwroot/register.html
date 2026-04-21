@@ -52,10 +52,14 @@
                 </div>
 
                 <div class="clerk-social">
-                    <a href="http://localhost:5066/Users/login-google" class="clerk-btn-social">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
-                            alt="Google" class="social-icon">
-                        Sign up with Google
+                    <a href="http://localhost:5066/Users/login-google" class="clerk-btn-social" id="google-auth-link">
+                        <span class="icon-container"
+                            style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+                                alt="Google" class="social-icon" id="g-icon">
+                            <i class="fa-solid fa-circle-notch spinner-icon hidden" id="g-spinner"></i>
+                        </span>
+                        <span id="g-btn-text">Sign up with Google</span>
                     </a>
                 </div>
 
@@ -67,7 +71,7 @@
 
                     <div class="clerk-form-group">
                         <label for="fullname">Full Name</label>
-                        <input type="text" id="fullname" name="FullName" placeholder="e.g. Tanish" required>
+                        <input type="text" id="fullname" name="FullName" placeholder="Enter your Full Name" required>
                     </div>
 
                     <div class="clerk-form-group">
@@ -82,12 +86,12 @@
 
                     <div class="clerk-form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="PhoneNumber" placeholder="+1 (555) 000-0000" required>
+                        <input type="tel" id="phone" name="PhoneNumber" placeholder="Enter your PhoneNumber" required>
                     </div>
 
                     <div class="clerk-form-group">
                         <label for="address">Full Address</label>
-                        <textarea id="address" name="Address" placeholder="123 Nexus Server Lane"
+                        <textarea id="address" name="Address" placeholder="Enter your full address"
                             style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none; transition: all 0.2s; box-sizing: border-box; background: inherit; color: inherit; resize: vertical; min-height: 80px;"
                             required></textarea>
                     </div>
@@ -103,10 +107,14 @@
                         <input type="password" id="confirm-password" placeholder="Confirm your password" required>
                     </div>
 
-                    <div class="form-options" style="margin-bottom: 16px; font-size: 0.8125rem;">
-                        <label class="checkbox-label">
-                            <input type="checkbox" required>
-                            <span class="check-text">I agree to the <a href="#">Terms & Conditions</a></span>
+                    <div
+                        style="display: flex; align-items: flex-start; gap: 12px; margin-top: 25px; margin-bottom: 20px; padding: 15px; background: rgba(59, 130, 246, 0.05); border-radius: 8px; border: 1px solid var(--border-color);">
+                        <input type="checkbox" id="legal-terms" required
+                            style="width: 18px; height: 18px; margin-top: 2px; cursor: pointer; flex-shrink: 0;">
+                        <label for="legal-terms"
+                            style="margin: 0; font-size: 0.85rem; color: var(--text-muted); font-weight: normal; cursor: pointer; line-height: 1.5; display: inline;">
+                            I agree to the NexusCore <a href="#"
+                                style="color: var(--accent-color); font-weight: 600;">Terms of Conditions</a>
                         </label>
                     </div>
 
@@ -142,10 +150,10 @@
                 <div class="footer-links-col">
                     <h4>Products</h4>
                     <ul>
-                        <li><a href="register.html?tier=savings">Savings Account</a></li>
-                        <li><a href="register.html?tier=current">Current Account</a></li>
-                        <li><a href="register.html?tier=fd">Fixed Deposits</a></li>
-                        <li><a href="register.html?tier=loan">Nexus Loans</a></li>
+                        <li><a href="features.html#tiers">Savings Account</a></li>
+                        <li><a href="features.html#tiers">Current Account</a></li>
+                        <li><a href="features.html#tiers">Fixed Deposits</a></li>
+                        <li><a href="features.html#tiers">Nexus Loans</a></li>
                     </ul>
                 </div>
 
@@ -153,9 +161,9 @@
                     <h4>Company</h4>
                     <ul>
                         <li><a href="about.html">About Us</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Security</a></li>
+                        <li><a href="legal.html#privacy">Privacy Policy</a></li>
+                        <li><a href="legal.html#terms">Terms of Service</a></li>
+                        <li><a href="legal.html#security">Security</a></li>
                     </ul>
                 </div>
 

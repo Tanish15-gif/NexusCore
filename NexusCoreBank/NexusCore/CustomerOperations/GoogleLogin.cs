@@ -35,10 +35,10 @@ namespace NexusCore.CustomerOperation
                     }
 
                     string insertQuery = @"
-                INSERT INTO Users(Email, PasswordHash, Role)
-                VALUES(@email, 'GOOGLE_ACCOUNT', 'Customer');
-                SELECT SCOPE_IDENTITY();
-            ";
+                    INSERT INTO Users(Email, PasswordHash, Role)
+                    VALUES(@email, 'GOOGLE_ACCOUNT', 'Customer');
+                    SELECT SCOPE_IDENTITY();
+                    ";
 
                     using (var inscmd = new SqlCommand(insertQuery, connect))
                     {
@@ -66,7 +66,7 @@ namespace NexusCore.CustomerOperation
                             Insert into CustomerProfiles(UserId,FullName,DateofBirth,PhoneNumber,Address,KYCStatus)
                             Values(@userid,@fullname,@dob,@phoneNumber,@address,'Pending');
                     ";
-                    using(var cmd = new SqlCommand(sql,connect))
+                    using(var cmd = new SqlCommand(sql,connect)) 
                     {
                         cmd.Parameters.AddWithValue("@userid",userid);
                         cmd.Parameters.AddWithValue("@fullname",googleProfile.FullName);

@@ -1,9 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
-
-    
-    
     if (themeToggle) {
         const icon = themeToggle.querySelector('i');
         const savedTheme = localStorage.getItem('theme');
@@ -16,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
-            
+
             if (body.classList.contains('dark-mode')) {
                 icon.classList.replace('fa-moon', 'fa-sun');
                 localStorage.setItem('theme', 'dark');
@@ -26,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    
 
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
@@ -33,24 +31,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
-            if(navLinks) navLinks.classList.toggle('active');
-            if(navActions) navActions.classList.toggle('active');
+            if (navLinks) navLinks.classList.toggle('active');
+            if (navActions) navActions.classList.toggle('active');
         });
     }
 
     const selectionCards = document.querySelectorAll('.selection-card');
-    
+
     selectionCards.forEach(card => {
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function () {
             document.querySelectorAll('.selection-card').forEach(c => c.classList.remove('selected'));
-            
+
             this.classList.add('selected');
-            
+
             const button = this.querySelector('.selection-btn');
             if (button && button.getAttribute('href')) {
                 setTimeout(() => {
                     window.location.href = button.getAttribute('href');
-                }, 1500);
+                }, 500);
             }
         });
     });
@@ -58,18 +56,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function showMessage(msg, type = 'error') {
     const error = document.getElementById("error-message");
-    if (!error) return; 
+    if (!error) return;
 
     if (typeof msg === 'object') {
         msg = JSON.stringify(msg);
     }
-    
+
     error.classList.remove('error', 'success', 'warning', 'info');
     error.classList.add(type);
-    
+
     error.innerText = String(msg);
     error.style.display = "block";
-    
+
     if (type === 'success') {
         setTimeout(() => {
             hideMessage();
@@ -79,26 +77,70 @@ function showMessage(msg, type = 'error') {
 
 function hideMessage() {
     const error = document.getElementById("error-message");
-    if(error) {
+    if (error) {
         error.style.display = "none";
         error.classList.remove('error', 'success', 'warning', 'info');
     }
 }
-// ==========================================
-    // BACK TO TOP BUTTON
-    // ==========================================
-    const backToTopBtn = document.getElementById('backToTop');
-    
-    if (backToTopBtn) {
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+const backToTopBtn = document.getElementById('backToTop');
+
+if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
         });
-    }
+    });
+}
+const sections = document.querySelectorAll(".legal-section");
+const sidebarLinks  = document.querySelectorAll(".sidebar-link");
+
+if (sections.length > 0 && sidebarLinks .length > 0) {
+
+    const observerOptions = {
+        root: null,
+        rootMargin: "-150px 0px -60% 0px",
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                sidebarLinks .forEach(link => link.classList.remove("active"));
+
+                const currentId = entry.target.getAttribute("id");
+
+                const activeLink = document.querySelector(`.sidebar-link[href="#${currentId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add("active");
+                }
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        observer.observe(section);
+    }); 
+}
+
 
 function showError(msg) { showMessage(String(msg), 'error'); }
 function showSuccess(msg) { showMessage(String(msg), 'success'); }
 function showWarning(msg) { showMessage(String(msg), 'warning'); }
 function showInfo(msg) { showMessage(String(msg), 'info'); }
+
+const googleBtn = document.getElementById('google-auth-link');
+
+if (googleBtn) {
+    googleBtn.addEventListener('click', function(e) {
+        const icon = document.getElementById('g-icon');
+        const spinner = document.getElementById('g-spinner');
+        const text = document.getElementById('g-btn-text');
+
+        googleBtn.classList.add('is-loading');
+
+        icon?.classList.add('hidden');
+        spinner?.classList.remove('hidden');
+        if (text) text.innerText = "Connecting...";
+    });
+}

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/employee-dashboard.css">
     <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         function getCookie(name) {
@@ -21,12 +22,16 @@
 
         const tempToken = getCookie('temp_nexus_token');
         const tempName = getCookie('temp_nexus_name');
+        const tempPicture = getCookie('temp_nexus_picture');
 
         if (tempToken) {
             localStorage.setItem('nexus_token', tempToken);
 
             if (tempName) {
                 localStorage.setItem('nexus_google_name', tempName);
+            }
+            if (tempPicture) {
+                localStorage.setItem("nexus_google_picture", tempPicture);
             }
             try {
                 const payloadObject = JSON.parse(atob(tempToken.split('.')[1]));
@@ -59,37 +64,76 @@
                     <i class="fa-solid fa-robot"></i> AI Advisor
                 </a>
             </nav>
-            <div class="sidebar-footer">
-                <div class="profile-info">
-                    <span class="tier-badge" style="color: #3b82f6; background: rgba(59, 130, 246, 0.2);">Tier 1:
-                        Customer</span>
-                </div>
-                <button id="logout-btn" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i>
-                    Logout</button>
-            </div>
         </aside>
 
         <main class="main-content">
             <header class="top-header">
-                <div class="greeting">
-                    <h1>Welcome, <span id="dashname-header" style="color: var(--primary-blue);">Customer</span></h1>
+                <div class="header-left">
+                    <button id="mobile-menu-btn" class="mobile-only-btn">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="greeting">
+                        <h1>Welcome, <span id="dashname-header" style="color: #3b82f6;">Customer</span></h1>
+                    </div>
                 </div>
 
-                <div class="header-right" style="display: flex; align-items: center; gap: 1.5rem;">
-                    <div class="wealth-indicator" style="display: flex; align-items: center; gap: 0.8rem;">
-                        <i class="fa-solid fa-chart-line" style="color: #34d399; font-size: 1.2rem;"></i>
-                        <div class="wealth-info" style="display: flex; flex-direction: column;">
-                            <span class="wealth-label"
-                                style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Total
-                                Wealth</span>
-                            <span class="wealth-amount" id="total-wealth"
-                                style="font-weight: bold; color: var(--text-light);">₹0.00</span>
+                <div class="header-right">
+                    <div class="wealth-indicator">
+                        <i class="fa-solid fa-chart-line" style="color: #34d399;"></i>
+                        <div class="wealth-info">
+                            <span class="wealth-label">Total Wealth</span>
+                            <span class="wealth-amount" id="total-wealth">₹0.00</span>
                         </div>
                     </div>
 
-                    <button id="theme-toggle" class="theme-btn">
-                        <i id="theme-icon" class="fa-solid fa-moon"></i>
+                    <button id="user-menu-btn" class="avatar-btn">
+                        <img src="https://ui-avatars.com/api/?name=Customer&background=3b82f6&color=fff&bold=true"
+                            alt="User" id="header-avatar" referrerpolicy="no-referrer">
                     </button>
+                    <div id="user-dropdown" class="clerk-dropdown hidden">
+                        <div class="dropdown-header">
+                            <img src="..." alt="User" id="dropdown-avatar" referrerpolicy="no-referrer">
+                            <div class="dropdown-user-info">
+                                <span class="dropdown-user-name" id="dropdown-name">Customer</span>
+                                <span class="dropdown-user-email" id="dropdown-user-email">customer@nexuscore.com</span>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-actions">
+                            <button id="manage-account-btn" class="dropdown-btn">
+                                <i class="fa-solid fa-gear"></i> Manage
+                            </button>
+                            <button id="clerk-signout-btn" class="dropdown-btn">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out
+                            </button>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+
+                        <button id="add-account-btn" class="dropdown-btn-full">
+                            <div class="icon-circle"><i class="fa-solid fa-plus"></i></div> Add account
+                        </button>
+
+                        <button id="theme-toggle" class="dropdown-btn-full" style="justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="icon-circle"><i id="theme-icon" class="fa-solid fa-moon"></i></div>
+                                Appearance
+                            </div>
+                            <span id="theme-text" style="font-size: 0.75rem; color: var(--text-muted);">Dark</span>
+                        </button>
+                        <button id="fullscreen-toggle" class="dropdown-btn-full"
+                            style="justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="icon-circle"><i id="fullscreen-icon" class="fa-solid fa-expand"></i>
+                                </div>
+                                Full Screen
+                            </div>
+                        </button>
+
+                        <div class="dropdown-footer">
+                            Secured by <strong style="color: var(--text-light);">NexusCore</strong>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -118,7 +162,8 @@
                             </div>
                             <div class="pending-content">
                                 <h3>Account Pending Approval</h3>
-                                <p>Your <span id="pending-account-type"></span> account is currently under review.</p>
+                                <p>Your <span id="pending-account-type"></span> account is currently under review.
+                                </p>
                                 <p class="pending-note">You cannot deposit or transfer money until approved.</p>
                             </div>
                         </div>
@@ -170,7 +215,8 @@
                 </div>
                 <div id="view-ai-advisor" class="hidden">
                     <h2>NexusCore AI Financial Advisor</h2>
-                    <p style="color: #9ca3af; margin-bottom: 20px;">Ask questions about your ledger, spending habits, or
+                    <p style="color: #9ca3af; margin-bottom: 20px;">Ask questions about your ledger, spending
+                        habits, or
                         account balance.</p>
 
                     <div class="ai-chat-card"
@@ -201,31 +247,89 @@
     </div>
 
     <div id="account-modal" class="modal-overlay hidden">
-        <div class="modal-content action-card">
+        <div class="modal-content action-card" style="max-width: 600px;">
             <div class="modal-header">
                 <h2>Open New Account</h2>
                 <button class="icon-btn" id="modal-close"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
                 <form id="new-account-form">
-                    <div class="form-group" style="margin-bottom: 1rem;">
-                        <label style="color: var(--text-muted); font-size: 0.9rem;">Account Type</label>
-                        <select id="account-type" required
-                            style="width: 100%; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); margin-top: 0.5rem;">
-                            <option value="">Select Account Type</option>
-                            <option value="Savings">Savings Account</option>
-                            <option value="Current">Current Account</option>
-                            <option value="FixedDeposit">Fixed Deposit</option>
-                            <option value="RecurringDeposit">Recurring Deposit</option>
-                            <option value="Loan">Personal Loan</option>
+
+                    <h3 style="font-size: 1rem; color: var(--accent-color); margin-bottom: 15px;">1. Account Details
+                    </h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label>Account Type</label>
+                            <select id="account-type" style="cursor: pointer;" required>
+                                <option value="" selected disabled hidden>Select Tier</option>
+                                <option value="Savings">Savings Account</option>
+                                <option value="Current">Current Account</option>
+                                <option value="FixedDeposit">Fixed Deposit</option>
+                                <option value="RecurringDeposit">Recurring Deposit</option>
+                                <option value="Loan">Loan</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label>Initial Deposit (₹)</label>
+                            <input type="number" id="initial-deposit" placeholder="0.00" min="0" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div id="fd-duration-group" class="form-group hidden" style="margin-bottom: 1rem;">
+                        <label>Term Duration</label>
+                        <select id="fd-duration">
+                            <option value="6">6 Months (5.5% ROI)</option>
+                            <option value="12">1 Year (7.0% ROI)</option>
+                            <option value="60">5 Years (8.5% ROI)</option>
                         </select>
                     </div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <label style="color: var(--text-muted); font-size: 0.9rem;">Initial Deposit (₹)</label>
-                        <input type="number" id="initial-deposit" placeholder="0.00" min="0" step="0.01"
-                            style="width: 100%; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); margin-top: 0.5rem;">
+
+                    <h3 style="font-size: 1rem; color: var(--accent-color); margin-top: 10px; margin-bottom: 15px;">2.
+                        Compliance & Beneficiary</h3>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label>Source of Funds (AML Requirement)</label>
+                        <select id="source-of-funds" style="cursor: pointer;" required>
+                            <option value="" selected disabled hidden>Select Source</option>
+                            <option value="Salary">Salary / Employment</option>
+                            <option value="Business">Business Income</option>
+                            <option value="Savings">Personal Savings</option>
+                            <option value="Gift">Gift / Inheritance</option>
+                        </select>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label>Nominee Full Name</label>
+                            <input type="text" id="nominee-name" placeholder="Legal Name of Beneficiary" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label>Relationship</label>
+                            <select id="nominee-relation" style="cursor: pointer;" required>
+                                <option value="" selected disabled hidden>Select</option>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Parent">Parent</option>
+                                <option value="Child">Child</option>
+                                <option value="Sibling">Sibling</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div
+                        style="display: flex; align-items: flex-start; gap: 12px; margin-top: 25px; margin-bottom: 20px; padding: 15px; background: rgba(59, 130, 246, 0.05); border-radius: 8px; border: 1px solid var(--border-color);">
+                        <input type="checkbox" id="legal-terms" required
+                            style="width: 18px; height: 18px; margin-top: 2px; cursor: pointer; flex-shrink: 0;">
+                        <label for="legal-terms"
+                            style="margin: 0; font-size: 0.85rem; color: var(--text-muted); font-weight: normal; cursor: pointer; line-height: 1.5; display: inline;">
+                            I agree to the NexusCore <a href="#"
+                                style="color: var(--accent-color); font-weight: 600;">Terms of Service</a> and confirm I
+                            am a tax resident of my declared jurisdiction.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;"><i
+                            class="fa-solid fa-file-signature"></i> Authorize & Open Account</button>
                 </form>
             </div>
         </div>
@@ -295,6 +399,77 @@
             </div>
         </div>
     </div>
+    <div id="manage-account-modal" class="modal-overlay hidden"
+        style="z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+
+        <div class="clerk-settings-card">
+            <button id="close-manage-modal" class="settings-close-btn"><i class="fa-solid fa-xmark"></i></button>
+
+            <aside class="settings-sidebar">
+                <div class="settings-title">Account</div>
+                <p class="settings-subtitle">Manage your account info.</p>
+
+                <nav class="settings-nav">
+                    <button class="settings-nav-item active"><i class="fa-solid fa-user"></i> Profile</button>
+                    <button class="settings-nav-item"><i class="fa-solid fa-shield-halved"></i> Security</button>
+                </nav>
+
+                <div class="settings-footer">Secured by <strong>NexusCore</strong></div>
+            </aside>
+
+            <main class="settings-content">
+                <h2>Profile details</h2>
+
+                <div class="settings-row">
+                    <div class="settings-label">Profile</div>
+                    <div class="settings-value profile-val">
+                        <img src="..." id="manage-avatar" alt="Avatar" referrerpolicy="no-referrer">
+                        <div class="profile-name-group">
+                            <span id="manage-name">Customer Name</span>
+                        </div>
+                    </div>
+                    <button class="settings-action">Update profile</button>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-label">Email addresses</div>
+                    <div class="settings-value">
+                        <div class="value-item">
+                            <span id="manage-email">user@nexuscore.com</span>
+                            <span class="badge-primary">Primary</span>
+                        </div>
+                        <button class="settings-add-btn"><i class="fa-solid fa-plus"></i> Add email address</button>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-label">Phone numbers</div>
+                    <div class="settings-value">
+                        <div class="value-item">
+                            <span id="manage-phone">+91 00000 00000</span>
+                            <span class="badge-primary">Primary</span>
+                        </div>
+                        <button class="settings-add-btn"><i class="fa-solid fa-plus"></i> Add phone number</button>
+                    </div>
+                </div>
+
+                <div class="settings-row borderless">
+                    <div class="settings-label">Connected accounts</div>
+                    <div class="settings-value">
+                        <div class="value-item"
+                            style="display: flex; align-items: center; flex-direction: row; gap: 6px; white-space: nowrap; width: 100%;">
+                            <i class="fa-brands fa-google" style="color: #ea4335; font-size: 1.1rem;"></i>
+                            <span style="font-weight: 500; color: var(--text-light);">Google</span>
+                            <span style="color: var(--text-muted); margin: 0 2px;">&bull;</span>
+                            <span id="manage-google-email"
+                                style="color: var(--text-muted); text-overflow: ellipsis; overflow: visible;">user@gmail.com</span>
+                        </div>
+                        <button class="settings-add-btn"><i class="fa-solid fa-plus"></i> Connect account</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
     <div id="kyc-modal" class="modal hidden"
         style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
         <div class="clerk-card" style="width: 100%; max-width: 450px; position: relative;">
@@ -322,13 +497,55 @@
 
                 <div class="clerk-form-group">
                     <label>Home Address</label>
-                    <textarea type="text" id="kyc-address" 
-                    style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none; transition: all 0.2s; box-sizing: border-box; background: inherit; color: inherit; resize: vertical; min-height: 80px;"
-                    required placeholder="123 Nexus Street, Mumbai"></textarea>
-                </div> 
+                    <textarea type="text" id="kyc-address"
+                        style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none; transition: all 0.2s; box-sizing: border-box; background: inherit; color: inherit; resize: vertical; min-height: 80px;"
+                        required placeholder="123 Nexus Street, Mumbai"></textarea>
+                </div>
 
                 <button type="submit" class="clerk-btn-primary">Submit KYC Data</button>
             </form>
+        </div>
+    </div>
+    <div id="otp-modal" class="modal-overlay hidden">
+        <div class="modal-content action-card" style="max-width: 450px; text-align: center;">
+            <div class="modal-header" style="justify-content: center; position: relative;">
+                <h2 style="font-size: 1.5rem;">Security Verification</h2>
+                <button class="icon-btn" id="close-otp" style="position: absolute; right: 0;"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <div style="margin-bottom: 25px;">
+                    <div
+                        style="width: 60px; height: 60px; background: rgba(59, 130, 246, 0.1); color: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 15px auto;">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">
+                        We've sent a 6-digit verification code to your registered email. Enter it below to authorize
+                        this transfer.
+                    </p>
+                </div>
+
+                <form id="otp-form">
+                    <div class="otp-container"
+                        style="display: flex; gap: 10px; justify-content: center; margin-bottom: 30px;">
+                        <input type="text" class="otp-box" maxlength="1" required autocomplete="off">
+                        <input type="text" class="otp-box" maxlength="1" required autocomplete="off">
+                        <input type="text" class="otp-box" maxlength="1" required autocomplete="off">
+                        <input type="text" class="otp-box" maxlength="1" required autocomplete="off">
+                        <input type="text" class="otp-box" maxlength="1" required autocomplete="off">
+                        <input type="text" class="otp-box" maxlength="1" required autocomplete="off">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" id="verify-btn">Verify &
+                        Transfer</button>
+                </form>
+
+                <div style="margin-top: 20px; font-size: 0.85rem; color: var(--text-muted);">
+                    Code expires in <span id="otp-countdown"
+                        style="color: var(--accent-color); font-weight: bold;">05:00</span>
+                </div>
+            </div>
         </div>
     </div>
 

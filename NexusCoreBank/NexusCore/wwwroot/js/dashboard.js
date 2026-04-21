@@ -5,34 +5,69 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = 'login.html';
         return;
     }
-    const themeToggle = document.getElementById("theme-toggle");
-    const themeIcon = document.getElementById("theme-icon");
+
     const headerName = document.getElementById("dashname-header");
     const aiName = document.getElementById("dashname-ai");
 
     const kycModal = document.getElementById("kyc-modal");
     const kycForm = document.getElementById("kyc-form");
     const kycFullNameInput = document.getElementById("kyc-fullname");
-
-    const savedGoogleName = localStorage.getItem('nexus_google_name');
-    if (savedGoogleName) {
-        const cleanName = decodeURIComponent(savedGoogleName).replace(/%20/g, ' ');
-        if (headerName) headerName.innerText = cleanName;
-        if (aiName) aiName.innerText = cleanName;
-    }
     const BaseUrl = window.location.origin;
 
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
+    const themeText = document.getElementById("theme-text");
     themeToggle.addEventListener("click", () => {
-
         document.body.classList.toggle("light-mode");
+
         if (document.body.classList.contains("light-mode")) {
             themeIcon.className = "fa-solid fa-sun";
-        }
-        else {
+            if (themeText) themeText.innerText = "Light";
+        } else {
             themeIcon.className = "fa-solid fa-moon";
+            if (themeText) themeText.innerText = "Dark";
         }
-
     });
+    function updateUserProfileUI(fullName, email = "No email provided", phoneNumber = "No phone provided", pictureUrl = null) {
+        const headerName = document.getElementById("dashname-header");
+        const aiName = document.getElementById("dashname-ai");
+        const dropdownName = document.getElementById("dropdown-name");
+        const dropdownEmail = document.querySelector(".dropdown-user-email");
+
+
+        if (headerName) headerName.innerText = fullName;
+        if (aiName) aiName.innerText = fullName;
+        if (dropdownName) dropdownName.innerText = fullName;
+        if (dropdownEmail) dropdownEmail.innerText = email;
+
+        // 2. Manage Account Modal
+        const manageName = document.getElementById("manage-name");
+        const manageEmail = document.getElementById("manage-email");
+        const managePhone = document.getElementById("manage-phone");
+        const manageGoogle = document.getElementById("manage-google-email");
+
+        if (manageName) manageName.innerText = fullName;
+        if (manageEmail) manageEmail.innerText = email;
+        if (managePhone) managePhone.innerText = phoneNumber; // Fixed the variable name!
+        if (manageGoogle) manageGoogle.innerText = email;
+
+        // 3. Dynamic Avatars
+        const encodedName = encodeURIComponent(fullName);
+        const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodedName}&background=3b82f6&color=fff&bold=true`;
+
+        const finalAvatarUrl = (pictureUrl && pictureUrl !== "null" && pictureUrl.trim() !== "")
+            ? pictureUrl
+            : fallbackAvatar;
+
+
+        const headerAvatar = document.getElementById("header-avatar");
+        const dropdownAvatar = document.getElementById("dropdown-avatar");
+        const manageAvatar = document.getElementById("manage-avatar");
+
+        if (headerAvatar) headerAvatar.src = finalAvatarUrl;
+        if (dropdownAvatar) dropdownAvatar.src = finalAvatarUrl;
+        if (manageAvatar) manageAvatar.src = finalAvatarUrl;
+    }
 
     async function verifyKycStatus() {
         try {
@@ -104,14 +139,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 const data = await response.json();
-
-                if (headerName) headerName.innerText = data.fullName;
-                if (aiName) aiName.innerText = data.fullName;
+                const savedGooglePicture = localStorage.getItem('nexus_google_picture');
+                const cleanPictureUrl = savedGooglePicture ? decodeURIComponent(savedGooglePicture) : null;
+                updateUserProfileUI(data.fullName, data.email, data.phoneNumber, cleanPictureUrl);
             }
         } catch (err) {
             console.error(err);
+
+            const savedGoogleName = localStorage.getItem('nexus_google_name');
+            if (savedGoogleName) {
+                updateUserProfileUI(decodeURIComponent(savedGoogleName));
+            }
         }
     }
+
+    // --- FULL SCREEN API LOGIC ---
+const fullscreenBtn = document.getElementById('fullscreen-toggle');
+const fullscreenIcon = document.getElementById('fullscreen-icon');
+
+fullscreenBtn?.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        // Force the browser into full screen
+        document.documentElement.requestFullscreen().catch(err => {
+            console.error(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+        // Swap the icon to "compress"
+        if(fullscreenIcon) fullscreenIcon.classList.replace('fa-expand', 'fa-compress');
+    } else {
+        // Exit full screen
+        document.exitFullscreen();
+        // Swap the icon back to "expand"
+        if(fullscreenIcon) fullscreenIcon.classList.replace('fa-compress', 'fa-expand');
+    }
+});
 
     const mobileSidebar = document.querySelector('.sidebar');
     const activeLink = document.querySelector('.nav-link.active');
@@ -232,7 +292,6 @@ document.addEventListener("DOMContentLoaded", () => {
             ${account.accountNumber}
         </div>
 
-        ${getAccountPerkBadge(account.accountType)}
 
         <div class="account-balance" style="margin-top: 10px;">
             <div class="balance-label">Balance</div>
@@ -387,18 +446,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // 1. We need this global variable so the OTP modal remembers what we are transferring!
+    let pendingTransferPayload = null;
 
     transferForm?.addEventListener("submit", async e => {
         e.preventDefault();
+
+        // Grab the exact inputs from your HTML
         const sourceId = parseInt(document.getElementById("transfer-from-account-id").value);
         const targetNum = parseInt(document.getElementById("transfer-to-account").value);
         const amount = parseFloat(document.getElementById("transfer-amount").value);
 
-        const transferData = {
+        // Save it to the global variable so Step 2 (OTP) can use it later
+        pendingTransferPayload = {
             SourceAccountId: sourceId,
             TargetAccountNumber: targetNum,
             Amount: amount
-        }
+        };
+
+        // Change the button text so the user knows it's loading
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerText;
+        submitBtn.innerText = "Processing...";
+        submitBtn.disabled = true;
 
         try {
             const response = await fetch(`${BaseUrl}/Account/transfer`, {
@@ -407,27 +477,185 @@ document.addEventListener("DOMContentLoaded", () => {
                     'Content-Type': 'application/json',
                     'Authorization': "Bearer " + token
                 },
-                body: JSON.stringify(transferData)
+                body: JSON.stringify(pendingTransferPayload)
             });
+
+            const data = await response.json();
+
             if (response.ok) {
-                const msg = await response.json();
-                alert(msg.message);
-                transferModal.classList.add("hidden");
-                fetchMyAccounts();
-                fetchTransactions();
-            }
-            else {
-                const errormsg = await response.json();
-                alert(errormsg.message);
-                fetchMyAccounts();
+                if (data.action === "SHOW_OTP") {
+                    transferModal.classList.add("hidden");
+                    document.getElementById('otp-modal').classList.remove('hidden');
+                    document.querySelectorAll('.otp-box')[0].focus();
+
+                    startOtpTimer();
+                }
+                else if (data.action === "COMPLETED") {
+                    alert(data.message);
+                    transferModal.classList.add("hidden");
+                    fetchMyAccounts();
+                    fetchTransactions();
+                    updateDashboard();
+                    e.target.reset();
+                }
+            } else {
+                alert(data.message);
             }
         } catch (error) {
             console.error(error);
+            alert("System error connecting to the bank.");
+        } finally {
+            // Reset the button
+            submitBtn.innerText = originalBtnText;
+            submitBtn.disabled = false;
         }
-        updateDashboard();
+    });
+    const otpBoxes = document.querySelectorAll('.otp-box');
+    otpBoxes.forEach((box, index) => {
+        box.addEventListener('keyup', (e) => {
+            if (e.key >= 0 && e.key <= 9) {
+                if (index < otpBoxes.length - 1) otpBoxes[index + 1].focus();
+            } else if (e.key === 'Backspace') {
+                if (index > 0) otpBoxes[index - 1].focus();
+            }
+        });
+    });
+
+    document.getElementById('close-otp').addEventListener('click', () => {
+        document.getElementById('otp-modal').classList.add('hidden');
+        pendingTransferPayload = null;
+        otpBoxes.forEach(box => box.value = "");
+        clearInterval(otpInterval);
     });
 
 
+    async function initiateTransfer(targetAccountNumber, amount) {
+
+        pendingTransferPayload = {
+            TargetAccountNumber: parseInt(targetAccountNumber),
+            Amount: parseFloat(amount)
+        };
+
+        try {
+            const response = await fetch(`${BaseUrl}/Account/transfer`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer " + token
+                },
+                body: JSON.stringify(pendingTransferPayload)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                if (data.action === "SHOW_OTP") {
+                    document.getElementById('otp-modal').classList.remove('hidden');
+                    otpBoxes[0].focus();
+                }
+                else if (data.action === "COMPLETED") {
+                    alert("Money Sent Instantly! (Under ₹50,000)");
+                }
+            } else {
+                alert("Transfer Failed: " + data.message);
+            }
+
+        } catch (error) {
+            console.error("API Error:", error);
+            alert("System error connecting to the bank.");
+        }
+    }
+
+
+    // --- 4. STEP 2: VERIFY OTP AND EXECUTE ---
+    document.getElementById('otp-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        // 1. Lock the button to prevent double-clicking
+        const verifyBtn = document.getElementById('verify-btn');
+        verifyBtn.innerText = "Verifying...";
+        verifyBtn.disabled = true;
+
+        // 2. Gather the 6-digit code
+        let fullOtp = "";
+        otpBoxes.forEach(box => fullOtp += box.value);
+
+        // 3. Build the payload matching your C# DTO
+        const verifyPayload = {
+            OtpCode: fullOtp,
+            TransferDetails: pendingTransferPayload
+        };
+
+        try {
+            const response = await fetch(`${BaseUrl}/Account/verify`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer " + token
+                },
+                body: JSON.stringify(verifyPayload)
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.action === "COMPLETED") {
+                // SUCCESS!
+                document.getElementById('otp-modal').classList.add('hidden');
+                alert("Verification Successful! The money has been transferred.");
+
+                // Clear the boxes for next time
+                otpBoxes.forEach(box => box.value = '');
+                pendingTransferPayload = null;
+
+                // Trigger your UI balance update function here!
+
+            } else {
+                alert("Verification Failed: " + data.message);
+                // Shake the boxes or turn them red here for a cool UX effect!
+            }
+        } catch (error) {
+            console.error("API Error:", error);
+        } finally {
+            // Unlock the button
+            verifyBtn.innerText = "Verify & Transfer";
+            verifyBtn.disabled = false;
+        }
+    });
+
+    let otpInterval; // Global variable so we can reset it
+
+    function startOtpTimer() {
+        clearInterval(otpInterval); // Clear any old timers if they try again
+
+        let timeLeft = 300; // 5 minutes (in seconds)
+        const display = document.getElementById('otp-countdown');
+        const verifyBtn = document.getElementById('verify-btn');
+
+        // Reset the UI in case it was red/locked from a previous attempt
+        display.style.color = "var(--accent-color)";
+        verifyBtn.disabled = false;
+        verifyBtn.innerText = "Verify & Transfer";
+
+        otpInterval = setInterval(() => {
+            // Calculate minutes and seconds
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+
+            // Format with leading zeros (e.g., 05:09)
+            display.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            // When time runs out!
+            if (timeLeft <= 0) {
+                clearInterval(otpInterval);
+                display.innerText = "00:00";
+                display.style.color = "#ef4444"; // Turn red!
+                verifyBtn.disabled = true; // Lock the button so they can't submit
+                verifyBtn.innerText = "Code Expired";
+            }
+
+            timeLeft--;
+        }, 1000); // Ticks every 1000 milliseconds (1 second)
+    }
     async function fetchTransactions() {
         try {
             const response = await fetch(`${BaseUrl}/Account/transactions`, {
@@ -455,6 +683,19 @@ document.addEventListener("DOMContentLoaded", () => {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
     }
+
+    document.getElementById('account-type').addEventListener('change', function (e) {
+        const fdGroup = document.getElementById('fd-duration-group');
+        const fdInput = document.getElementById('fd-duration');
+
+        if (e.target.value === 'FixedDeposit' || e.target.value === 'Loan' || e.target.value === 'RecurringDeposit') {
+            fdGroup.classList.remove('hidden');
+            fdInput.setAttribute('required', 'true');
+        } else {
+            fdGroup.classList.add('hidden');
+            fdInput.removeAttribute('required');
+        }
+    });
 
     function renderTransactions(transactions) {
 
@@ -611,6 +852,48 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     }
+    if (token) {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("http://localhost:5066/notificationHub", {
+                accessTokenFactory: () => token
+            })
+            .withAutomaticReconnect()
+            .build();
+
+        connection.on("ReceiveTransferNotification", (amount) => {
+            showRealTimeToast(`Incoming Transfer! You just received ₹${amount}.`);
+        });
+
+        connection.start()
+    }
+
+
+    function showRealTimeToast(message) {
+        const toast = document.createElement("div");
+        toast.style.position = "fixed";
+        toast.style.bottom = "20px";
+        toast.style.right = "20px";
+        toast.style.backgroundColor = "#10b981";
+        toast.style.color = "white";
+        toast.style.padding = "15px 25px";
+        toast.style.borderRadius = "8px";
+        toast.style.boxShadow = "0 10px 25px rgba(16, 185, 129, 0.4)";
+        toast.style.zIndex = "9999";
+        toast.style.fontWeight = "600";
+        toast.style.transform = "translateY(100px)";
+        toast.style.transition = "transform 0.3s ease";
+
+        toast.innerHTML = `<i class="fa-solid fa-bell"></i> &nbsp; ${message}`;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => { toast.style.transform = "translateY(0)"; }, 100);
+
+        setTimeout(() => {
+            toast.style.transform = "translateY(100px)";
+            setTimeout(() => toast.remove(), 300);
+        }, 5000);
+    }
 
     openAccountBtn?.addEventListener("click", () => {
         accountModal.classList.remove("hidden");
@@ -666,15 +949,7 @@ document.addEventListener("DOMContentLoaded", () => {
         viewAiAdvisor.classList.remove("hidden");
         navAiAdvisor.classList.add("active");
     });
-    const logoutBtn = document.getElementById("logout-btn");
-    logoutBtn?.addEventListener("click", () => {
-        if (confirm("Are you sure you want to log out?")) {
-            alert("Logged out SuccessFully");
-            localStorage.removeItem("nexus_token");
-            localStorage.clear();
-            window.location.href = "index.html";
-        }
-    });
+
 
     viewAccounts.classList.remove("hidden");
     viewTransactions.classList.add("hidden");
@@ -682,19 +957,77 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDashboard();
     fetchMyAccounts();
     fetchTransactions();
-    function getAccountPerkBadge(accountType) {
-        if (!accountType) return '';
-        const type = accountType.toLowerCase();
+    // --- CLERK DROPDOWN LOGIC ---
+    const userMenuBtn = document.getElementById('user-menu-btn');
+    const userDropdown = document.getElementById('user-dropdown');
+    const clerkSignoutBtn = document.getElementById('clerk-signout-btn');
 
-        if (type.includes('savings')) {
-            return `<div class="perk-badge perk-savings"><i class="fa-solid fa-tag"></i> 5% Mart Cashback</div>`;
-        } else if (type.includes('current')) {
-            return `<div class="perk-badge perk-current"><i class="fa-solid fa-bolt"></i> 15% Wholesale Discount</div>`;
-        } else if (type.includes('fixed') || type.includes('fd') || type.includes('deposit')) {
-            return `<div class="perk-badge perk-fd"><i class="fa-solid fa-crown"></i> VIP Unlocked</div>`;
-        } else if (type.includes('loan')) {
-            return `<div class="perk-badge perk-loan"><i class="fa-solid fa-percent"></i> AI-Reduced EMI</div>`;
+    // 1. Toggle dropdown when clicking the avatar
+    userMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Stops the click from hitting the document
+        userDropdown.classList.toggle('hidden');
+    });
+
+    // 2. Close dropdown if user clicks anywhere else on the page
+    document.addEventListener('click', (e) => {
+        if (!userDropdown.contains(e.target) && !userMenuBtn.contains(e.target)) {
+            userDropdown.classList.add('hidden');
         }
-        return '';
-    }
+    });
+
+    // 3. Hook up the new Sign Out button to clear the JWT Token
+    clerkSignoutBtn.addEventListener('click', () => {
+        if (confirm("Are you sure you want to log out?")) {
+            alert("Logged out SuccessFully");
+            localStorage.removeItem("nexus_token");
+            localStorage.removeItem('nexus_google_name');
+            localStorage.removeItem('nexus_google_picture');
+            window.location.href = "index.html";
+        }
+    });
+    const manageModal = document.getElementById('manage-account-modal');
+    const manageBtn = document.getElementById('manage-account-btn'); // The button in your dropdown
+    const closeManageBtn = document.getElementById('close-manage-modal');
+
+    // 1. Open Modal from Dropdown
+    manageBtn.addEventListener('click', () => {
+        manageModal.classList.remove('hidden');
+        document.getElementById('user-dropdown').classList.add('hidden'); // Close the dropdown
+    });
+
+    // 2. Close Modal
+    closeManageBtn.addEventListener('click', () => {
+        manageModal.classList.add('hidden');
+    });
+});
+// --- MOBILE HAMBURGER MENU LOGIC ---
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const sidebar = document.querySelector('.sidebar');
+
+// Create the dark overlay that sits behind the open menu
+const overlay = document.createElement('div');
+overlay.className = 'mobile-overlay';
+document.body.appendChild(overlay);
+
+// Function to open/close
+function toggleSidebar() {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+
+// Click the ||| button to open
+mobileMenuBtn?.addEventListener('click', toggleSidebar);
+
+// Click the dark overlay to close it
+overlay.addEventListener('click', toggleSidebar);
+
+// Auto-close the menu if the user clicks a navigation link
+const navLinks = document.querySelectorAll('.nav-link');
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+    });
 });

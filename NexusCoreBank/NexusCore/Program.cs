@@ -3,9 +3,21 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.AI;
 using OpenAI;
+using NexusCore.AccountRepositories;
+using NexusCore.AccountServices;
+using NexusCore.TransactionServices;
+using NexusCore.TransactionRepositories;
+using NexusCore.Hubs;
+using NexusCore.CustomerRepositories;
+using NexusCore.CustomerServices;
+using NexusCore.Services;
+using NexusCore.BackGroundServices;
+using QuestPDF.Infrastructure;
+using Microsoft.AspNetCore.Authentication;
+
 var builder = WebApplication.CreateBuilder(args);
 var openAiKey = builder.Configuration["AI:OpenAI:ApiKey"];
-if(!string.IsNullOrEmpty(openAiKey))
+if (!string.IsNullOrEmpty(openAiKey))
 {
     builder.Services.AddSingleton(new OpenAIClient(openAiKey));
 }
@@ -17,23 +29,18 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:5066")
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = "Cookies";
-    options.DefaultChallengeScheme = "Google"; 
-});
-
-builder.Services.AddOpenApi();
-builder.Services.AddControllers();
-builder.Services.AddAuthentication(options =>
-{
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+    options.DefaultSignInScheme = "Cookies";
 })
 .AddJwtBearer(options =>
 {
@@ -49,23 +56,56 @@ builder.Services.AddAuthentication(options =>
 
         ValidateLifetime = true
     };
+    options.Events  =new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            if(!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/notificationHub"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
 })
 .AddCookie("Cookies")
-.AddGoogle("Google",googleOptions =>
+.AddGoogle("Google", googleOptions =>
 {
     googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
     googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+
+    googleOptions.Scope.Add("profile");
+    googleOptions.ClaimActions.MapJsonKey("picture", "picture", "url");
 });
-builder.Services.AddScoped<NexusCore.CustomerOperation.RegistrationOperation>();
-builder.Services.AddScoped<NexusCore.CustomerOperation.CustomerLogin>();
+builder.Services.AddOpenApi();
+builder.Services.AddControllers();
+builder.Services.AddSignalR();
+
 builder.Services.AddScoped<NexusCore.CustomerOperation.RegisterViaGoogle>();
 builder.Services.AddScoped<NexusCore.CustomerOperation.TokenService>();
-builder.Services.AddScoped<NexusCore.AccountOperation.CreateAccount>();
-builder.Services.AddScoped<NexusCore.AccountOperation.GetCustomerAccount>();
-builder.Services.AddScoped<NexusCore.AccountOperation.AmountDeposit>();
-builder.Services.AddScoped<NexusCore.AccountOperation.MoneyTransfer>();
-builder.Services.AddScoped<NexusCore.AccountOperation.TransactionReceiptHistory>();
-builder.Services.AddScoped<NexusCore.AccountOperation.AmountWithdraw>();
+//Customer Dependency Injection
+builder.Services.AddScoped<ICustomerRepositories, CustomerRepository>();
+builder.Services.AddScoped<CustomerService>();
+
+//Accounts Dependency Injection.
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<AccountService>();
+//Transaction Dependency Injection.
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<TransactionService>();
+
+//Email Kit DependencyInjection.
+builder.Services.AddScoped<IEmailServices, MailKitService>();
+builder.Services.AddMemoryCache();
+
+//Midnight Robot DependencyInjection.
+builder.Services.AddHostedService<MidNightInterestRobot>();
+
+//Download Pdf Statement Pdf..
+builder.Services.AddScoped<PdfStatementService>();
+
 builder.Services.AddScoped<NexusCore.EmployeeOperation.DisplayPendingAccount>();
 builder.Services.AddScoped<NexusCore.EmployeeOperation.Approval>();
 builder.Services.AddScoped<NexusCore.EmployeeOperation.FetchEmployee>();
@@ -81,6 +121,8 @@ builder.Services.AddScoped<NexusCore.AdminOperation.SystemInfo>();
 builder.Services.AddScoped<NexusCore.AdminOperation.MasterAudiLog>();
 builder.Services.AddScoped<NexusCore.AiOperation.BudgetingService>();
 
+QuestPDF.Settings.License = LicenseType.Community;
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -94,7 +136,8 @@ app.UseAuthorization();
 app.UseStaticFiles();
 app.UseDefaultFiles();
 app.MapControllers();
-app.MapGet("/",() => Results.Redirect("/index.html"));
+app.MapHub<NotificationHub>("/notificationHub");
+app.MapGet("/", () => Results.Redirect("/index.html"));
 
 // string testpass = "123456";
 // string hash  = BCrypt.Net.BCrypt.HashPassword(testpass);

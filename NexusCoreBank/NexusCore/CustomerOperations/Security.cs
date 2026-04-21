@@ -15,7 +15,7 @@ namespace NexusCore.CustomerOperation
             token = config["JwtSettings:SecretKey"]
                 ?? throw new InvalidOperationException("JWT Secret Key is missing!");
         }
-        public string GenerateToken(int userId, string role)
+        public string GenerateToken(int userId, string role,string email)
         {
             var key = Encoding.UTF8.GetBytes(token);
 
@@ -28,7 +28,8 @@ namespace NexusCore.CustomerOperation
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.Role, role),
+                new Claim(ClaimTypes.Email, email)
             };
 
             var descriptor = new SecurityTokenDescriptor

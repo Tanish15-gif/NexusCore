@@ -222,7 +222,7 @@ body {
 }
 
 .btn-primary {
-    background-color: var(--primary-blue);
+    background: #4a8cff;
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
@@ -232,7 +232,7 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
+    background: #3a7be0;
 }
 
 /* Empty State */

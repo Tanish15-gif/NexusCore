@@ -12,7 +12,7 @@ namespace NexusCore.TransferDto
             }
             set
             {
-                if(value.ToString().Length == 10)
+                if(value.ToString().Length <= 14)
                 {
                     _TargetAccountNumber = value;
                 }

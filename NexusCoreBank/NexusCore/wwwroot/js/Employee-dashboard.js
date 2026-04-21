@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const accountNumber = document.getElementById("search-input").value.trim();
 
         if (accountNumber === "") {
-            alert("Please enter an account number");
+            alert("Enter an account number");
             return;
         }
         const resultCard = document.getElementById("search-result-card");

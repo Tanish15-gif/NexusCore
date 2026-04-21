@@ -1,3 +1,44 @@
+body {
+    padding-top: 0 !important;
+    margin: 0;
+}
+
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--bg-color);
+}
+
+.sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--nav-bg);
+    border-right: 1px solid var(--border-color);
+    z-index: 100;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 .global-header {
     background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
     color: white;
@@ -5,6 +46,8 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     position: sticky;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 1000;
     backdrop-filter: blur(10px);
 }
@@ -26,6 +69,11 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.dashboard-layout,
+.dashboard-main {
+    overflow: visible !important;
 }
 
 .header-center .greeting {
@@ -979,6 +1027,383 @@ body.dark-mode .modal {
     margin-top: 40px;
 }
 
+/* OTP 6-Box Styling */
+.otp-box {
+    width: 45px;
+    height: 55px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.2s ease;
+}
+
+.otp-box:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+}
+
+/* --- Clerk Avatar & Dropdown Styles --- */
+.avatar-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    background: transparent;
+}
+
+.avatar-btn:hover {
+    border-color: #3b82f6;
+    transform: scale(1.05);
+}
+
+.avatar-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* The Floating White Box */
+.clerk-dropdown {
+    position: absolute;
+    top: 55px;
+    /* Pushes it just below the avatar */
+    right: 0;
+    width: 320px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    z-index: 1000;
+    padding: 16px;
+    color: #111827;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    transform-origin: top right;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* Smooth Open/Close Animation */
+.clerk-dropdown.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+}
+
+/* --- 1. Lock the Sidebar --- */
+.dashboard-layout {
+    display: flex;
+    height: 100vh;
+    /* Locks the entire app height */
+    overflow: hidden;
+}
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    flex-shrink: 0;
+    /* Prevents it from crushing */
+}
+
+.main-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    /* Only the right side scrolls! */
+    height: 100vh;
+}
+
+/* --- 2. Clerk Dropdown (Dark & Light Mode Compatible) --- */
+.avatar-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    background: transparent;
+}
+
+.avatar-btn:hover {
+    border-color: #3b82f6;
+    transform: scale(1.05);
+}
+
+.avatar-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.clerk-dropdown {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 320px;
+    background: var(--bg-card);
+    /* Auto-switches based on theme! */
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    z-index: 1000;
+    padding: 16px;
+    color: var(--text-light);
+    transform-origin: top right;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.clerk-dropdown.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+}
+
+.dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.dropdown-header img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.dropdown-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-user-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-light);
+}
+
+.dropdown-user-email {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.dropdown-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.dropdown-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dropdown-btn:hover {
+    background: var(--bg-card);
+    filter: brightness(1.2);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 0 -16px 8px -16px;
+}
+
+.dropdown-btn-full {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 8px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dropdown-btn-full:hover {
+    background: var(--bg-main);
+}
+
+.icon-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    background: var(--bg-main);
+}
+
+.dropdown-footer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 16px;
+}
+
+/* --- MANAGE ACCOUNT MODAL (CLERK STYLE - OPACITY FIX) --- */
+
+/* 1. Base Modal (Dark Mode Default) */
+.clerk-settings-card {
+    background-color: #1a1e29 !important; /* Solid Dark Background */
+    width: 100%;
+    max-width: 850px;
+    height: 550px;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5); /* Deep shadow to separate from background */
+    border: 1px solid #374151 !important;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    color: #f9fafb !important; /* White text */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Close Button */
+.settings-close-btn {
+    position: absolute; top: 16px; right: 16px;
+    background: transparent; border: none;
+    color: #9ca3af; font-size: 1.2rem; cursor: pointer;
+    transition: color 0.2s; z-index: 10;
+}
+.settings-close-btn:hover { color: #ffffff; }
+
+/* Left Sidebar (Darker shade for depth) */
+.settings-sidebar {
+    width: 240px;
+    background-color: #111827 !important; /* Solid Darker Background */
+    border-right: 1px solid #374151 !important;
+    padding: 24px 16px;
+    display: flex; flex-direction: column;
+}
+
+.settings-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 4px; color: #f9fafb; }
+.settings-subtitle { font-size: 0.85rem; color: #9ca3af; margin-bottom: 24px; }
+
+.settings-nav-item {
+    display: flex; align-items: center; gap: 12px;
+    width: 100%; padding: 8px 12px;
+    background: transparent; border: none; border-radius: 6px;
+    color: #9ca3af; font-size: 0.9rem; font-weight: 500;
+    text-align: left; cursor: pointer; transition: all 0.2s;
+}
+.settings-nav-item:hover { background-color: #1f2937 !important; color: #f9fafb; }
+.settings-nav-item.active { background-color: #1f2937 !important; color: #f9fafb; font-weight: 600; }
+
+.settings-footer { margin-top: auto; font-size: 0.75rem; color: #6b7280; }
+
+/* Right Content Area */
+.settings-content { flex: 1; padding: 32px 40px; overflow-y: auto; }
+.settings-content h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 24px; color: #f9fafb; }
+
+/* The Rows */
+.settings-row {
+    display: flex; padding: 24px 0;
+    border-bottom: 1px solid #374151 !important;
+}
+.settings-row.borderless { border-bottom: none !important; }
+
+.settings-label { width: 35%; font-size: 0.9rem; font-weight: 500; color: #f9fafb; }
+.settings-value { width: 45%; display: flex; flex-direction: column; gap: 12px; color: #d1d5db; }
+
+.profile-val { flex-direction: row; align-items: center; gap: 16px; }
+.profile-val img { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #374151; }
+.profile-name-group { display: flex; flex-direction: column; font-size: 0.95rem; font-weight: 500; color: #f9fafb;}
+
+.value-item { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+
+/* Badges & Actions */
+.badge-primary {
+    background: rgba(59, 130, 246, 0.2) !important; color: #60a5fa !important;
+    padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;
+}
+.settings-action, .settings-add-btn {
+    background: transparent; border: none; color: #3b82f6;
+    font-size: 0.9rem; font-weight: 500; cursor: pointer;
+    display: flex; align-items: center; gap: 8px; align-self: flex-start;
+}
+.settings-action:hover, .settings-add-btn:hover { color: #60a5fa; }
+
+
+/* --- 2. Light Mode Overrides --- */
+body.light-mode .clerk-settings-card {
+    background-color: #ffffff !important;
+    border-color: #e5e7eb !important;
+    color: #111827 !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+body.light-mode .settings-sidebar {
+    background-color: #f9fafb !important;
+    border-color: #e5e7eb !important;
+}
+body.light-mode .settings-title, 
+body.light-mode .settings-content h2, 
+body.light-mode .settings-label, 
+body.light-mode .profile-name-group {
+    color: #111827 !important;
+}
+body.light-mode .settings-subtitle, 
+body.light-mode .settings-footer {
+    color: #6b7280 !important;
+}
+body.light-mode .settings-nav-item {
+    color: #4b5563 !important;
+}
+body.light-mode .settings-nav-item:hover, 
+body.light-mode .settings-nav-item.active {
+    background-color: #f3f4f6 !important;
+    color: #111827 !important;
+}
+body.light-mode .settings-row {
+    border-color: #e5e7eb !important;
+}
+body.light-mode .settings-value {
+    color: #4b5563 !important;
+}
+body.light-mode .profile-val img {
+    border-color: #e5e7eb !important;
+}
+body.light-mode .settings-close-btn {
+    color: #6b7280 !important;
+}
+body.light-mode .settings-close-btn:hover {
+    color: #111827 !important;
+}
+body.light-mode .badge-primary {
+    background: rgba(59, 130, 246, 0.1) !important;
+    color: #3b82f6 !important;
+}
+
 .table-container {
     background: #ffffff;
     border-radius: 14px;
@@ -1106,218 +1531,209 @@ body.dark-mode .modal {
     color: #888;
     font-style: italic;
 }
-
-/* =========================================
-   Customer Dashboard Mobile Fix
-   ========================================= */
-@media (max-width: 768px) {
-
-    /* 1. Stack the Layout & Kill the Squeeze */
-    .dashboard-layout {
-        flex-direction: column !important;
-        height: auto !important;
-        overflow-x: hidden;
-    }
-
-    /* 2. Transform Sidebar into a Horizontal Swipe Track */
-    .dashboard-sidebar {
-        width: 100% !important;
-        height: auto !important;
-        min-height: auto !important;
-        flex-direction: row !important;
-        align-items: center;
-        overflow-x: auto !important;
-        padding: 15px !important;
-        border-right: none !important;
-        border-bottom: 1px solid var(--border-color);
-        background: var(--bg-color);
-
-        /* Hide scrollbar but keep swipe */
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-
-    .dashboard-sidebar::-webkit-scrollbar {
-        display: none;
-    }
-
-    /* 3. Hide the Sidebar Logo on Mobile (Since you have a top header) */
-    .dashboard-sidebar .brand,
-    .dashboard-sidebar h2 {
-        display: none !important;
-    }
-
-    /* 4. Turn the links into touch-friendly pills */
-    .dashboard-sidebar a,
-    .dashboard-sidebar .nav-item {
-        flex-shrink: 0;
-        /* Prevents squishing */
-        white-space: nowrap;
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        margin-right: 12px;
-        padding: 10px 20px !important;
-        border-radius: 50px;
-        background: var(--card-bg);
-        border: 1px solid var(--border-color);
-        font-size: 0.95rem;
-        font-weight: 600;
-    }
-
-    /* Highlight the active tab */
-    .dashboard-sidebar a.active,
-    .dashboard-sidebar .nav-item.active {
-        background: var(--accent-color);
-        color: white;
-        border-color: var(--accent-color);
-    }
-
-    /* Make the Logout button match the horizontal flow */
-    .dashboard-sidebar .logout-btn {
-        margin-top: 0 !important;
-        background: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    /* 5. Un-squish the Main Content */
-    .dashboard-main {
-        width: 100% !important;
-        flex: 1;
-        padding: 20px 15px !important;
-        min-width: 0;
-        /* Crucial: stops the blowout! */
-    }
+.clerk-dropdown {
+    background-color: #1a1e29 !important; /* Solid dark FinTech blue/gray */
+    border: 1px solid #374151 !important;
 }
 
+/* 2. Fix the Dark Mode Buttons */
+.dropdown-btn {
+    background-color: #1f2937 !important;
+    border: 1px solid #374151 !important;
+    color: #f9fafb !important;
+}
+.dropdown-btn:hover {
+    background-color: #374151 !important;
+}
+
+.dropdown-btn-full {
+    color: #f9fafb !important;
+}
+.dropdown-btn-full:hover {
+    background-color: #1f2937 !important;
+}
+
+.icon-circle {
+    background-color: #1f2937 !important;
+    border: 1px solid #4b5563 !important;
+    color: #9ca3af !important;
+}
+
+
+/* --- 3. Light Mode Auto-Switching --- */
+body.light-mode .clerk-dropdown {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+body.light-mode .dropdown-btn {
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    color: #374151 !important;
+}
+body.light-mode .dropdown-btn:hover {
+    background-color: #f9fafb !important;
+}
+
+body.light-mode .dropdown-btn-full {
+    color: #374151 !important;
+}
+body.light-mode .dropdown-btn-full:hover {
+    background-color: #f3f4f6 !important;
+}
+
+body.light-mode .icon-circle {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    color: #6b7280 !important;
+}
+/* --- DESKTOP HEADER (Clean & Flat) --- */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative; /* Keeps the dropdown attached here */
+}
+
+/* Hide Hamburger on Desktop */
+.mobile-only-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Clean Wealth Text */
+.wealth-indicator { display: flex; align-items: center; gap: 10px; }
+.wealth-info { display: flex; flex-direction: column; }
+.wealth-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+.wealth-amount { font-weight: bold; color: var(--text-light); font-size: 1.2rem; }
+.greeting h1 { margin: 0; font-size: 1.5rem; }
+
+
+/* --- MOBILE OVERRIDES (Max-width 768px) --- */
 @media (max-width: 768px) {
-
-    /* 1. Stack Master Layout */
-    .dashboard-layout {
-        flex-direction: column !important;
-        height: auto !important;
-        overflow-x: hidden;
+    /* Show Hamburger */
+    .mobile-only-btn { display: block; }
+    
+    /* Stack the Header vertically */
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding-bottom: 15px;
     }
 
-    /* 2. The Master Swipe Track (This is what was missing!) */
+    /* Push Wealth to the left, Avatar to the right */
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+/* =========================================
+   DESKTOP HEADER (Clean & Flat)
+   ========================================= */
+.top-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    gap: 20px;
+}
+.mobile-only-btn { display: none; }
+.greeting { flex-grow: 1; } /* Pushes wealth and avatar to the right */
+.wealth-indicator { display: flex; align-items: center; gap: 10px; }
+.wealth-info { display: flex; flex-direction: column; }
+
+
+/* =========================================
+   CLERK MOBILE VIEW (Max-width 768px)
+   ========================================= */
+@media (max-width: 768px) {
+    /* 1. Prevent the whole page from shaking/bleeding */
+    .dashboard-layout { flex-direction: column !important; }
+    .main-content { width: 100% !important; padding: 15px !important; overflow-x: hidden !important; }
+
+    /* 2. Completely hide the sidebar off-screen (Fixes the top-left glitch) */
     .sidebar {
-        width: 100% !important;
-        height: auto !important;
-        min-height: auto !important;
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        /* CRUCIAL: Stops elements from stacking vertically */
-        align-items: center !important;
-        padding: 12px 15px !important;
-        overflow-x: auto !important;
-        border-right: none !important;
-        border-bottom: 1px solid var(--border-color);
-        scrollbar-width: none;
-        -ms-overflow-style: none;
+        position: fixed !important;
+        top: 0; 
+        left: -100% !important; /* Pushes it entirely off the screen */
+        width: 260px !important; 
+        height: 100vh !important;
+        z-index: 9999 !important;
+        background: var(--bg-main) !important;
+        transition: left 0.3s ease !important;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.5);
     }
+    .sidebar.open { left: 0 !important; }
 
-    .sidebar::-webkit-scrollbar {
-        display: none;
-    }
-
-    /* 3. The Brand Logo in the Track */
-    .sidebar-header {
-        display: flex !important;
-        align-items: center !important;
-        white-space: nowrap !important;
-        flex-shrink: 0 !important;
-        font-size: 1.2rem !important;
-        color: var(--accent-color) !important;
-        padding-right: 15px !important;
-        margin-right: 15px !important;
-        border-right: 2px solid var(--border-color) !important;
-        border-bottom: none !important;
-    }
-
-    /* 4. The Swipeable Nav Links */
-    .nav-menu {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        gap: 10px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    .nav-link {
-        white-space: nowrap !important;
-        flex-shrink: 0 !important;
-        padding: 8px 16px !important;
-        border-radius: 50px !important;
-    }
-
-    /* 5. Hide Bulky Profile, keep Logout in the track */
-    .profile-info {
-        display: none !important;
-    }
-
-    .sidebar-footer {
-        display: flex !important;
-        margin-left: 10px !important;
-        padding: 0 !important;
-        border: none !important;
-        background: transparent !important;
-    }
-
-    .btn-logout {
-        white-space: nowrap !important;
-        flex-shrink: 0 !important;
-        padding: 8px 16px !important;
-        border-radius: 50px !important;
-        margin: 0 !important;
-    }
-
-    /* 6. Un-squish Main Content */
-    .main-content {
-        width: 100% !important;
-        min-width: 0 !important;
-        padding: 20px 15px !important;
-    }
-
-    /* 7. Premium Welcome & Wealth Card Fix */
+    /* 3. The Bulletproof Header Layout */
     .top-header {
         display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 20px !important;
-        height: auto !important;
-        padding: 0 0 25px 0 !important;
+        flex-wrap: wrap !important; /* Allows items to drop to new rows */
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0 0 15px 0 !important;
         border-bottom: none !important;
     }
 
-    .greeting h1 {
-        font-size: 1.6rem !important;
-        line-height: 1.3 !important;
-        margin: 0 !important;
+    /* ROW 1: Hamburger (Left) */
+    .mobile-only-btn { 
+        order: 1 !important; 
+        display: block !important; 
+        background: transparent; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer;
     }
 
-    /* Turns the right side into a sleek solid card */
-    .header-right {
-        width: 100% !important;
-        display: flex !important;
-        flex-direction: row !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        background: var(--card-bg) !important;
-        padding: 15px 20px !important;
-        border-radius: 12px !important;
+    /* ROW 1: Avatar (Right) */
+    .avatar-dropdown-container { 
+        order: 2 !important; 
+    }
+
+    /* ROW 2: Greeting (Takes up full width, drops below Row 1) */
+    .greeting { 
+        order: 3 !important; 
+        width: 100% !important; 
+        margin-top: 20px !important; 
+    }
+    .greeting h1 { font-size: 1.4rem !important; margin: 0 !important; }
+
+    /* ROW 3: Wealth Card (Takes up full width, drops below Row 2) */
+    .wealth-indicator { 
+        order: 4 !important; 
+        width: 100% !important; 
+        margin-top: 15px !important; 
+        background: var(--bg-card) !important; 
+        padding: 15px 20px !important; 
+        border-radius: 12px !important; 
         border: 1px solid var(--border-color) !important;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2) !important;
+        justify-content: space-between !important; /* Separates the icon and the money */
     }
 
-    .wealth-indicator {
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
+    /* Dark overlay when menu is open */
+    .mobile-overlay {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.6); z-index: 9998;
     }
-
-    .wealth-amount {
-        font-size: 1.4rem !important;
-    }
+    .mobile-overlay.active { display: block; }
 }

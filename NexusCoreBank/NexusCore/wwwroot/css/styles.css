@@ -11,6 +11,7 @@ body {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
+    scroll-behavior: smooth;
 }
 
 ::selection {
@@ -38,27 +39,33 @@ body.dark-mode ::-moz-selection {
 }
 
 :root {
-    --bg-color: #f8f9fa;
-    --text-color: #1a1a1a;
-    --text-muted: #666;
+    --bg-color: #f0f7ff; 
+    
+    --text-color: #0f172a; 
+    --text-muted: #475569;
+    
     --primary-color: #0f172a;
-    --accent-color: #3b82f6;
-    --card-bg: #ffffff;
-    --nav-bg: rgba(255, 255, 255, 0.95);
-    --border-color: #e2e8f0;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --accent-color: #2563eb; 
+    --card-bg: #ffffff; 
+    --border-color: #dbeafe; 
+    
+    --shadow: 0 8px 20px rgba(37, 99, 235, 0.06); 
 }
 
 body.dark-mode {
-    --bg-color: #0f172a;
-    --text-color: #f1f5f9;
-    --text-muted: #94a3b8;
+    --bg-color: #050b14; 
+    
+    --text-color: #ffffff; 
+    --text-muted: #94a3b8; 
+    
     --primary-color: #ffffff;
-    --accent-color: #60a5fa;
-    --card-bg: #1e293b;
-    --nav-bg: rgba(15, 23, 42, 0.95);
-    --border-color: #334155;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --accent-color: #38bdf8; 
+    
+    --card-bg: #0b1221; 
+    --nav-bg: rgba(5, 11, 20, 0.95);
+    
+    --border-color: #1e293b;
+    --shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
 * {
@@ -73,6 +80,8 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
+    margin: 0;
+    padding-top: 80px;
 }
 
 a {
@@ -157,11 +166,14 @@ ul {
 .navbar {
     background-color: var(--nav-bg);
     border-bottom: 1px solid var(--border-color);
-    position: sticky;
+    position: fixed; 
     top: 0;
-    z-index: 1000;
+    left: 0;
+    width: 100%; 
+    z-index: 9999; 
     padding: 15px 0;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); 
 }
 
 .nav-container {
@@ -311,15 +323,16 @@ body.dark-mode .logo i {
 .image-placeholder {
     width: 100%;
     height: 300px;
-    /* Light mode default gradient using your variables */
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), var(--border-color));
+    
+    /* THE FIX: A crisp, icy blue gradient for Light Mode */
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), #60a5fa);
+    
     border: 1px solid var(--border-color);
     border-radius: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* FIX: Force text to use the high-contrast theme text color */
     color: var(--text-color);
     box-shadow: var(--shadow);
     backdrop-filter: blur(10px);
@@ -756,10 +769,6 @@ body.dark-mode .selection-card:hover {
         /* 2 columns on tablet */
     }
 }
-
-
-/* MANAGER DASHBOARD GRID */
-
 .manager-grid {
 
     display: grid;
@@ -768,10 +777,6 @@ body.dark-mode .selection-card:hover {
     margin-top: 40px;
 
 }
-
-
-/* CARD STYLE */
-
 .manager-card {
 
     background: var(--card-bg);
@@ -802,48 +807,29 @@ body.dark-mode .selection-card:hover {
 
 }
 
-
-/* CARD BODY */
-
 .card-body {
 
     min-height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
-
-/* PLACEHOLDER */
-
 .placeholder-text {
-
     color: #888;
     text-align: center;
     font-size: 14px;
-
 }
 
-
-/* DARK MODE SUPPORT */
-
 .dark-mode .manager-card {
-
     background: #1e2633;
     border: 1px solid #2f3a4a;
-
 }
 
 .dark-mode .placeholder-text {
-
     color: #aaa;
-
 }
 
-/* =========================================
-   ENTERPRISE FOOTER GRID
-   ========================================= */
 .footer {
     background-color: var(--card-bg);
     border-top: 1px solid var(--border-color);
@@ -1146,5 +1132,25 @@ body.dark-mode .selection-card:hover {
         padding-top: 20px;
         margin-top: 20px;
         border-top: 1px solid var(--border-color);
+    }
+}
+body.dark-mode .sidebar-link.active {
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); 
+}
+
+body.dark-mode .update-badge,
+body.dark-mode .enterprise-list li::before {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa; 
+}
+
+body.dark-mode .sidebar-link:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.05); 
+    color: var(--text-color);
+}
+
+@media (max-width: 900px) {
+    body.dark-mode .sticky-nav {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 }

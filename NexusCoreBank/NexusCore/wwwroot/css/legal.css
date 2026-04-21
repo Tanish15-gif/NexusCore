@@ -1,0 +1,218 @@
+.trust-center-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 60px;
+    padding: 60px 20px;
+    align-items: start;
+}
+
+.trust-sidebar {
+    position: sticky;
+    top: 140px;
+}
+
+.sticky-nav {
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 20px;
+}
+
+.sidebar-title {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 15px;
+    padding-left: 15px;
+}
+
+.sidebar-link {
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-link i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-link:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--accent-color);
+}
+
+.sidebar-link.active {
+    background: var(--accent-color);
+    color: white;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* Right Side Content */
+.legal-section {
+    padding-bottom: 60px;
+    margin-bottom: 60px;
+    border-bottom: 1px solid var(--border-color);
+    /* Accounts for the fixed navbar when clicking anchor links! */
+    scroll-margin-top: 100px;
+}
+
+.legal-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.update-badge {
+    display: inline-block;
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--accent-color);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.legal-section h2 {
+    color: var(--text-color);
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.legal-section p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.enterprise-list {
+    list-style: none;
+    padding: 0;
+}
+
+.enterprise-list li {
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 20px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.enterprise-list li::before {
+    content: '\f00c';
+    /* FontAwesome Checkmark */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: var(--accent-color);
+    background: rgba(59, 130, 246, 0.1);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.enterprise-list strong {
+    color: var(--text-color);
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+    .trust-center-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .sticky-nav {
+        position: relative;
+        top: 0;
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-link {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 900px) {
+    .trust-center-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 30px 15px;
+    }
+}
+
+@media (max-width: 900px) {
+    .sticky-nav {
+        position: relative;
+        top: 0;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-title {
+        display: none;
+        /* hide "Legal & Trust" label */
+    }
+
+    .sidebar-link {
+        white-space: nowrap;
+        flex: 0 0 auto;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .trust-content {
+        margin-left: 0;
+        /* remove desktop offset if added */
+    }
+}
+
+@media (max-width: 600px) {
+    .legal-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .legal-section p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+}
+
+@media (max-width: 600px) {
+    .image-placeholder h1 {
+        font-size: 1.8rem;
+    }
+
+    .image-placeholder p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .enterprise-list li {
+        padding-left: 30px;
+        font-size: 0.9rem;
+    }
+}

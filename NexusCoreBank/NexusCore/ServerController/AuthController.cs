@@ -12,6 +12,8 @@ using NexusCore.AdminOperation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using NexusCore.CustomerProfileViaGoogle;
+using NexusCore.CustomerServices;
+using NexusCore.CustomerRepositories;
 
 namespace AuthController.Controllers
 {
@@ -19,60 +21,62 @@ namespace AuthController.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly RegistrationOperation _registrationOperation;
-        private readonly CustomerLogin _customerLogin;
+        private readonly CustomerService _customerService;
         private readonly TokenService _tokenService;
         private readonly RegisterViaGoogle _registerViaGoogle;
         public UsersController
         (
-            RegistrationOperation registration,
-            CustomerLogin login,
+            CustomerService customerService,
             RegisterViaGoogle registerViaGoogle,
             TokenService tokenService
         )
         {
-            _registrationOperation = registration;
-            _customerLogin = login;
+            _customerService = customerService;
             _registerViaGoogle = registerViaGoogle;
             _tokenService = tokenService;
         }
         [HttpPost("register")]
-        public IActionResult SignInCustomer([FromBody] Register register)
+        public async Task<IActionResult> SignInCustomer([FromBody] Register register)
         {
-            int success = _registrationOperation.RegisterCustomer(register);
-            if (success == 1)
+            var success = await _customerService.RegisterNewUserAsync(register);
+            switch (success)
             {
-                return Ok(new { message = "Registration SuccessFully" });
-            }
-            else if (success == 2)
-            {
-                return Conflict(new { message = "Email Already Exists" });
-            }
-            else
-            {
-                return BadRequest(new { message = "Server Error" });
+                case CustomerSignUpResult.Success:
+                    return Ok(new { message = "Registration SuccessFully" });
+                case CustomerSignUpResult.EmailExists:
+                    return BadRequest(new { message = "Entered E-Mail Already Exists" });
+                case CustomerSignUpResult.PhoneNumberExists:
+                    return BadRequest(new { message = "Entered Phone-Number Already Exists" });
+                case CustomerSignUpResult.SystemError:
+                default:
+                    return StatusCode(500, new { message = "A System Error Occured" });
             }
         }
         [HttpPost("Login")]
-        public IActionResult LoginCustomer(LogIn logIn)
+        public async Task<IActionResult> LoginCustomer([FromBody] LogIn logIn)
         {
-            var response = _customerLogin.Login(logIn);
-            if (response.Success)
+            var response = await _customerService.CompleteLoginAsync(logIn);
+            switch (response.status)
             {
-                string token = _tokenService.GenerateToken(response.UserId, response.Role);
-                return Ok(new { token = token, message = "Login Successful" });
-            }
-            else
-            {
-                return Unauthorized(new { message = "Invalid email or password." });
+                case CustomerLoginResult.Success:
+                    string token = _tokenService.GenerateToken(response.UserId, response.Role, logIn.Email!);
+                    return Ok(new { message = "Login Successfull", token = token, });
+                case CustomerLoginResult.InvalidEmailPassword:
+                    return BadRequest(new { message = "Invalid Email and Password" });
+                case CustomerLoginResult.InvalidEmail:
+                    return Unauthorized(new { message = "Invalid Email" });
+                case CustomerLoginResult.InvalidPassword:
+                    return Unauthorized(new { message = "Invalid Password" });
+                default:
+                    return StatusCode(500, new { message = "A System Error Has Occured" });
             }
         }
         [HttpGet("profile")]
-        public IActionResult GetProfile()
+        public async Task<IActionResult> GetProfile()
         {
             int userid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
-            string name = _customerLogin.GetProfile(userid);
-            return Ok(new {fullName = name});
+            var result = await _customerService.GetProfile(userid);
+            return Ok(new { fullName = result.FullName, email = result.Email, phoneNumber = result.PhoneNumber });
         }
         [HttpGet("login-google")]
         public IActionResult LoginWithGoogle()
@@ -94,10 +98,13 @@ namespace AuthController.Controllers
             var googleName = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name) ?? "Customer";
             var safeGoogleName = Uri.EscapeDataString(googleName);
 
+            var pictureUrl = authenticateResult.Principal.FindFirst("picture")?.Value;
+
             var dbresult = _registerViaGoogle.RegisterGoogleUser(email!);
+
             if (dbresult.Success)
             {
-                string token = _tokenService.GenerateToken(dbresult.UserId, dbresult.Role);
+                string token = _tokenService.GenerateToken(dbresult.UserId, dbresult.Role, email!);
 
                 var cookieOptions = new CookieOptions
                 {
@@ -114,6 +121,11 @@ namespace AuthController.Controllers
                 Response.Cookies.Append("temp_nexus_token", token, cookieOptions);
 
                 Response.Cookies.Append("temp_nexus_name", safeGoogleName, cookieOptions);
+
+                if (!string.IsNullOrEmpty(pictureUrl))
+                {
+                    Response.Cookies.Append("temp_nexus_picture", pictureUrl, cookieOptions);
+                }
 
                 return Redirect($"http://localhost:5066/customer-dashboard.html");
             }
@@ -143,7 +155,7 @@ namespace AuthController.Controllers
         {
             int userid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
             bool hasprofile = _registerViaGoogle.CheckIfProfileExists(userid);
-            return Ok(new {needsProfile = !hasprofile});
+            return Ok(new { needsProfile = !hasprofile });
         }
     }
 }

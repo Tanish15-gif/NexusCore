@@ -3,13 +3,18 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using NexusCore.DepositDto;
 using NexusCore.OpenAccountsDto;
-using NexusCore.AccountOperation;
 using NexusCore.TransferDto;
 using NexusMart.LinkBankAccountDto;
 using Microsoft.Data.SqlClient;
 using System.Runtime.CompilerServices;
 using NexusCore.DeductRequestDto;
 using Microsoft.AspNetCore.Identity;
+using NexusCore.AccountRepositories;
+using NexusCore.AccountServices;
+using NexusCore.TransactionServices;
+using System.Security.Claims;
+using NexusCore.TransactionStatementsDto;
+using NexusCore.Services;
 
 namespace AuthorizeController.Controllers
 {
@@ -18,38 +23,29 @@ namespace AuthorizeController.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly CreateAccount _createAccount;
-        private readonly GetCustomerAccount _getCustomerAccount;
-        private readonly AmountDeposit _depositAmount;
-        private readonly AmountWithdraw _amountWithdraw;
-        private readonly MoneyTransfer _moneyTransfer;
-        private readonly TransactionReceiptHistory _transactionReceiptHistory;
+        private readonly AccountService _accountService;
+        private readonly TransactionService _transactionService;
+        private readonly PdfStatementService _pdfStatementService;
         private readonly string? _connectionstring;
         public AccountController
         (
-            CreateAccount createAccount,
-            GetCustomerAccount getCustomerAccount,
-            AmountDeposit amountDeposit,
-            AmountWithdraw amountWithdraw,
-            MoneyTransfer moneyTransfer,
-            TransactionReceiptHistory transactionReceiptHistory,
+            AccountService accountService,
+            TransactionService transactionService,
+            PdfStatementService pdfStatementService,
             IConfiguration config
         )
         {
-            _createAccount = createAccount;
-            _getCustomerAccount = getCustomerAccount;
-            _depositAmount = amountDeposit;
-            _amountWithdraw = amountWithdraw;
-            _moneyTransfer = moneyTransfer;
-            _transactionReceiptHistory = transactionReceiptHistory;
+            _accountService = accountService;
+            _transactionService = transactionService;
+            _pdfStatementService = pdfStatementService;
             _connectionstring = config.GetConnectionString("DefaultConnection");
         }
         [HttpPost("create")]
-        public IActionResult Create(OpenAccount open)
+        public async Task<IActionResult> Create(OpenAccount open)
         {
             int secureid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
-            bool result = _createAccount.CreateNewAccount(secureid, open);
-            if (result == true)
+            string result = await _accountService.OpenNewAccountAsync(secureid, open);
+            if (result == "Success")
             {
                 return Ok(new { message = "Account pending approval" });
             }
@@ -59,18 +55,18 @@ namespace AuthorizeController.Controllers
             }
         }
         [HttpGet("my-accounts")]
-        public IActionResult GetMyAccounts()
+        public async Task<IActionResult> GetMyAccounts()
         {
             int secureid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
-            var result = _getCustomerAccount.GetAccount(secureid);
+            var result = await _accountService.GetAccountsAsync(secureid);
             return Ok(result);
         }
         [HttpPost("deposit")]
         [Authorize(Roles = "Customer")]
-        public IActionResult Deposit([FromBody] DepositAmount deposit)
+        public async Task<IActionResult> Deposit([FromBody] DepositAmount deposit)
         {
             int secureid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
-            string result = _depositAmount.DepositAccount(secureid, deposit);
+            string result = await _transactionService.ProcessDepositAsync(secureid, deposit);
             switch (result)
             {
                 case "Completed":
@@ -83,45 +79,82 @@ namespace AuthorizeController.Controllers
         }
         [HttpPost("withdraw")]
         [Authorize(Roles = "Customer")]
-        public IActionResult Withdraw([FromBody] DepositAmount amount)
+        public async Task<IActionResult> Withdraw([FromBody] DepositAmount amount)
         {
             int secureid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
-            bool result = _amountWithdraw.WithdrawAmount(secureid, amount);
-            if (result == true)
+            string result = await _transactionService.ProcessWithdrawAsync(secureid, amount);
+            switch (result)
             {
-                return Ok(new { message = "Amount Withdrawn SuccessFully." });
-            }
-            else
-            {
-                return Conflict(new { message = "Insufficient balance or inactive account." });
+                case "Completed":
+                    return Ok(new { message = "Amount Withdrawal SuccessFull" });
+                case "INS_B":
+                    return BadRequest(new { message = "Not Enough Balance" });
+                default:
+                    return BadRequest(new { message = "Withdrawal Failed" });
             }
         }
         [HttpPost("transfer")]
         [Authorize(Roles = "Customer")]
-        public IActionResult TransferMoney([FromBody] TransferAmount transferAmount)
+        public async Task<IActionResult> RequestTransfer([FromBody] TransferAmount transferAmount)
         {
-            int secureid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
-            int success = _moneyTransfer.TransferAccount(secureid, transferAmount);
-            switch (success)
+            int secureid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            string currentUserEmail = User.FindFirst(ClaimTypes.Email)?.Value ?? "";
+            if (secureid == 0 || string.IsNullOrEmpty(currentUserEmail))
             {
-                case 1:
-                    return Ok(new { message = "Transfer Successful." });
-                case 2:
-                    return BadRequest(new { message = "Destination account not found or inactive." });
-                case 3:
+                return Unauthorized(new { message = "Invalid Security Token. Please log in again." });
+            }
+            var Status = await _transactionService.ProcessTransferRequestAsync(secureid, transferAmount, currentUserEmail);
+            switch (Status)
+            {
+                case TransferResult.Success:
+                    return Ok(new { action = "COMPLETED", message = "Transfer Completed Successful." });
+                case TransferResult.RequireOtp:
+                    return Ok(new { action = "SHOW_OTP", message = "Security Verification Required! Check Email." });
+                case TransferResult.InsufficientFunds:
                     return BadRequest(new { message = "Insufficient balance or invalid source account." });
-                case 4:
+                case TransferResult.CannotTransferToSelf:
                     return BadRequest(new { message = "You cannot transfer money to your own account." });
+                case TransferResult.TargetAccountNotFound:
+                    return NotFound(new { message = "Destination account not found or inactive." });
                 default:
                     return StatusCode(500, new { message = "An internal server error occurred during the transfer." });
             }
         }
+        [HttpPost("verify")]
+        public async Task<IActionResult> VerifyAndExecute([FromBody] OtpVerifyDto otpVerify)
+        {
+            int userid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            var Status = await _transactionService.VerifyOtpAndTransferAsync(userid, otpVerify.TransferDetails!, otpVerify.OtpCode);
+            switch (Status)
+            {
+                case TransferResult.Success:
+                    return Ok(new { action = "COMPLETED", message = "Verification successful. Money transferred!" });
+
+                case TransferResult.InvalidOtp:
+                    return BadRequest(new { message = "Invalid or Expired OTP." });
+
+                case TransferResult.InsufficientFunds:
+                    return BadRequest(new { message = "OTP Verified, but you have insufficient funds." });
+
+                case TransferResult.TargetAccountNotFound:
+                    return NotFound(new { message = "OTP Verified, but the receiving account number is invalid or not Active." });
+
+                case TransferResult.CannotTransferToSelf:
+                    return BadRequest(new { message = "OTP Verified, but you cannot transfer money to your own account." });
+
+                case TransferResult.SystemError:
+                    return StatusCode(500, new { message = "OTP Verified, but a Database System Error occurred." });
+
+                default:
+                    return StatusCode(500, new { message = "Transfer failed after verification." });
+            }
+        }
         [HttpGet("transactions")]
         [Authorize(Roles = "Customer")]
-        public IActionResult GetHistory()
+        public async Task<IActionResult> GetHistory()
         {
             int secureid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
-            var list = _transactionReceiptHistory.GetTransactionHistory(secureid);
+            var list = await _transactionService.GetTransactionReceiptsAsync(secureid);
             return Ok(list);
         }
         [HttpPost("verify-account")]
@@ -219,13 +252,35 @@ namespace AuthorizeController.Controllers
                         }
                     }
                 }
-                catch (System.Exception ex) 
+                catch (System.Exception ex)
                 {
                     transaction.Rollback();
                     Console.WriteLine(ex.Message);
-                    return StatusCode(500,"Bank Server Error");
+                    return StatusCode(500, "Bank Server Error");
                 }
             }
+        }
+        [HttpGet("download-statement/{accountId}")]
+        [AllowAnonymous] 
+        public async Task<IActionResult> DownloadStatement(int accountId)
+        {
+            // 1. You would fetch the REAL data from your SQL Database here
+            string accountName = "Tanish Gupta";
+            string accountNumber = "NEXUS-789456123";
+
+            // Fake data for right now, you will replace this with your actual repository call!
+            var history = new List<TransactionStatement>
+    {
+        new TransactionStatement { Date = System.DateTime.Now.AddDays(-2), Description = "TRANSFER_IN_FROM_ANANDI", Amount = 5000, Status = "Completed" },
+        new TransactionStatement { Date = System.DateTime.Now.AddDays(-1), Description = "Amazon Purchase", Amount = -1200, Status = "Completed" },
+        new TransactionStatement { Date = System.DateTime.Now, Description = "Interest Credited", Amount = 150, Status = "Completed" }
+    };
+
+            // 2. Generate the PDF bytes using your new service
+            var pdfBytes = _pdfStatementService.GenerateStatement(accountName, accountNumber, history);
+
+            // 3. Return the physical file to the user!
+            return File(pdfBytes, "application/pdf", $"NexusCore_Statement_{accountId}.pdf");
         }
     }
 }

@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
         if (!newEmail) {
-            alert("Please enter a new email address.");
+            alert("Enter a new email address.");
             return;
         }
         const confirmUpdateEmail = confirm("Are you sure you want to override the registered email for this user?");
