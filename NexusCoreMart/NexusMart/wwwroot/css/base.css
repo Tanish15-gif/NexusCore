@@ -13,19 +13,45 @@ html, body {
     padding: 0;
 }
 :root {
-    --bg-main: #f8fafc;
-    --bg-surface: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --primary-accent: #4f46e5;
-    /* Modern Indigo */
-    --primary-hover: #4338ca;
-    --border-color: #e2e8f0;
-    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
-    --danger-red: #ef4444;
-    --google-green: #34A853;
-    --google-green-light: #81C995;
-    --google-green-dark: #1E8E3E;
+    /* THE EYE-STRAIN FIX: A premium, cooling "Ice Blue" background */
+    --bg-color: #f0f7ff; 
+    
+    /* Swap harsh black text for a deep, rich Navy Blue */
+    --text-color: #0f172a; 
+    --text-muted: #475569;
+    
+    --primary-color: #0f172a;
+    --accent-color: #2563eb; /* Deeper, more trustworthy Royal Blue */
+    
+    /* Keep cards pure white so they float off the blue background */
+    --card-bg: #ffffff; 
+    
+    /* Soft blue-tinted borders instead of harsh gray */
+    --border-color: #dbeafe; 
+    
+    /* Add a very subtle blue tint to the drop shadows */
+    --shadow: 0 8px 20px rgba(37, 99, 235, 0.06); 
+}
+
+body.dark-mode {
+    /* THE DIMINISHED FIX: A much deeper, richer "Abyss" blue-black */
+    --bg-color: #050b14; 
+    
+    /* Boost text to pure white so it doesn't look washed out */
+    --text-color: #ffffff; 
+    --text-muted: #94a3b8; 
+    
+    --primary-color: #ffffff;
+    
+    /* The Magic Sauce: A glowing, bright Sky/Cyan Blue that POPS on dark backgrounds */
+    --accent-color: #38bdf8; 
+    
+    /* Darker cards for higher contrast against the glowing blue */
+    --card-bg: #0b1221; 
+    --nav-bg: rgba(5, 11, 20, 0.95);
+    
+    --border-color: #1e293b;
+    --shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
 /* --- MOBILE RESPONSIVENESS (Screens under 768px) --- */
