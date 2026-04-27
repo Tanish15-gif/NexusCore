@@ -82,6 +82,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
+builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<NexusCore.CustomerOperation.RegisterViaGoogle>();
 builder.Services.AddScoped<NexusCore.CustomerOperation.TokenService>();

@@ -127,7 +127,7 @@ body {
 }
 
 .top-header {
-    padding: 2rem;
+    padding: 1rem;
     border-bottom: 1px solid var(--border-dark);
     display: flex;
     justify-content: space-between;
@@ -157,7 +157,7 @@ body {
 }
 
 .content-wrapper {
-    padding: 2rem;
+    padding: 0.5rem;
 }
 
 .section-header {

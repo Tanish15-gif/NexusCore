@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using NexusCore.CustomerLoginDTO;
 using NexusCore.CustomerSignIn;
 using NexusCore.LoginResponseDto;
+using NexusCore.UpdatePersonalInformation;
 
 namespace NexusCore.CustomerRepositories
 {
@@ -17,5 +18,6 @@ namespace NexusCore.CustomerRepositories
         Task<LoginResponse> UserLoginAsync(LogIn logIn);
         Task<Register> GetUserProfile(int userid);
         
+        Task<bool> UpdateLegalInfo(int userid,UpdatePersonalInfo updatePersonalInfo);
     }
 }

@@ -19,13 +19,16 @@ namespace AiChatBotController.ControllerBase
     {
         private readonly BudgetingService _budgetingService;
         private readonly IConfiguration _config;
+        private readonly IHttpClientFactory _httpClientFactory;
         public AiChatController
         (
             BudgetingService budgetingService,
+            IHttpClientFactory httpClientFactory,
             IConfiguration config
         )
         {
             _budgetingService = budgetingService;
+            _httpClientFactory = httpClientFactory;
             _config = config;
         }
         [Authorize(Roles = "Customer")]
@@ -56,10 +59,13 @@ namespace AiChatBotController.ControllerBase
             {
                 return BadRequest("Message cannot be empty");
             }
-            string? apiKey = _config["OpenAI:ApiKey"];
+            string? apiKey = _config["OpenAI:ApiKey"]; //Extracting the API Key from the Dotnet Secrets
             string jsonpayload = JsonSerializer.Serialize(payload);
             var content = new StringContent(jsonpayload, Encoding.UTF8, "application/json");
-            using var client = new HttpClient();
+
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",apiKey);
+
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
             var response = await client.PostAsync("https://openrouter.ai/api/v1/chat/completions", content);
             if (!response.IsSuccessStatusCode)

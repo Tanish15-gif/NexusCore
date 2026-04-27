@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const dropdownName = document.getElementById("dropdown-name");
         const dropdownEmail = document.querySelector(".dropdown-user-email");
 
-
         if (headerName) headerName.innerText = fullName;
         if (aiName) aiName.innerText = fullName;
         if (dropdownName) dropdownName.innerText = fullName;
@@ -45,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const manageEmail = document.getElementById("manage-email");
         const managePhone = document.getElementById("manage-phone");
         const manageGoogle = document.getElementById("manage-google-email");
+
 
         if (manageName) manageName.innerText = fullName;
         if (manageEmail) manageEmail.innerText = email;
@@ -129,6 +129,108 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    const nameSpan = document.getElementById('manage-legal-name');
+    const dobSpan = document.getElementById('manage-dob');
+    const addressSpan = document.getElementById('manage-address');
+
+    const personalInfoView = document.getElementById('settings-view-personal');
+    const editButtons = personalInfoView.querySelectorAll('.settings-edit-btn, .settings-add-btn');
+
+    editButtons.forEach(btn => {
+        btn.addEventListener('click', enterEditMode);
+    });
+
+    function enterEditMode() {
+        // 0. Prevent double-clicks from spawning multiple save buttons
+        if (document.getElementById('save-personal-container')) return;
+
+        // 1. Grab current values
+        const currentName = nameSpan.innerText === "Not provided" ? "" : nameSpan.innerText;
+        const currentDob = dobSpan.innerText === "--/--/----" ? "" : dobSpan.innerText;
+        const currentAddress = addressSpan.innerText === "No address provided" ? "" : addressSpan.innerText;
+
+        // 2. SAFELY HIDE the original spans and buttons (Do not destroy them!)
+        nameSpan.style.display = 'none';
+        dobSpan.style.display = 'none';
+        addressSpan.style.display = 'none';
+        editButtons.forEach(b => b.style.display = 'none');
+
+        nameSpan.parentElement.insertAdjacentHTML('afterbegin', `<input type="text" id="edit-legal-name" class="temp-edit-input" value="${currentName}" style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-light); width: 100%;">`);
+
+        dobSpan.parentElement.insertAdjacentHTML('afterbegin', `<input type="date" id="edit-dob" class="temp-edit-input" value="${currentDob}" style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-light); width: 100%;">`);
+
+        addressSpan.parentElement.insertAdjacentHTML('afterbegin', `<textarea id="edit-address" class="temp-edit-input" placeholder="Enter the Updated Address" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.875rem; outline: none; transition: all 0.2s; box-sizing: border-box; background: var(--bg-main); color: var(--text-light); resize: vertical; min-height: 80px;">${currentAddress}</textarea>`);
+
+        const saveContainer = document.createElement('div');
+        saveContainer.id = "save-personal-container";
+        saveContainer.style.cssText = "margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;";
+
+        saveContainer.innerHTML = `
+        <button id="cancel-personal-btn" style="padding: 8px 15px; background: transparent; border: 1px solid var(--border-color); color: var(--text-light); border-radius: 6px; cursor: pointer;">Cancel</button>
+        <button id="save-personal-btn" style="padding: 8px 15px; background: #3b82f6; border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: 500;">Save Changes</button>
+    `;
+
+        personalInfoView.appendChild(saveContainer);
+
+        // 5. THE FIX: Real Cancel Logic
+        document.getElementById('cancel-personal-btn').addEventListener('click', () => {
+            // A. Delete all the temporary input boxes
+            document.querySelectorAll('.temp-edit-input').forEach(input => input.remove());
+
+            // B. Delete the save/cancel buttons
+            saveContainer.remove();
+
+            // C. Bring back the original text and pen icons!
+            nameSpan.style.display = '';
+            dobSpan.style.display = '';
+            addressSpan.style.display = '';
+            editButtons.forEach(b => b.style.display = '');
+        });
+
+        // 6. Wire up the Save Button to your C# Bulk Endpoint
+        document.getElementById('save-personal-btn').addEventListener('click', async () => {
+            const newName = document.getElementById('edit-legal-name').value;
+            const newDob = document.getElementById('edit-dob').value;
+            const newAddress = document.getElementById('edit-address').value;
+
+            const token = localStorage.getItem('nexus_token');
+            const saveBtn = document.getElementById('save-personal-btn');
+            saveBtn.innerText = "Saving...";
+            saveBtn.disabled = true;
+
+            try {
+                const response = await fetch(`${BaseUrl}/Users/update-legal-info`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        LegalName: newName,
+                        DOB: newDob,
+                        Address: newAddress
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("Profile successfully updated!");
+                    window.location.reload();
+                } else {
+                    alert("Update failed: " + data.message);
+                    saveBtn.innerText = "Save Changes";
+                    saveBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Network error.");
+                saveBtn.innerText = "Save Changes";
+                saveBtn.disabled = false;
+            }
+        });
+    }
+
     async function fetchUserProfile() {
         try {
             const response = await fetch(`${BaseUrl}/Users/profile`, {
@@ -142,6 +244,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const savedGooglePicture = localStorage.getItem('nexus_google_picture');
                 const cleanPictureUrl = savedGooglePicture ? decodeURIComponent(savedGooglePicture) : null;
                 updateUserProfileUI(data.fullName, data.email, data.phoneNumber, cleanPictureUrl);
+
+                document.getElementById('manage-legal-name').innerText = data.fullName || "Not provided";
+                document.getElementById('manage-dob').innerText = data.dateofBirth || "--/--/----";
+                document.getElementById('manage-address').innerText = data.address || "No address provided";
             }
         } catch (err) {
             console.error(err);
@@ -153,25 +259,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // --- FULL SCREEN API LOGIC ---
-const fullscreenBtn = document.getElementById('fullscreen-toggle');
-const fullscreenIcon = document.getElementById('fullscreen-icon');
+    const fullscreenBtn = document.getElementById('fullscreen-toggle');
+    const fullscreenIcon = document.getElementById('fullscreen-icon');
 
-fullscreenBtn?.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-        // Force the browser into full screen
-        document.documentElement.requestFullscreen().catch(err => {
-            console.error(`Error attempting to enable fullscreen: ${err.message}`);
-        });
-        // Swap the icon to "compress"
-        if(fullscreenIcon) fullscreenIcon.classList.replace('fa-expand', 'fa-compress');
-    } else {
-        // Exit full screen
-        document.exitFullscreen();
-        // Swap the icon back to "expand"
-        if(fullscreenIcon) fullscreenIcon.classList.replace('fa-compress', 'fa-expand');
-    }
-});
+    fullscreenBtn?.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable fullscreen: ${err.message}`);
+            });
+            // Swap the icon to "compress"
+            if (fullscreenIcon) fullscreenIcon.classList.replace('fa-expand', 'fa-compress');
+        } else {
+            document.exitFullscreen();
+            // Swap the icon back to "expand"
+            if (fullscreenIcon) fullscreenIcon.classList.replace('fa-compress', 'fa-expand');
+        }
+    });
 
     const mobileSidebar = document.querySelector('.sidebar');
     const activeLink = document.querySelector('.nav-link.active');
@@ -348,16 +451,39 @@ fullscreenBtn?.addEventListener('click', () => {
             });
         });
     }
+    const fdGroup = document.getElementById('fd-duration-group');
+    const fdInput = document.getElementById('fd-duration');
+    document.getElementById('account-type').addEventListener('change', function (e) {
+        if (e.target.value === 'FixedDeposit' || e.target.value === 'Loan' || e.target.value === 'RecurringDeposit') {
+            fdGroup.classList.remove('hidden');
+            fdInput.setAttribute('required', 'true');
+        } else {
+            fdGroup.classList.add('hidden');
+            fdInput.removeAttribute('required');
+        }
+    });
 
     newAccountForm?.addEventListener("submit", async e => {
         e.preventDefault();
         const type = document.getElementById("account-type").value;
         const deposit = parseFloat(document.getElementById("initial-deposit").value) || 0;
+        const sourceoffunds = document.getElementById("source-of-funds").value;
+        const nominee = document.getElementById("nominee-name").value;
+        const relation = document.getElementById("nominee-relation").value;
 
-        const openaccount = {
-            AccountType: type,
-            InitialDeposit: deposit
-        };
+        let termduration = null;
+        if (!fdGroup.classList.contains("hidden")){
+            termduration = parseInt(document.getElementById("fd-duration").value);
+        }
+
+            const openaccount = {
+                AccountType: type,
+                InitialDeposit: deposit,
+                SourceofFunds: sourceoffunds,
+                NomineeName: nominee,
+                NomineeRelationship: relation,
+                TermDuration : termduration
+            };
         try {
             const response = await fetch(`${BaseUrl}/Account/create`, {
                 method: 'POST',
@@ -684,19 +810,6 @@ fullscreenBtn?.addEventListener('click', () => {
         });
     }
 
-    document.getElementById('account-type').addEventListener('change', function (e) {
-        const fdGroup = document.getElementById('fd-duration-group');
-        const fdInput = document.getElementById('fd-duration');
-
-        if (e.target.value === 'FixedDeposit' || e.target.value === 'Loan' || e.target.value === 'RecurringDeposit') {
-            fdGroup.classList.remove('hidden');
-            fdInput.setAttribute('required', 'true');
-        } else {
-            fdGroup.classList.add('hidden');
-            fdInput.removeAttribute('required');
-        }
-    });
-
     function renderTransactions(transactions) {
 
         const tbody = document.getElementById("transactions-body");
@@ -974,8 +1087,6 @@ fullscreenBtn?.addEventListener('click', () => {
             userDropdown.classList.add('hidden');
         }
     });
-
-    // 3. Hook up the new Sign Out button to clear the JWT Token
     clerkSignoutBtn.addEventListener('click', () => {
         if (confirm("Are you sure you want to log out?")) {
             alert("Logged out SuccessFully");
@@ -992,42 +1103,100 @@ fullscreenBtn?.addEventListener('click', () => {
     // 1. Open Modal from Dropdown
     manageBtn.addEventListener('click', () => {
         manageModal.classList.remove('hidden');
-        document.getElementById('user-dropdown').classList.add('hidden'); // Close the dropdown
+        document.getElementById('user-dropdown').classList.add('hidden');
     });
 
     // 2. Close Modal
     closeManageBtn.addEventListener('click', () => {
         manageModal.classList.add('hidden');
     });
+    const profileNavBtn = document.querySelectorAll('.settings-nav-item')[0];  // Profile
+    const personalNavBtn = document.querySelectorAll('.settings-nav-item')[1]; // Personal Info
+    const securityNavBtn = document.querySelectorAll('.settings-nav-item')[2]; // Security
+
+    const profileTitle = document.querySelector('.settings-content h2');
+    const profileRows = document.querySelectorAll('.settings-row:not(#settings-view-security .settings-row):not(#settings-view-personal .settings-row)');
+    const personalView = document.getElementById('settings-view-personal');
+    const securityView = document.getElementById('settings-view-security');
+
+    function hideAllManageViews() {
+        profileNavBtn.classList.remove('active');
+        personalNavBtn.classList.remove('active');
+        securityNavBtn.classList.remove('active');
+
+        profileTitle.style.display = 'none';
+        profileRows.forEach(row => row.style.display = 'none');
+        personalView.classList.add('hidden');
+        securityView.classList.add('hidden');
+    }
+
+    // 1. Click Profile
+    profileNavBtn.addEventListener('click', () => {
+        hideAllManageViews();
+        profileNavBtn.classList.add('active');
+
+        // Turn Profile back on
+        profileTitle.style.display = 'block';
+        profileRows.forEach(row => row.style.display = 'flex');
+    });
+
+    // 2. Click Personal Info
+    personalNavBtn.addEventListener('click', () => {
+        hideAllManageViews();
+        personalNavBtn.classList.add('active');
+
+        personalView.classList.remove('hidden');
+    });
+
+    // 3. Click Security
+    securityNavBtn.addEventListener('click', () => {
+        hideAllManageViews();
+        securityNavBtn.classList.add('active');
+
+        // Turn Security back on
+        securityView.classList.remove('hidden');
+    });
 });
-// --- MOBILE HAMBURGER MENU LOGIC ---
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const sidebar = document.querySelector('.sidebar');
 
-// Create the dark overlay that sits behind the open menu
 const overlay = document.createElement('div');
 overlay.className = 'mobile-overlay';
 document.body.appendChild(overlay);
 
-// Function to open/close
 function toggleSidebar() {
     sidebar.classList.toggle('open');
     overlay.classList.toggle('active');
 }
 
-// Click the ||| button to open
 mobileMenuBtn?.addEventListener('click', toggleSidebar);
 
-// Click the dark overlay to close it
 overlay.addEventListener('click', toggleSidebar);
 
-// Auto-close the menu if the user clicks a navigation link
 const navLinks = document.querySelectorAll('.nav-link');
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
         if (window.innerWidth <= 768) {
             sidebar.classList.remove('open');
             overlay.classList.remove('active');
+        }
+    });
+});
+// --- MOBILE SIDEBAR TOGGLE ---
+const mobileToggleBtn = document.getElementById('mobile-sidebar-toggle');
+const settingsSidebar = document.querySelector('.settings-sidebar');
+
+// 1. Click hamburger to slide menu in/out
+mobileToggleBtn?.addEventListener('click', () => {
+    settingsSidebar.classList.toggle('active');
+});
+
+// 2. Auto-close the sidebar on mobile when a tab is clicked
+document.querySelectorAll('.settings-nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+        // If the screen is mobile-sized, close the menu
+        if (window.innerWidth <= 768) {
+            settingsSidebar.classList.remove('active');
         }
     });
 });

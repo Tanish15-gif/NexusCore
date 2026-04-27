@@ -9,10 +9,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = "login.html";
         return;
     }
+    const BaseUrl = window.location.origin;
     fetchGlobalLedger();
     fetchAuditLogs();
 
-    const BaseUrl = window.location.origin;
+
     const navPending = document.getElementById('nav-pending');
     const viewPending = document.getElementById('view-pending');
 
@@ -51,6 +52,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         viewLedger.classList.remove("hidden");
         viewSecurity.classList.add("hidden");
+        viewPending.classList.add("hidden");
 
         navLedger.classList.add("active");
         navSecurity.classList.remove("active");
@@ -315,6 +317,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const data = await response.json();
                 const ledgerBody = document.getElementById("ledger-body");
                 ledgerBody.innerHTML = "";
+
+                if (data.length === 0) {
+                    ledgerBody.innerHTML = `
+        <tr>
+            <td colspan="7" style="text-align:center; padding:2rem; color: var(--text-muted);">
+                No accounts found in global ledger.
+            </td>
+        </tr>
+    `;
+                    return;
+                }
+
                 data.forEach(customer => {
                     const row = document.createElement("tr");
                     let statusClass = "";

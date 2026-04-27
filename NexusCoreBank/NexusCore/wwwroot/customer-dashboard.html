@@ -403,6 +403,9 @@
         style="z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
 
         <div class="clerk-settings-card">
+            <button id="mobile-sidebar-toggle" class="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
             <button id="close-manage-modal" class="settings-close-btn"><i class="fa-solid fa-xmark"></i></button>
 
             <aside class="settings-sidebar">
@@ -411,13 +414,16 @@
 
                 <nav class="settings-nav">
                     <button class="settings-nav-item active"><i class="fa-solid fa-user"></i> Profile</button>
+                    <button class="settings-nav-item">
+                        <i class="fa-regular fa-address-card"></i> Personal Info
+                    </button>
                     <button class="settings-nav-item"><i class="fa-solid fa-shield-halved"></i> Security</button>
                 </nav>
 
                 <div class="settings-footer">Secured by <strong>NexusCore</strong></div>
             </aside>
 
-            <main class="settings-content">
+            <main class="settings-content" style="flex: 1; padding: 30px; overflow-y: auto;">
                 <h2>Profile details</h2>
 
                 <div class="settings-row">
@@ -454,17 +460,112 @@
                 </div>
 
                 <div class="settings-row borderless">
-                    <div class="settings-label">Connected accounts</div>
-                    <div class="settings-value">
-                        <div class="value-item"
-                            style="display: flex; align-items: center; flex-direction: row; gap: 6px; white-space: nowrap; width: 100%;">
-                            <i class="fa-brands fa-google" style="color: #ea4335; font-size: 1.1rem;"></i>
-                            <span style="font-weight: 500; color: var(--text-light);">Google</span>
-                            <span style="color: var(--text-muted); margin: 0 2px;">&bull;</span>
+                    <div class="settings-label" style="width: 150px; flex-shrink: 0;">Connected accounts</div>
+
+                    <div class="settings-value"
+                        style="display: flex; flex-direction: column; align-items: flex-start; width: 100%; gap: 10px;">
+                        <div
+                            style="display: flex; flex-direction: row !important; align-items: center; gap: 8px; width: 100%; flex-wrap: nowrap !important; overflow: hidden;">
+                            <i class="fa-brands fa-google"
+                                style="color: #ea4335; font-size: 1.1rem; flex-shrink: 0;"></i>
+                            <span style="font-weight: 500; color: var(--text-light); flex-shrink: 0;">Google</span>
+                            <span style="color: var(--text-muted); flex-shrink: 0;">&bull;</span>
                             <span id="manage-google-email"
-                                style="color: var(--text-muted); text-overflow: ellipsis; overflow: visible;">user@gmail.com</span>
+                                style="color: var(--text-muted); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">user@gmail.com</span>
                         </div>
-                        <button class="settings-add-btn"><i class="fa-solid fa-plus"></i> Connect account</button>
+
+                        <button class="settings-add-btn" style="align-self: flex-start;"><i
+                                class="fa-solid fa-plus"></i> Connect account</button>
+                    </div>
+                </div>
+                <div id="settings-view-personal" class="hidden">
+                    <h2>Personal information</h2>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
+                        Legal details required for account verification and compliance.
+                    </p>
+
+                    <div class="settings-row"
+                        style="padding: 15px 0; border-bottom: 1px solid var(--border-color); display: flex; align-items: center;">
+                        <div class="settings-label"
+                            style="width: 150px; font-weight: 500; color: var(--text-light); flex-shrink: 0;">Legal Name
+                        </div>
+
+                        <div class="settings-value"
+                            style="display: flex; flex-direction: row !important; align-items: center; justify-content: space-between; width: 100%; flex-wrap: nowrap !important;">
+                            <span id="manage-legal-name"
+                                style="color: var(--text-light); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                Loading...</span>
+                            <button class="settings-edit-btn"
+                                style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 4px; transition: 0.2s; flex-shrink: 0;"
+                                onmouseover="this.style.color='#3b82f6'; this.style.background='rgba(59, 130, 246, 0.1)'"
+                                onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="settings-row"
+                        style="padding: 15px 0; border-bottom: 1px solid var(--border-color); display: flex; align-items: center;">
+                        <div class="settings-label"
+                            style="width: 150px; font-weight: 500; color: var(--text-light); flex-shrink: 0;">Date of
+                            Birth</div>
+
+                        <div class="settings-value"
+                            style="display: flex; flex-direction: row !important; align-items: center; justify-content: space-between; width: 100%; flex-wrap: nowrap !important;">
+                            <span id="manage-dob" style="color: var(--text-light); font-weight: 500;">--/--/----</span>
+                            <button class="settings-edit-btn"
+                                style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 4px; transition: 0.2s; flex-shrink: 0;"
+                                onmouseover="this.style.color='#3b82f6'; this.style.background='rgba(59, 130, 246, 0.1)'"
+                                onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="settings-row borderless"
+                        style="padding: 15px 0; display: flex; align-items: flex-start;">
+                        <div class="settings-label"
+                            style="width: 150px; font-weight: 500; color: var(--text-light); flex-shrink: 0; padding-top: 4px;">
+                            Permanent Address</div>
+
+                        <div class="settings-value"
+                            style="display: flex; flex-direction: column !important; align-items: flex-start; gap: 8px; width: 100%;">
+                            <span id="manage-address" style="color: var(--text-muted);">No address provided</span>
+                            <button class="settings-add-btn"
+                                style="background: transparent; border: none; color: #3b82f6; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 4px; margin-left: -8px;"
+                                onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'"
+                                onmouseout="this.style.background='transparent'">
+                                <i class="fa-solid fa-plus"></i> Add address
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="settings-view-security" class="hidden">
+                    <h2>Security</h2>
+
+                    <div class="settings-row borderless" style="flex-direction: column; align-items: flex-start;">
+                        <div style="margin-bottom: 15px;">
+                            <div class="settings-label" style="width: 100%; margin-bottom: 4px;">Change Password</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Ensure your account is using a
+                                long, random password to stay secure.</div>
+                        </div>
+
+                        <form id="change-password-form"
+                            style="width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 15px;">
+                            <input type="password" id="current-password" placeholder="Current password" required
+                                style="padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-light); width: 100%;">
+
+                            <input type="password" id="new-password" placeholder="New password" required
+                                style="padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-light); width: 100%;">
+
+                            <input type="password" id="confirm-password" placeholder="Confirm new password" required
+                                style="padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-light); width: 100%;">
+
+                            <button type="submit"
+                                style="background: #3b82f6; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 500; cursor: pointer; margin-top: 5px;">
+                                Update Password
+                            </button>
+                        </form>
                     </div>
                 </div>
             </main>

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using NexusCore.CustomerProfileViaGoogle;
 using NexusCore.CustomerServices;
 using NexusCore.CustomerRepositories;
+using NexusCore.UpdatePersonalInformation;
 
 namespace AuthController.Controllers
 {
@@ -76,7 +77,14 @@ namespace AuthController.Controllers
         {
             int userid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
             var result = await _customerService.GetProfile(userid);
-            return Ok(new { fullName = result.FullName, email = result.Email, phoneNumber = result.PhoneNumber });
+            return Ok(new
+            { 
+                fullName = result.FullName,
+                email = result.Email,
+                phoneNumber = result.PhoneNumber,
+                dateofBirth = result.DateofBirth,
+                address = result.Address
+            });
         }
         [HttpGet("login-google")]
         public IActionResult LoginWithGoogle()
@@ -156,6 +164,19 @@ namespace AuthController.Controllers
             int userid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
             bool hasprofile = _registerViaGoogle.CheckIfProfileExists(userid);
             return Ok(new { needsProfile = !hasprofile });
+        }
+        [Authorize]
+        [HttpPut("update-legal-info")]
+        public async Task<IActionResult> UpdateInfo(UpdatePersonalInfo updatePersonalInfo)
+        {
+            int userid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
+            bool success = await _customerService.CompleteUpdateAsync(userid, updatePersonalInfo);
+            if (success)
+            {
+                return Ok(new { message = "Legal Info updated successfully!" });
+            }
+
+            return BadRequest(new { message = "Failed to update name." });
         }
     }
 }

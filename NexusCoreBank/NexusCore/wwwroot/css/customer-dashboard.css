@@ -29,7 +29,7 @@ body {
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 0px;
 }
 
 .top-header {
@@ -298,7 +298,7 @@ body.dark-mode .pending-alert {
 }
 
 .section-header {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .section-header h2 {
@@ -1275,84 +1275,195 @@ body.dark-mode .modal {
 
 /* 1. Base Modal (Dark Mode Default) */
 .clerk-settings-card {
-    background-color: #1a1e29 !important; /* Solid Dark Background */
+    background-color: #1a1e29 !important;
+    /* Solid Dark Background */
     width: 100%;
     max-width: 850px;
     height: 550px;
     border-radius: 16px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.5); /* Deep shadow to separate from background */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    /* Deep shadow to separate from background */
     border: 1px solid #374151 !important;
     display: flex;
     position: relative;
     overflow: hidden;
-    color: #f9fafb !important; /* White text */
+    color: #f9fafb !important;
+    /* White text */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* Close Button */
 .settings-close-btn {
-    position: absolute; top: 16px; right: 16px;
-    background: transparent; border: none;
-    color: #9ca3af; font-size: 1.2rem; cursor: pointer;
-    transition: color 0.2s; z-index: 10;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    z-index: 10;
 }
-.settings-close-btn:hover { color: #ffffff; }
+
+.settings-close-btn:hover {
+    color: #ffffff;
+}
 
 /* Left Sidebar (Darker shade for depth) */
 .settings-sidebar {
     width: 240px;
-    background-color: #111827 !important; /* Solid Darker Background */
+    background-color: #111827 !important;
+    /* Solid Darker Background */
     border-right: 1px solid #374151 !important;
     padding: 24px 16px;
-    display: flex; flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
-.settings-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 4px; color: #f9fafb; }
-.settings-subtitle { font-size: 0.85rem; color: #9ca3af; margin-bottom: 24px; }
+.settings-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #f9fafb;
+}
+
+.settings-subtitle {
+    font-size: 0.85rem;
+    color: #9ca3af;
+    margin-bottom: 24px;
+}
 
 .settings-nav-item {
-    display: flex; align-items: center; gap: 12px;
-    width: 100%; padding: 8px 12px;
-    background: transparent; border: none; border-radius: 6px;
-    color: #9ca3af; font-size: 0.9rem; font-weight: 500;
-    text-align: left; cursor: pointer; transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: #9ca3af;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
 }
-.settings-nav-item:hover { background-color: #1f2937 !important; color: #f9fafb; }
-.settings-nav-item.active { background-color: #1f2937 !important; color: #f9fafb; font-weight: 600; }
 
-.settings-footer { margin-top: auto; font-size: 0.75rem; color: #6b7280; }
+.settings-nav-item:hover {
+    background-color: #1f2937 !important;
+    color: #f9fafb;
+}
+
+.settings-nav-item.active {
+    background-color: #1f2937 !important;
+    color: #f9fafb;
+    font-weight: 600;
+}
+
+.settings-footer {
+    margin-top: auto;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
 
 /* Right Content Area */
-.settings-content { flex: 1; padding: 32px 40px; overflow-y: auto; }
-.settings-content h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 24px; color: #f9fafb; }
+.settings-content {
+    flex: 1;
+    padding: 32px 40px;
+    overflow-y: auto;
+}
+
+.settings-content h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #f9fafb;
+}
 
 /* The Rows */
 .settings-row {
-    display: flex; padding: 24px 0;
+    display: flex;
+    padding: 24px 0;
     border-bottom: 1px solid #374151 !important;
 }
-.settings-row.borderless { border-bottom: none !important; }
 
-.settings-label { width: 35%; font-size: 0.9rem; font-weight: 500; color: #f9fafb; }
-.settings-value { width: 45%; display: flex; flex-direction: column; gap: 12px; color: #d1d5db; }
+.settings-row.borderless {
+    border-bottom: none !important;
+}
 
-.profile-val { flex-direction: row; align-items: center; gap: 16px; }
-.profile-val img { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #374151; }
-.profile-name-group { display: flex; flex-direction: column; font-size: 0.95rem; font-weight: 500; color: #f9fafb;}
+.settings-label {
+    width: 35%;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #f9fafb;
+}
 
-.value-item { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+.settings-value {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #d1d5db;
+}
+
+.profile-val {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.profile-val img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #374151;
+}
+
+.profile-name-group {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #f9fafb;
+}
+
+.value-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
 
 /* Badges & Actions */
 .badge-primary {
-    background: rgba(59, 130, 246, 0.2) !important; color: #60a5fa !important;
-    padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;
+    background: rgba(59, 130, 246, 0.2) !important;
+    color: #60a5fa !important;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
 }
-.settings-action, .settings-add-btn {
-    background: transparent; border: none; color: #3b82f6;
-    font-size: 0.9rem; font-weight: 500; cursor: pointer;
-    display: flex; align-items: center; gap: 8px; align-self: flex-start;
+
+.settings-action,
+.settings-add-btn {
+    background: transparent;
+    border: none;
+    color: #3b82f6;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
 }
-.settings-action:hover, .settings-add-btn:hover { color: #60a5fa; }
+
+.settings-action:hover,
+.settings-add-btn:hover {
+    color: #60a5fa;
+}
 
 
 /* --- 2. Light Mode Overrides --- */
@@ -1360,45 +1471,56 @@ body.light-mode .clerk-settings-card {
     background-color: #ffffff !important;
     border-color: #e5e7eb !important;
     color: #111827 !important;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
+
 body.light-mode .settings-sidebar {
     background-color: #f9fafb !important;
     border-color: #e5e7eb !important;
 }
-body.light-mode .settings-title, 
-body.light-mode .settings-content h2, 
-body.light-mode .settings-label, 
+
+body.light-mode .settings-title,
+body.light-mode .settings-content h2,
+body.light-mode .settings-label,
 body.light-mode .profile-name-group {
     color: #111827 !important;
 }
-body.light-mode .settings-subtitle, 
+
+body.light-mode .settings-subtitle,
 body.light-mode .settings-footer {
     color: #6b7280 !important;
 }
+
 body.light-mode .settings-nav-item {
     color: #4b5563 !important;
 }
-body.light-mode .settings-nav-item:hover, 
+
+body.light-mode .settings-nav-item:hover,
 body.light-mode .settings-nav-item.active {
     background-color: #f3f4f6 !important;
     color: #111827 !important;
 }
+
 body.light-mode .settings-row {
     border-color: #e5e7eb !important;
 }
+
 body.light-mode .settings-value {
     color: #4b5563 !important;
 }
+
 body.light-mode .profile-val img {
     border-color: #e5e7eb !important;
 }
+
 body.light-mode .settings-close-btn {
     color: #6b7280 !important;
 }
+
 body.light-mode .settings-close-btn:hover {
     color: #111827 !important;
 }
+
 body.light-mode .badge-primary {
     background: rgba(59, 130, 246, 0.1) !important;
     color: #3b82f6 !important;
@@ -1531,8 +1653,10 @@ body.light-mode .badge-primary {
     color: #888;
     font-style: italic;
 }
+
 .clerk-dropdown {
-    background-color: #1a1e29 !important; /* Solid dark FinTech blue/gray */
+    background-color: #1a1e29 !important;
+    /* Solid dark FinTech blue/gray */
     border: 1px solid #374151 !important;
 }
 
@@ -1542,6 +1666,7 @@ body.light-mode .badge-primary {
     border: 1px solid #374151 !important;
     color: #f9fafb !important;
 }
+
 .dropdown-btn:hover {
     background-color: #374151 !important;
 }
@@ -1549,6 +1674,7 @@ body.light-mode .badge-primary {
 .dropdown-btn-full {
     color: #f9fafb !important;
 }
+
 .dropdown-btn-full:hover {
     background-color: #1f2937 !important;
 }
@@ -1571,6 +1697,7 @@ body.light-mode .dropdown-btn {
     border: 1px solid #d1d5db !important;
     color: #374151 !important;
 }
+
 body.light-mode .dropdown-btn:hover {
     background-color: #f9fafb !important;
 }
@@ -1578,6 +1705,7 @@ body.light-mode .dropdown-btn:hover {
 body.light-mode .dropdown-btn-full {
     color: #374151 !important;
 }
+
 body.light-mode .dropdown-btn-full:hover {
     background-color: #f3f4f6 !important;
 }
@@ -1587,6 +1715,7 @@ body.light-mode .icon-circle {
     border: 1px solid #e5e7eb !important;
     color: #6b7280 !important;
 }
+
 /* --- DESKTOP HEADER (Clean & Flat) --- */
 .top-header {
     display: flex;
@@ -1607,7 +1736,8 @@ body.light-mode .icon-circle {
     display: flex;
     align-items: center;
     gap: 20px;
-    position: relative; /* Keeps the dropdown attached here */
+    position: relative;
+    /* Keeps the dropdown attached here */
 }
 
 /* Hide Hamburger on Desktop */
@@ -1621,18 +1751,43 @@ body.light-mode .icon-circle {
 }
 
 /* Clean Wealth Text */
-.wealth-indicator { display: flex; align-items: center; gap: 10px; }
-.wealth-info { display: flex; flex-direction: column; }
-.wealth-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
-.wealth-amount { font-weight: bold; color: var(--text-light); font-size: 1.2rem; }
-.greeting h1 { margin: 0; font-size: 1.5rem; }
+.wealth-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wealth-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.wealth-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.wealth-amount {
+    font-weight: bold;
+    color: var(--text-light);
+    font-size: 1.2rem;
+}
+
+.greeting h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
 
 
 /* --- MOBILE OVERRIDES (Max-width 768px) --- */
 @media (max-width: 768px) {
+
     /* Show Hamburger */
-    .mobile-only-btn { display: block; }
-    
+    .mobile-only-btn {
+        display: block;
+    }
+
     /* Stack the Header vertically */
     .top-header {
         flex-direction: column;
@@ -1647,6 +1802,7 @@ body.light-mode .icon-circle {
         justify-content: space-between;
     }
 }
+
 /* =========================================
    DESKTOP HEADER (Clean & Flat)
    ========================================= */
@@ -1656,41 +1812,70 @@ body.light-mode .icon-circle {
     align-items: center;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     gap: 20px;
 }
-.mobile-only-btn { display: none; }
-.greeting { flex-grow: 1; } /* Pushes wealth and avatar to the right */
-.wealth-indicator { display: flex; align-items: center; gap: 10px; }
-.wealth-info { display: flex; flex-direction: column; }
+
+.mobile-only-btn {
+    display: none;
+}
+
+.greeting {
+    flex-grow: 1;
+}
+
+/* Pushes wealth and avatar to the right */
+.wealth-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wealth-info {
+    display: flex;
+    flex-direction: column;
+}
 
 
 /* =========================================
    CLERK MOBILE VIEW (Max-width 768px)
    ========================================= */
 @media (max-width: 768px) {
+
     /* 1. Prevent the whole page from shaking/bleeding */
-    .dashboard-layout { flex-direction: column !important; }
-    .main-content { width: 100% !important; padding: 15px !important; overflow-x: hidden !important; }
+    .dashboard-layout {
+        flex-direction: column !important;
+    }
+
+    .main-content {
+        width: 100% !important;
+        padding: 15px !important;
+        overflow-x: hidden !important;
+    }
 
     /* 2. Completely hide the sidebar off-screen (Fixes the top-left glitch) */
     .sidebar {
         position: fixed !important;
-        top: 0; 
-        left: -100% !important; /* Pushes it entirely off the screen */
-        width: 260px !important; 
+        top: 0;
+        left: -100% !important;
+        /* Pushes it entirely off the screen */
+        width: 260px !important;
         height: 100vh !important;
         z-index: 9999 !important;
         background: var(--bg-main) !important;
         transition: left 0.3s ease !important;
-        box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
     }
-    .sidebar.open { left: 0 !important; }
+
+    .sidebar.open {
+        left: 0 !important;
+    }
 
     /* 3. The Bulletproof Header Layout */
     .top-header {
         display: flex !important;
-        flex-wrap: wrap !important; /* Allows items to drop to new rows */
+        flex-wrap: wrap !important;
+        /* Allows items to drop to new rows */
         justify-content: space-between !important;
         align-items: center !important;
         padding: 0 0 15px 0 !important;
@@ -1698,42 +1883,110 @@ body.light-mode .icon-circle {
     }
 
     /* ROW 1: Hamburger (Left) */
-    .mobile-only-btn { 
-        order: 1 !important; 
-        display: block !important; 
-        background: transparent; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer;
+    .mobile-only-btn {
+        order: 1 !important;
+        display: block !important;
+        background: transparent;
+        border: none;
+        color: var(--text-light);
+        font-size: 1.5rem;
+        cursor: pointer;
     }
 
     /* ROW 1: Avatar (Right) */
-    .avatar-dropdown-container { 
-        order: 2 !important; 
+    .avatar-dropdown-container {
+        order: 2 !important;
     }
 
     /* ROW 2: Greeting (Takes up full width, drops below Row 1) */
-    .greeting { 
-        order: 3 !important; 
-        width: 100% !important; 
-        margin-top: 20px !important; 
+    .greeting {
+        order: 3 !important;
+        width: 100% !important;
+        margin-top: 20px !important;
     }
-    .greeting h1 { font-size: 1.4rem !important; margin: 0 !important; }
+
+    .greeting h1 {
+        font-size: 1.4rem !important;
+        margin: 0 !important;
+    }
 
     /* ROW 3: Wealth Card (Takes up full width, drops below Row 2) */
-    .wealth-indicator { 
-        order: 4 !important; 
-        width: 100% !important; 
-        margin-top: 15px !important; 
-        background: var(--bg-card) !important; 
-        padding: 15px 20px !important; 
-        border-radius: 12px !important; 
+    .wealth-indicator {
+        order: 4 !important;
+        width: 100% !important;
+        margin-top: 15px !important;
+        background: var(--bg-card) !important;
+        padding: 15px 20px !important;
+        border-radius: 12px !important;
         border: 1px solid var(--border-color) !important;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2) !important;
-        justify-content: space-between !important; /* Separates the icon and the money */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2) !important;
+        justify-content: space-between !important;
+        /* Separates the icon and the money */
     }
 
     /* Dark overlay when menu is open */
     .mobile-overlay {
-        display: none; position: fixed; inset: 0;
-        background: rgba(0,0,0,0.6); z-index: 9998;
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 9998;
     }
-    .mobile-overlay.active { display: block; }
+
+    .mobile-overlay.active {
+        display: block;
+    }
+}
+
+.mobile-menu-btn {
+    display: none;
+}
+
+/* --- MOBILE RESPONSIVE MODAL OVERRIDES --- */
+@media (max-width: 768px) {
+
+    /* 1. Shrink the modal to fit the phone screen */
+    .clerk-settings-card {
+        width: 95vw !important;
+        height: 85vh !important;
+        flex-direction: column !important;
+    }
+
+    /* 2. Show the hamburger menu in the top left */
+    .mobile-menu-btn {
+        display: block;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 15;
+    }
+
+    /* 3. Make the main content take up the whole screen and push text down so it doesn't hit the hamburger */
+    .settings-content {
+        width: 100% !important;
+        padding: 60px 20px 20px 20px !important;
+        /* Extra top padding for the hamburger */
+    }
+
+    /* 4. Hide the sidebar entirely by pushing it off-screen to the left */
+    .settings-sidebar {
+        position: absolute;
+        left: -300px;
+        /* Hidden outside the modal */
+        top: 0;
+        bottom: 0;
+        z-index: 10;
+        transition: left 0.3s ease-in-out;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 5. The active class that slides the sidebar back in! */
+    .settings-sidebar.active {
+        left: 0;
+    }
 }

@@ -3,6 +3,7 @@ using NexusCore.CustomerLoginDTO;
 using NexusCore.CustomerRepositories;
 using NexusCore.CustomerSignIn;
 using NexusCore.LoginResponseDto;
+using NexusCore.UpdatePersonalInformation;
 
 namespace NexusCore.CustomerServices
 {
@@ -51,6 +52,18 @@ namespace NexusCore.CustomerServices
             else
             {
                 return CustomerSignUpResult.SystemError;
+            }
+        }
+        public async Task<bool> CompleteUpdateAsync(int userid,UpdatePersonalInfo updatePersonalInfo)
+        {
+            bool result = await _customerRepositories.UpdateLegalInfo(userid,updatePersonalInfo);
+            if(result)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

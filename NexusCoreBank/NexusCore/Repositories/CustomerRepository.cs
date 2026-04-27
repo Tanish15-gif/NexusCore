@@ -5,6 +5,7 @@ using NexusCore.CustomerSignIn;
 using NexusCore.LoginResponseDto;
 using System.Threading.Tasks;
 using BCrypt.Net;
+using NexusCore.UpdatePersonalInformation;
 
 namespace NexusCore.CustomerRepositories
 {
@@ -160,7 +161,7 @@ namespace NexusCore.CustomerRepositories
             {
                 await connect.OpenAsync();
                 string sql = @"
-                        select u.Email,c.FullName,c.PhoneNumber
+                        select u.Email,c.FullName,c.PhoneNumber,c.DateofBirth,c.Address
                         from Users u
                         join CustomerProfiles c on u.UserId = c.UserId
                         where u.UserId = @uid;
@@ -176,13 +177,45 @@ namespace NexusCore.CustomerRepositories
                             {
                                 FullName = reader["FullName"].ToString() ?? "",
                                 Email = reader["Email"].ToString() ?? "",
-                                PhoneNumber = reader["PhoneNumber"].ToString()
+                                PhoneNumber = reader["PhoneNumber"].ToString(),
+                                DateofBirth = DateOnly.FromDateTime((DateTime)reader["DateofBirth"]),
+                                Address = reader["Address"].ToString()
                             };
                         }
                     }
                 }
             }
             return register;
+        }
+        public async Task<bool> UpdateLegalInfo(int userid,UpdatePersonalInfo updatePersonalInfo)
+        {
+            try
+            {
+                using(var connect = new SqlConnection(conn))
+                {
+                    await connect.OpenAsync();
+                    string sql = @"
+                        Update CustomerProfiles Set
+                        FullName = @fullname , DateofBirth = @dob , Address = @address
+                        where UserId = @uid
+                    ";
+                    using (var cmd = new SqlCommand(sql,connect))
+                    {
+                        cmd.Parameters.AddWithValue("@uid",userid);
+                        cmd.Parameters.AddWithValue("@fullname",updatePersonalInfo!.LegalName);
+                        cmd.Parameters.AddWithValue("@dob",updatePersonalInfo.DOB);
+                        cmd.Parameters.AddWithValue("@address",updatePersonalInfo.Address);
+                        
+                        int rows = await cmd.ExecuteNonQueryAsync();
+                        return rows > 0;
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
     }
 }

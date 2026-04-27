@@ -371,14 +371,23 @@ namespace NexusCore.TransactionRepositories
             {
                 await connect.OpenAsync();
                 string sql = @"
-                        Update Accounts
-                        Set
-                            Balance = Balance + (Balance * InterestRate / 365),
-                            LastInterestAppliedDate = CAST(GetDate() As Date)
-                        where 
-                            AccountType = 'Savings'
-                            And AccountStatus = 'Active'
-                            And LastInterestAppliedDate < CAST(GetDate() as DATE)
+                        BEGIN TRAN;
+                            UPDATE a
+                            SET a.Balance = a.Balance + (a.Balance * s.InterestRate / 365)
+                            FROM Accounts a
+                            JOIN SavingsDetails s ON a.AccountId = s.AccountId
+                            WHERE a.AccountType = 'Savings' 
+                            AND a.AccountStatus = 'Active' 
+                            AND s.LastInterestAppliedDate < CAST(GETDATE() AS DATE);
+
+                            UPDATE s
+                            SET s.LastInterestAppliedDate = CAST(GETDATE() AS DATE)
+                            FROM SavingsDetails s
+                            JOIN Accounts a ON s.AccountId = a.AccountId
+                            WHERE a.AccountType = 'Savings' 
+                                AND a.AccountStatus = 'Active' 
+                                AND s.LastInterestAppliedDate < CAST(GETDATE() AS DATE);
+                            COMMIT TRAN;
                 ";
                 using (var cmd = new SqlCommand(sql,connect))
                 {

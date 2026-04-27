@@ -27,7 +27,7 @@ namespace NexusCore.AiOperation
                             inner join Accounts a on t.AccountId = a.AccountId
                             where a.UserId = @uid and t.TransactionDate >= DATEADD(day,-30,GETDATE())
                             and  t.Status = 'Completed'
-                            group by t.MerchantName
+                            group by t.MerchantName;
                 ";
                 using (var cmd = new SqlCommand(sql, connect))
                 {
