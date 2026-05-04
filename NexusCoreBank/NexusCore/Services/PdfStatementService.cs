@@ -7,7 +7,6 @@ namespace NexusCore.Services
 {
     public class PdfStatementService
     {
-        // We pass in the User's Name and their Transaction List
         public byte[] GenerateStatement(string accountName, string accountNumber, List<TransactionStatement> transactions)
         {
             var document = Document.Create(container =>
@@ -42,13 +41,12 @@ namespace NexusCore.Services
                         {
                             table.ColumnsDefinition(columns =>
                             {
-                                columns.ConstantColumn(80); // Date
-                                columns.RelativeColumn();   // Description
-                                columns.ConstantColumn(80); // Amount
-                                columns.ConstantColumn(80); // Status
+                                columns.ConstantColumn(80); 
+                                columns.RelativeColumn();   
+                                columns.ConstantColumn(80); 
+                                columns.ConstantColumn(80); 
                             });
 
-                            // Table Headers
                             table.Header(header =>
                             {
                                 header.Cell().Text("Date").SemiBold();
@@ -57,7 +55,6 @@ namespace NexusCore.Services
                                 header.Cell().AlignCenter().Text("Status").SemiBold();
                             });
 
-                            // Loop through the database transactions!
                             foreach (var txn in transactions)
                             {
                                 table.Cell().Text(txn.Date.ToString("MM/dd/yyyy"));
@@ -68,7 +65,6 @@ namespace NexusCore.Services
                         });
                     });
 
-                    // 3. THE FOOTER
                     page.Footer().AlignCenter().Text(x =>
                     {
                         x.Span("Page ");
@@ -79,7 +75,6 @@ namespace NexusCore.Services
                 });
             });
 
-            // Turn the drawing into actual PDF bytes!
             return document.GeneratePdf();
         }
     }

@@ -108,10 +108,10 @@ namespace AuthorizeController.Controllers
             {
                 case TransferResult.Success:
                     return Ok(new { action = "COMPLETED", message = "Transfer Completed Successful." });
-                case TransferResult.RequireOtp:
-                    return Ok(new { action = "SHOW_OTP", message = "Security Verification Required! Check Email." });
                 case TransferResult.InsufficientFunds:
                     return BadRequest(new { message = "Insufficient balance or invalid source account." });
+                case TransferResult.RequireOtp:
+                    return Ok(new { action = "SHOW_OTP", message = "Security Verification Required! Check Email." });
                 case TransferResult.CannotTransferToSelf:
                     return BadRequest(new { message = "You cannot transfer money to your own account." });
                 case TransferResult.TargetAccountNotFound:
@@ -264,22 +264,18 @@ namespace AuthorizeController.Controllers
         [AllowAnonymous] 
         public async Task<IActionResult> DownloadStatement(int accountId)
         {
-            // 1. You would fetch the REAL data from your SQL Database here
             string accountName = "Tanish Gupta";
             string accountNumber = "NEXUS-789456123";
 
-            // Fake data for right now, you will replace this with your actual repository call!
             var history = new List<TransactionStatement>
-    {
-        new TransactionStatement { Date = System.DateTime.Now.AddDays(-2), Description = "TRANSFER_IN_FROM_ANANDI", Amount = 5000, Status = "Completed" },
-        new TransactionStatement { Date = System.DateTime.Now.AddDays(-1), Description = "Amazon Purchase", Amount = -1200, Status = "Completed" },
-        new TransactionStatement { Date = System.DateTime.Now, Description = "Interest Credited", Amount = 150, Status = "Completed" }
-    };
+        {
+            new TransactionStatement { Date = System.DateTime.Now.AddDays(-2), Description = "TRANSFER_IN_FROM_ANANDI", Amount = 5000, Status = "Completed" },
+            new TransactionStatement { Date = System.DateTime.Now.AddDays(-1), Description = "Amazon Purchase", Amount = -1200, Status = "Completed" },
+            new TransactionStatement { Date = System.DateTime.Now, Description = "Interest Credited", Amount = 150, Status = "Completed" }
+        };
 
-            // 2. Generate the PDF bytes using your new service
             var pdfBytes = _pdfStatementService.GenerateStatement(accountName, accountNumber, history);
 
-            // 3. Return the physical file to the user!
             return File(pdfBytes, "application/pdf", $"NexusCore_Statement_{accountId}.pdf");
         }
     }

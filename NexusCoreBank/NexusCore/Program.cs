@@ -98,7 +98,7 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<TransactionService>();
 
 //Email Kit DependencyInjection.
-builder.Services.AddScoped<IEmailServices, MailKitService>();
+builder.Services.AddTransient<IEmailServices, MailKitService>();
 builder.Services.AddMemoryCache();
 
 //Midnight Robot DependencyInjection.

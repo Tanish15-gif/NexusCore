@@ -1093,6 +1093,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.removeItem("nexus_token");
             localStorage.removeItem('nexus_google_name');
             localStorage.removeItem('nexus_google_picture');
+            localStorage.clear();
             window.location.href = "index.html";
         }
     });
@@ -1182,19 +1183,15 @@ navLinks.forEach(link => {
         }
     });
 });
-// --- MOBILE SIDEBAR TOGGLE ---
 const mobileToggleBtn = document.getElementById('mobile-sidebar-toggle');
 const settingsSidebar = document.querySelector('.settings-sidebar');
 
-// 1. Click hamburger to slide menu in/out
 mobileToggleBtn?.addEventListener('click', () => {
     settingsSidebar.classList.toggle('active');
 });
 
-// 2. Auto-close the sidebar on mobile when a tab is clicked
 document.querySelectorAll('.settings-nav-item').forEach(btn => {
     btn.addEventListener('click', () => {
-        // If the screen is mobile-sized, close the menu
         if (window.innerWidth <= 768) {
             settingsSidebar.classList.remove('active');
         }

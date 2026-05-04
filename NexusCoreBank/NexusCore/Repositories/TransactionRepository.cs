@@ -387,7 +387,7 @@ namespace NexusCore.TransactionRepositories
                             WHERE a.AccountType = 'Savings' 
                                 AND a.AccountStatus = 'Active' 
                                 AND s.LastInterestAppliedDate < CAST(GETDATE() AS DATE);
-                            COMMIT TRAN;
+                        COMMIT TRAN;
                 ";
                 using (var cmd = new SqlCommand(sql,connect))
                 {

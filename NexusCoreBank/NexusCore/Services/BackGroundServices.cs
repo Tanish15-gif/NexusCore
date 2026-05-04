@@ -4,7 +4,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using NexusCore.AccountRepositories;
-using Org.BouncyCastle.Asn1.Cms;
 
 namespace NexusCore.BackGroundServices
 {
