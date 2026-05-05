@@ -472,18 +472,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const relation = document.getElementById("nominee-relation").value;
 
         let termduration = null;
-        if (!fdGroup.classList.contains("hidden")){
+        if (!fdGroup.classList.contains("hidden")) {
             termduration = parseInt(document.getElementById("fd-duration").value);
         }
 
-            const openaccount = {
-                AccountType: type,
-                InitialDeposit: deposit,
-                SourceofFunds: sourceoffunds,
-                NomineeName: nominee,
-                NomineeRelationship: relation,
-                TermDuration : termduration
-            };
+        const openaccount = {
+            AccountType: type,
+            InitialDeposit: deposit,
+            SourceofFunds: sourceoffunds,
+            NomineeName: nominee,
+            NomineeRelationship: relation,
+            TermDuration: termduration
+        };
         try {
             const response = await fetch(`${BaseUrl}/Account/create`, {
                 method: 'POST',
@@ -1070,18 +1070,15 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDashboard();
     fetchMyAccounts();
     fetchTransactions();
-    // --- CLERK DROPDOWN LOGIC ---
     const userMenuBtn = document.getElementById('user-menu-btn');
     const userDropdown = document.getElementById('user-dropdown');
     const clerkSignoutBtn = document.getElementById('clerk-signout-btn');
 
-    // 1. Toggle dropdown when clicking the avatar
     userMenuBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Stops the click from hitting the document
+        e.stopPropagation(); 
         userDropdown.classList.toggle('hidden');
     });
 
-    // 2. Close dropdown if user clicks anywhere else on the page
     document.addEventListener('click', (e) => {
         if (!userDropdown.contains(e.target) && !userMenuBtn.contains(e.target)) {
             userDropdown.classList.add('hidden');
@@ -1089,31 +1086,34 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     clerkSignoutBtn.addEventListener('click', () => {
         if (confirm("Are you sure you want to log out?")) {
-            alert("Logged out SuccessFully");
-            localStorage.removeItem("nexus_token");
-            localStorage.removeItem('nexus_google_name');
-            localStorage.removeItem('nexus_google_picture');
+            alert("Logged out Successfully");
+
             localStorage.clear();
+
+            document.cookie.split(";").forEach(cookie => {
+                document.cookie = cookie
+                    .replace(/^ +/, "")
+                    .replace(/=.*/, "=;expires=" + new Date(0).toUTCString() + ";path=/");
+            });
+
             window.location.href = "index.html";
         }
     });
     const manageModal = document.getElementById('manage-account-modal');
-    const manageBtn = document.getElementById('manage-account-btn'); // The button in your dropdown
+    const manageBtn = document.getElementById('manage-account-btn'); 
     const closeManageBtn = document.getElementById('close-manage-modal');
 
-    // 1. Open Modal from Dropdown
     manageBtn.addEventListener('click', () => {
         manageModal.classList.remove('hidden');
         document.getElementById('user-dropdown').classList.add('hidden');
     });
 
-    // 2. Close Modal
     closeManageBtn.addEventListener('click', () => {
         manageModal.classList.add('hidden');
     });
-    const profileNavBtn = document.querySelectorAll('.settings-nav-item')[0];  // Profile
-    const personalNavBtn = document.querySelectorAll('.settings-nav-item')[1]; // Personal Info
-    const securityNavBtn = document.querySelectorAll('.settings-nav-item')[2]; // Security
+    const profileNavBtn = document.querySelectorAll('.settings-nav-item')[0];  
+    const personalNavBtn = document.querySelectorAll('.settings-nav-item')[1]; 
+    const securityNavBtn = document.querySelectorAll('.settings-nav-item')[2]; 
 
     const profileTitle = document.querySelector('.settings-content h2');
     const profileRows = document.querySelectorAll('.settings-row:not(#settings-view-security .settings-row):not(#settings-view-personal .settings-row)');
@@ -1131,17 +1131,14 @@ document.addEventListener("DOMContentLoaded", () => {
         securityView.classList.add('hidden');
     }
 
-    // 1. Click Profile
     profileNavBtn.addEventListener('click', () => {
         hideAllManageViews();
         profileNavBtn.classList.add('active');
 
-        // Turn Profile back on
         profileTitle.style.display = 'block';
         profileRows.forEach(row => row.style.display = 'flex');
     });
 
-    // 2. Click Personal Info
     personalNavBtn.addEventListener('click', () => {
         hideAllManageViews();
         personalNavBtn.classList.add('active');
@@ -1149,12 +1146,10 @@ document.addEventListener("DOMContentLoaded", () => {
         personalView.classList.remove('hidden');
     });
 
-    // 3. Click Security
     securityNavBtn.addEventListener('click', () => {
         hideAllManageViews();
         securityNavBtn.classList.add('active');
 
-        // Turn Security back on
         securityView.classList.remove('hidden');
     });
 });
