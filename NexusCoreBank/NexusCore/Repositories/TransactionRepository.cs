@@ -1,5 +1,6 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualBasic;
 using NexusCore.AccountRepositories;
 using NexusCore.DepositDto;
 using NexusCore.TransactionDto;
@@ -302,11 +303,11 @@ namespace NexusCore.TransactionRepositories
                             Select UserId from Accounts
                             where AccountNumber = @accnum and AccountStatus = 'Active';
                     ";
-                    using (var cmd = new SqlCommand(sql,connect))
+                    using (var cmd = new SqlCommand(sql, connect))
                     {
-                        cmd.Parameters.AddWithValue("@accnum",AccountNumber);
+                        cmd.Parameters.AddWithValue("@accnum", AccountNumber);
                         var result = await cmd.ExecuteScalarAsync();
-                        if(result != null && result != DBNull.Value)
+                        if (result != null && result != DBNull.Value)
                         {
                             return Convert.ToInt32(result);
                         }
@@ -377,8 +378,8 @@ namespace NexusCore.TransactionRepositories
                             FROM Accounts a
                             JOIN SavingsDetails s ON a.AccountId = s.AccountId
                             WHERE a.AccountType = 'Savings' 
-                            AND a.AccountStatus = 'Active' 
-                            AND s.LastInterestAppliedDate < CAST(GETDATE() AS DATE);
+                                AND a.AccountStatus = 'Active' 
+                                AND s.LastInterestAppliedDate < CAST(GETDATE() AS DATE);
 
                             UPDATE s
                             SET s.LastInterestAppliedDate = CAST(GETDATE() AS DATE)
@@ -388,6 +389,37 @@ namespace NexusCore.TransactionRepositories
                                 AND a.AccountStatus = 'Active' 
                                 AND s.LastInterestAppliedDate < CAST(GETDATE() AS DATE);
                         COMMIT TRAN;
+                ";
+                using (var cmd = new SqlCommand(sql, connect))
+                {
+                    int rows = await cmd.ExecuteNonQueryAsync();
+                    return rows;
+                }
+            }
+        }
+        public async Task<int> TakeDailyDepositAmountAsync()
+        {
+            using (var connect = new SqlConnection(conn))
+            {
+                await connect.OpenAsync();
+                string sql = @"
+                        Begin TRAN
+                        Update a
+                        Set a.Balance = a.Balance - d.DailyAmount 
+                        from Accounts a
+                        join DailyDepositDetails d on a.AccountId = d.AccountId
+                        where a.AccountType = 'DailyDeposit' 
+                            and a.AccountStatus = 'Active'
+                            and d.LastProcessedDate < CAST(GETDATE() as DATE);
+
+                        Update d
+                        Set d.LastProcessedDate	 = CAST(GETDATE() as DATE),d.TotalReceivedAmount += d.DailyAmount
+                        from DailyDepositDetails d
+                        join Accounts a on d.AccountId = a.AccountId
+                        where a.AccountType = 'DailyDeposit'
+                            and a.AccountStatus = 'Active'
+                            and d.LastProcessedDate < CAST(GETDATE() as DATE);
+                        Commit Tran
                 ";
                 using (var cmd = new SqlCommand(sql,connect))
                 {

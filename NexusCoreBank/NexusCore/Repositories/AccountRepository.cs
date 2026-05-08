@@ -24,7 +24,6 @@ namespace NexusCore.AccountRepositories
                 {
                     try
                     {
-                        Console.WriteLine(openAccount.TermDuration);
                         long Uniqueseq;
                         string seqsql = "SELECT NEXT VALUE FOR AccountNumberSeq;"; //Getting the next value from database.
                         using (var seqcmd = new SqlCommand(seqsql, connect, transaction))
@@ -44,6 +43,7 @@ namespace NexusCore.AccountRepositories
                             "fixeddeposit" => "30",
                             "recurringdeposit" => "40",
                             "loan" => "50",
+                            "dailydeposit" => "60",
                             _ => "99",
                         };
                         string seqstring = Uniqueseq.ToString("D7"); //Formatting the sequence
@@ -59,7 +59,7 @@ namespace NexusCore.AccountRepositories
                                 Values(@id,@smartAccNum,@acctype,@balance,'Pending',@sourceoffunds,@nominee,@relation)
                     ";
                         int newAccountId;
-                        using (var cmd = new SqlCommand(sql, connect,transaction))
+                        using (var cmd = new SqlCommand(sql, connect, transaction))
                         {
                             cmd.Parameters.AddWithValue("@id", userid);
                             cmd.Parameters.AddWithValue("@smartAccNum", smartAccountNumber);
@@ -145,9 +145,9 @@ namespace NexusCore.AccountRepositories
                             {
                                 decimal annualRate = 0.105m;
 
-                                double p = (double)openAccount.InitialDeposit; 
+                                double p = (double)openAccount.InitialDeposit;
                                 double r = (double)annualRate / 12;
-                                int n = openAccount.TermDuration.Value; 
+                                int n = openAccount.TermDuration.Value;
 
                                 double emi = (p * r * Math.Pow(1 + r, n)) / (Math.Pow(1 + r, n) - 1);
 
@@ -161,6 +161,19 @@ namespace NexusCore.AccountRepositories
                                 loanCmd.Parameters.AddWithValue("@NextPayment", nextPayment);
 
                                 await loanCmd.ExecuteNonQueryAsync();
+                            }
+                        }
+                        else if (openAccount.AccountType == "DailyDeposit" && openAccount.DailyAmount.HasValue)
+                        {
+                            string insertdailyAmount = @"
+                                Insert into DailyDepositDetails(AccountId,DailyAmount,IsActive)
+                                Values(@AccountId,@dailyAmount,1);
+                            ";
+                            using (var dailycmd = new SqlCommand(insertdailyAmount, connect,transaction))
+                            {
+                                dailycmd.Parameters.AddWithValue("@AccountId", newAccountId);
+                                dailycmd.Parameters.AddWithValue("@dailyAmount", openAccount.DailyAmount);
+                                await dailycmd.ExecuteNonQueryAsync();
                             }
                         }
                         else

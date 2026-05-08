@@ -19,7 +19,7 @@ namespace NexusCore.AccountServices
         public async Task<string> OpenNewAccountAsync(int userid,OpenAccount openAccount)
         {
             string safetype = openAccount.AccountType.ToLower();
-            if(safetype != "savings" && safetype != "current" && safetype != "fixeddeposit" && safetype != "recurringdeposit" && safetype != "loan")
+            if(safetype != "savings" && safetype != "current" && safetype != "fixeddeposit" && safetype != "recurringdeposit" && safetype != "loan" && safetype != "dailydeposit")
             {
                 return "Invalid Account Type";
             }

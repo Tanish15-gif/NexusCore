@@ -25,9 +25,11 @@ namespace NexusCore.BackGroundServices
                     {
                         var repository = scope.ServiceProvider.GetRequiredService<ITransactionRepository>();
                         int updatedAccounts = await repository.ApplyDailyInterestToSavingsAsync();
+                        int UpdatedDailyAccounts = await repository.TakeDailyDepositAmountAsync();
                         if(updatedAccounts > 0)
                         {
                             Console.WriteLine($"🤖 Midnight Robot: SUCCESS! Applied daily interest to {updatedAccounts} accounts.");
+                            Console.WriteLine($"🤖 Midnight Robot: Success! Taken Daily Amount from {UpdatedDailyAccounts} Accounts");
                         }
                     }
                 }

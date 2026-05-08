@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts | NexusCore Bank</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/features.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-layer-group"></i> NexusCore
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="Accounts.html" class="active">Accounts</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="register.html" class="btn btn-primary">Create Account</a>
+            </div>
+
+            <div class="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <section class="account-tiers" id="tiers">
+        <div class="container">
+            <div class="tiers-header">
+                <h2>Accounts</h2>
+                <p>Gamified banking. Unlock exclusive perks across NexusCore Bank and NexusMart.</p>
+            </div>
+
+            <div class="tiers-grid">
+
+                <div class="tier-card savings-tier">
+                    <div class="tier-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+                    <h3>Savings Account</h3>
+                    <p class="tier-subtitle">The Everyday Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> 4% Annual Interest</li>
+                        <li><i class="fa-solid fa-check"></i> 5% NexusMart Grocery Cashback</li>
+                        <li><i class="fa-solid fa-check"></i> Free AI Wealth Manager</li>
+                    </ul>
+                    <div class="tier-actions">
+                        <a href="register.html" class="btn btn-outline tier-btn">Open Savings</a>
+                        <a href="account-details.html?type=savings" class="btn-learn-more">Learn More <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="tier-card current-tier popular">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <div class="tier-icon"><i class="fa-solid fa-briefcase"></i></div>
+                    <h3>Current Account</h3>
+                    <p class="tier-subtitle">The Business & Creator Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> Zero Transaction Fees</li>
+                        <li><i class="fa-solid fa-check"></i> ₹50,000 Overdraft Limit</li>
+                        <li><i class="fa-solid fa-check"></i> 15% NexusMart Wholesale Discount</li>
+                    </ul>
+                    <div class="tier-actions">
+                        <a href="register.html" class="btn btn-outline tier-btn">Open Current</a>
+                        <a href="account-details.html?type=current" class="btn-learn-more">Learn More <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="tier-card fd-tier">
+                    <div class="tier-icon"><i class="fa-solid fa-vault"></i></div>
+                    <h3>Fixed Deposit</h3>
+                    <p class="tier-subtitle">The Vault Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> 8.5% Guaranteed Return</li>
+                        <li><i class="fa-solid fa-check"></i> Instant 90% Value Loans</li>
+                        <li><i class="fa-solid fa-check"></i> NexusMart Prime VIP Upgrade</li>
+                    </ul>
+                    <div class="tier-actions">
+                        <a href="register.html" class="btn btn-outline tier-btn">Lock Wealth</a>
+                        <a href="account-details.html?type=current" class="btn-learn-more">Learn More <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="tier-card rd-tier">
+                    <div class="tier-icon"><i class="fa-solid fa-rotate"></i></div>
+                    <h3>Recurring Deposit</h3>
+                    <p class="tier-subtitle">The Milestone Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> 7.0% Growing Interest</li>
+                        <li><i class="fa-solid fa-check"></i> ₹2,500 12-Month Streak Bonus</li>
+                        <li><i class="fa-solid fa-check"></i> Unlock Profile Badges</li>
+                    </ul>
+                    <div class="tier-actions">
+                        <a href="register.html" class="btn btn-outline tier-btn">Start Milestone</a>
+                        <a href="account-details.html?type=current" class="btn-learn-more">Learn More <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="tier-card loan-tier">
+                    <div class="tier-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <h3>Nexus Loan</h3>
+                    <p class="tier-subtitle">The Leverage Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> 1-Click NexusMart Financing</li>
+                        <li><i class="fa-solid fa-check"></i> AI-Reduced EMI Rates</li>
+                        <li><i class="fa-solid fa-check"></i> Zero Early Repayment Penalty</li>
+                    </ul>
+                    <div class="tier-actions">
+                        <a href="register.html" class="btn btn-outline tier-btn">Apply Now</a>
+                        <a href="account-details.html?type=current" class="btn-learn-more">Learn More <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="tier-card dailyDeposit-tier">
+                    <div class="tier-icon"><i class="fa-solid fa-hand-holding-dollar"></i>
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <h3>Daily Deposit</h3>
+                    <p class="tier-subtitle">The Savings Tier</p>
+                    <ul class="tier-features">
+                        <li><i class="fa-solid fa-check"></i> 8% Annual Interest</li>
+                        <li><i class="fa-solid fa-check"></i> Min: ₹20 ; Max: ₹5000</li>
+                        <li><i class="fa-solid fa-check"></i> 10% Penalty for Early BreakDown</li>
+                    </ul>
+                    <div class="tier-actions">
+                        <a href="register.html" class="btn btn-outline tier-btn">Apply Now</a>
+                        <a href="account-details.html?type=daily" class="btn-learn-more">Learn More <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

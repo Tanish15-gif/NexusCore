@@ -21,6 +21,8 @@ namespace NexusCore.AccountRepositories
         //Printing Transaction Reciept
         Task<List<TransactionReceipt>> GetTransactionReceiptsAsync(int userid);
 
+        //MidNight Robot 
         Task<int> ApplyDailyInterestToSavingsAsync();
+        Task<int> TakeDailyDepositAmountAsync();
     }
 }

@@ -153,9 +153,6 @@
     }
 }
 
-/* =========================================
-   ELITE ACCOUNT TIERS
-   ========================================= */
 .account-tiers {
     padding: 80px 0;
     background-color: var(--bg-color);
@@ -184,7 +181,6 @@
     gap: 2rem;
 }
 
-/* Base Card Styling */
 .tier-card {
     background: var(--card-bg);
     border-radius: 12px;
@@ -217,7 +213,6 @@
 
 .tier-features li i {
     color: #34d399;
-    /* Keeps the green checkmarks */
     margin-right: 10px;
 }
 
@@ -227,9 +222,6 @@
     width: 100%;
 }
 
-/* =========================================
-   SPECIAL "MOST POPULAR" CARD
-   ========================================= */
 .tier-card.popular {
     border: 2px solid var(--accent-color);
     transform: scale(1.05);
@@ -324,4 +316,67 @@
 .loan-tier .btn-outline:hover {
     background: #ef4444;
     color: white;
+}
+
+.dailyDeposit-tier .tier-icon{
+    color: #caca07;
+}
+
+.dailyDeposit-tier .btn-outline {
+    border-color: #caca07;
+    color: #caca07;
+}
+
+.dailyDeposit-tier .btn-outline:hover {
+    background: #caca07;
+    color: white;
+}
+/* 1. Change to a row layout */
+.tier-actions {
+    display: flex;
+    flex-direction: row; /* 👈 This is the magic word that puts them side-by-side! */
+    gap: 12px;
+    margin-top: 25px;
+}
+
+/* 2. Make sure the main button doesn't take up 100% of the row anymore */
+.tier-btn {
+    flex: 1; /* Makes it take exactly half the space */
+    width: auto;
+    padding: 12px 10px;
+}
+
+/* 3. Style the Learn More button to be the exact same size box [  ] */
+.btn-learn-more {
+    flex: 1; /* Makes it take the other half of the space */
+    text-align: center;
+    color: var(--text-muted); 
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    
+    /* Let's give it a subtle border so it actually looks like a button [ ] */
+    border: 1px solid var(--border-color); 
+    border-radius: 6px;
+    padding: 12px 10px;
+}
+
+/* Hover effects */
+.btn-learn-more:hover {
+    color: var(--accent-color); 
+    border-color: var(--accent-color); /* Border lights up on hover */
+}
+
+.btn-learn-more i {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-learn-more:hover i {
+    transform: translateX(5px); 
 }

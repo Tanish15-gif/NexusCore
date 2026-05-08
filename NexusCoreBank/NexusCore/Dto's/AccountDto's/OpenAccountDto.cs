@@ -8,5 +8,6 @@ namespace NexusCore.OpenAccountsDto
         public string NomineeName  {get;set;} = "";
         public string NomineeRelationship {get;set;} = "";
         public int? TermDuration {get;set;}
+        public int? DailyAmount {get;set;}
     }
 }

@@ -462,6 +462,17 @@ document.addEventListener("DOMContentLoaded", () => {
             fdInput.removeAttribute('required');
         }
     });
+    const ddGroup = document.getElementById('dd-Amount-group');
+    const ddInput = document.getElementById('dd-Amount');
+    document.getElementById('account-type').addEventListener('change',function (e) {
+        if(e.target.value === 'DailyDeposit'){
+            ddGroup.classList.remove('hidden');
+            ddInput.setAttribute('required','true');
+        }else{
+            ddGroup.classList.add('hidden');
+            ddInput.removeAttribute('required');
+        }
+    })
 
     newAccountForm?.addEventListener("submit", async e => {
         e.preventDefault();
@@ -474,7 +485,11 @@ document.addEventListener("DOMContentLoaded", () => {
         let termduration = null;
         if (!fdGroup.classList.contains("hidden")) {
             termduration = parseInt(document.getElementById("fd-duration").value);
-        }
+        };
+        let DailyDepositAmount = null;
+        if(!ddGroup.classList.contains("hidden")) {
+            DailyDepositAmount = parseInt(document.getElementById('dd-Amount').value);
+        }; 
 
         const openaccount = {
             AccountType: type,
@@ -482,7 +497,8 @@ document.addEventListener("DOMContentLoaded", () => {
             SourceofFunds: sourceoffunds,
             NomineeName: nominee,
             NomineeRelationship: relation,
-            TermDuration: termduration
+            TermDuration: termduration,
+            DailyAmount : DailyDepositAmount
         };
         try {
             const response = await fetch(`${BaseUrl}/Account/create`, {

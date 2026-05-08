@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | NexusCore Bank</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <link rel="stylesheet" href="css/customer-dashboard.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/employee-dashboard.css">
@@ -267,6 +268,7 @@
                                 <option value="FixedDeposit">Fixed Deposit</option>
                                 <option value="RecurringDeposit">Recurring Deposit</option>
                                 <option value="Loan">Loan</option>
+                                <option value="DailyDeposit">Daily Deposit</option>
                             </select>
                         </div>
                         <div class="form-group" style="margin-bottom: 1rem;">
@@ -281,6 +283,17 @@
                             <option value="6">6 Months (5.5% ROI)</option>
                             <option value="12">1 Year (7.0% ROI)</option>
                             <option value="60">5 Years (8.5% ROI)</option>
+                        </select>
+                    </div>
+                    <div id="dd-Amount-group" class="form-group hidden" style="margin-bottom: 1rem;">
+                        <label>Select Daily Deposit Amount</label>
+                        <select id="dd-Amount">
+                            <option value="20">₹20</option>
+                            <option value="100">₹100</option>
+                            <option value="500">₹500</option>
+                            <option value="1000">₹1000</option>
+                            <option value="2000">₹2000</option>
+                            <option value="5000">₹5000</option>
                         </select>
                     </div>
 
