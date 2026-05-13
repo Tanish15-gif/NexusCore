@@ -942,8 +942,6 @@ body.dark-mode .selection-card:hover {
 @media (max-width: 600px) {
     .footer-grid {
         grid-template-columns: 1fr;
-        /* 1 column on phones */
-        text-align: center;
     }
 
     .footer-brand-col p {

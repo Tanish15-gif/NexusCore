@@ -56,17 +56,20 @@ namespace NexusCore.TransactionServices
                 return completeSaved ? "Completed" : "Failed";
             }
         }
-        public async Task<string> ProcessWithdrawAsync(int userid, DepositAmount amount)
+        public async Task<WithdrawAmountResult> ProcessWithdrawAsync(int userid, DepositAmount amount)
         {
+            if (amount.AccountType!.Equals("current", StringComparison.OrdinalIgnoreCase))
+            {
+                return await _transactionRepository.CurrentAccountWithdrawalAsync(userid, amount);
+            }
             long CurrentBalance = await _accountRepository.GetCurrentBalanceAsync(amount.AccountId);
             if (CurrentBalance >= amount.Amount)
             {
-                bool success = await _transactionRepository.WithdrawAmountAsync(userid, amount);
-                return success ? "Completed" : "Failed";
+                return await _transactionRepository.WithdrawAmountAsync(userid,amount);
             }
             else
             {
-                return "INS_B";
+                return WithdrawAmountResult.NotEnoughBalance;
             }
         }
 
@@ -94,7 +97,7 @@ namespace NexusCore.TransactionServices
             return await ExecuteFinalTransferAsync(userid, transferAmount);
         }
 
-        public async Task<TransferResult> VerifyOtpAndTransferAsync(int userid,TransferAmount transferAmount, string Entercode)
+        public async Task<TransferResult> VerifyOtpAndTransferAsync(int userid, TransferAmount transferAmount, string Entercode)
         {
             string cachekey = $"OTP_{userid}";
             if (_memoryCache.TryGetValue(cachekey, out string? savecode))
@@ -102,7 +105,7 @@ namespace NexusCore.TransactionServices
                 if (savecode == Entercode)
                 {
                     _memoryCache.Remove(cachekey);
-                    return await ExecuteFinalTransferAsync(userid,transferAmount);
+                    return await ExecuteFinalTransferAsync(userid, transferAmount);
                 }
             }
             return TransferResult.InvalidOtp;

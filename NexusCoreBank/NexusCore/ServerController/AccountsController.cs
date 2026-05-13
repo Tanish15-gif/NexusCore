@@ -82,15 +82,19 @@ namespace AuthorizeController.Controllers
         public async Task<IActionResult> Withdraw([FromBody] DepositAmount amount)
         {
             int secureid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
-            string result = await _transactionService.ProcessWithdrawAsync(secureid, amount);
+            var result = await _transactionService.ProcessWithdrawAsync(secureid, amount);
             switch (result)
             {
-                case "Completed":
+                case WithdrawAmountResult.Success:
                     return Ok(new { message = "Amount Withdrawal SuccessFull" });
-                case "INS_B":
+                case WithdrawAmountResult.NotEnoughBalance:
                     return BadRequest(new { message = "Not Enough Balance" });
-                default:
+                case WithdrawAmountResult.Failed:
                     return BadRequest(new { message = "Withdrawal Failed" });
+                case WithdrawAmountResult.OverDraftLimitExceeds:
+                    return BadRequest(new {message = "Overdraft limit Exceeds"});
+                default:
+                    return StatusCode(500,new {message = "Server Error"});
             }
         }
         [HttpPost("transfer")]

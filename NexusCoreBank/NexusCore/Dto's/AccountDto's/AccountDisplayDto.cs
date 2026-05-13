@@ -8,5 +8,7 @@ namespace NexusCore.AccountDisplayDto
         public string? AccountType {get;set;} = "";
         public decimal Balance {get;set;}
         public string? Status {get;set;} = "";
+        public decimal DailyAmount {get;set;}
+        public decimal OverDraftLimit {get;set;}
     }
 }

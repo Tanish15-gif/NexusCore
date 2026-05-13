@@ -21,7 +21,8 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="services.html">Services</a></li>
-                <li><a href="features.html" class="active">Features</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="Accounts.html" class="active">Accounts</a></li>
             </ul>
 
             <div class="nav-actions">
@@ -43,16 +44,13 @@
         <p id="account-description" style="max-width: 600px; margin: 20px auto; line-height: 1.6;">
             Loading description...
         </p>
-        <a href="features.html" class="btn btn-outline">Back to Features</a>
+        <a href="Accounts.html" class="btn btn-outline">Back to Accounts</a>
         <a href="register.html" class="btn btn-primary">Apply Now</a>
     </div>
-
-    <!-- The dynamic logic -->
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const accountType = urlParams.get('type');
 
-        // 2. Define the data
         const accountData = {
             'savings': {
                 title: 'Savings Account',
@@ -62,7 +60,22 @@
                 title: 'Current Account',
                 description: 'The Business Tier. Manage high-volume transactions with zero fees. Designed for creators and entrepreneurs, featuring a massive ₹50,000 overdraft limit to keep your cash flow moving.'
             },
-            // Add your other accounts (fd, rd, loan) here...
+            'fd': {
+                title: 'Fixed-Deposit Account',
+                description: 'Fixed deposit (FD) accounts are a safe investment instrument where you deposit a lump sum for a fixed period at a predetermined interest rate. They are generally considered low-risk because returns are not subject to market fluctuations.'
+            },
+            'Rd' : {
+                title: 'Recurring-Deposit Account',
+                description: 'A Recurring Deposit (RD) is a specific type of term deposit that allows you to build a savings corpus through fixed monthly instalments rather than a single lump-sum payment. It is particularly popular in India for individuals with regular monthly income who want to earn interest rates similar to those of Fixed Deposits (FDs)'
+            },
+            'loan': {
+                title: 'Loan Account',
+                description: 'A loan is a formal financial agreement where a lender (such as a bank, NBFC, or individual) provides a sum of money to a borrower, who agrees to repay it over a specific period, usually with added interest.'
+            },
+            'daily': {
+                title: 'Daily-Deposit Account',
+                description: 'A Daily Deposit Account (often called a "Daily Deposit Scheme" or "Pigmy Deposit") is a unique savings product in India designed primarily for small business owners, daily wage earners, and traders. It allows individuals to save small amounts of money on a daily basis, which are typically collected from their doorstep by an authorized bank agent.'
+            }
         };
 
         // 3. Inject the data into the HTML

@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (dropdownName) dropdownName.innerText = fullName;
         if (dropdownEmail) dropdownEmail.innerText = email;
 
-        // 2. Manage Account Modal
         const manageName = document.getElementById("manage-name");
         const manageEmail = document.getElementById("manage-email");
         const managePhone = document.getElementById("manage-phone");
@@ -48,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (manageName) manageName.innerText = fullName;
         if (manageEmail) manageEmail.innerText = email;
-        if (managePhone) managePhone.innerText = phoneNumber; // Fixed the variable name!
+        if (managePhone) managePhone.innerText = phoneNumber;
         if (manageGoogle) manageGoogle.innerText = email;
 
         // 3. Dynamic Avatars
@@ -141,15 +140,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function enterEditMode() {
-        // 0. Prevent double-clicks from spawning multiple save buttons
         if (document.getElementById('save-personal-container')) return;
 
-        // 1. Grab current values
         const currentName = nameSpan.innerText === "Not provided" ? "" : nameSpan.innerText;
         const currentDob = dobSpan.innerText === "--/--/----" ? "" : dobSpan.innerText;
         const currentAddress = addressSpan.innerText === "No address provided" ? "" : addressSpan.innerText;
 
-        // 2. SAFELY HIDE the original spans and buttons (Do not destroy them!)
         nameSpan.style.display = 'none';
         dobSpan.style.display = 'none';
         addressSpan.style.display = 'none';
@@ -172,22 +168,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         personalInfoView.appendChild(saveContainer);
 
-        // 5. THE FIX: Real Cancel Logic
         document.getElementById('cancel-personal-btn').addEventListener('click', () => {
-            // A. Delete all the temporary input boxes
             document.querySelectorAll('.temp-edit-input').forEach(input => input.remove());
 
-            // B. Delete the save/cancel buttons
             saveContainer.remove();
 
-            // C. Bring back the original text and pen icons!
             nameSpan.style.display = '';
             dobSpan.style.display = '';
             addressSpan.style.display = '';
             editButtons.forEach(b => b.style.display = '');
         });
 
-        // 6. Wire up the Save Button to your C# Bulk Endpoint
         document.getElementById('save-personal-btn').addEventListener('click', async () => {
             const newName = document.getElementById('edit-legal-name').value;
             const newDob = document.getElementById('edit-dob').value;
@@ -378,50 +369,112 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderAccounts() {
         accountCards.innerHTML = "";
+
+        accountCards.style.display = "flex";
+        accountCards.style.flexDirection = "column";
+        accountCards.style.gap = "12px";
+
         accounts.forEach(account => {
+            const row = document.createElement("div");
+            row.className = "account-list-item";
 
-            const card = document.createElement("div");
-            card.className = "account-card";
+            row.onclick = () => openAccountDetails(account);
 
-            card.innerHTML = `
-        <div class="account-header">
-            <span class="account-type">${account.accountType}</span>
-            <span class="account-status ${account.status.toLowerCase()}">
-                ${account.status}
-            </span>
-        </div>
+            const balancecolor = account.balance >= 0 ? "#118C4F" : "#ef4444";
 
-        <div class="account-number">
-            ${account.accountNumber}
-        </div>
+            row.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 45px; height: 45px; border-radius: 50%; background: rgba(59, 130, 246, 0.1); color: var(--accent-color); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.1rem; color: var(--text-light);">${account.accountType}</h3>
+                    <span style="color: var(--text-muted); font-size: 0.85rem; font-family: monospace;">***${account.accountNumber.toString().slice(-4)}</span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px; text-align: right;">
+                <div>
+                    <h3 style="margin: 0; color: ${balancecolor};">₹${account.balance.toFixed(2)}</h3>
+                    <span class="account-status ${account.status.toLowerCase()}" style="font-size: 0.7rem;">${account.status}</span>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+            </div>
+        `;
+            accountCards.appendChild(row);
+        });
+        const savedAccountId = localStorage.getItem("active_nexus_account");
+        if (savedAccountId) {
+            const accountToRestore = accounts.find(a => a.accountId == savedAccountId);
+            if (accountToRestore) {
+                openAccountDetails(accountToRestore);
+            }
+        }
+    }
+    function openAccountDetails(account) {
+        localStorage.setItem('active_nexus_account', account.accountId);
+        document.getElementById('accounts-grid').classList.add('hidden');
+        document.getElementById('account-detail-view').classList.remove('hidden');
 
+        document.getElementById('detail-account-type').innerText = account.accountType;
+        document.getElementById('detail-account-status').innerText = account.status;
+        document.getElementById('detail-account-status').className = `account-status ${account.status.toLowerCase()}`;
+        document.getElementById('detail-account-number').innerText = account.accountNumber;
 
-        <div class="account-balance" style="margin-top: 10px;">
-            <div class="balance-label">Balance</div>
-            <div class="balance-amount">₹${account.balance.toFixed(2)}</div>
-        </div>
+        const balancecolor = document.getElementById('detail-account-balance');
+        balancecolor.innerText = `₹${account.balance.toFixed(2)}`;
+        balancecolor.style.color = account.balance >= 0 ? "#118C4F" : "#ef4444";
 
-        <div class="account-actions">
-            <button class="btn btn-primary deposit-btn" data-id="${account.accountId}"
-                ${["Pending", "Frozen", "Closed", "Rejected"].includes(account.status) ? "disabled" : ""}>
+        let extraDetailsHtml = "";
+        if (account.accountType === "DailyDeposit") {
+            const dailyCut = account.depositAmount || account.amount || 0;
+            extraDetailsHtml = `
+            <div class="daily-deposit-badge">
+                <div class="dd-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div class="dd-info">
+                    <span class="dd-label">Daily Auto-Deduction</span>
+                    <span class="dd-amount">₹${account.dailyAmount} / day</span>
+                </div>
+            </div>
+        `;
+        }
+        if (account?.accountType?.toLowerCase() === "current") {
+            const limit = account?.overDraftLimit ?? 0;
+            const formattedLimit = limit.toLocaleString('en-IN');
+
+            extraDetailsHtml = `
+        <p style="color: var(--text-muted); font-family: monospace; font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 10px;">
+            Overdraft Limit: ₹${formattedLimit}
+        </p>
+    `;
+        }
+
+        const isDisabled = ["Pending", "Frozen", "Closed", "Rejected"].includes(account.status) ? "disabled" : "";
+        const actionContainer = document.getElementById('detail-actions-container');
+        const extraContainer = document.getElementById('extra-account-details');
+        extraContainer.innerHTML = extraDetailsHtml;
+        actionContainer.innerHTML = `
+        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; width: 100%; margin-top: 20px;">
+            <button class="btn btn-primary deposit-btn" data-id="${account.accountId}" ${isDisabled} style="flex: 1; min-width: 150px; max-width: 200px; color: #4da6ff background: rgba(255, 77, 77, 0.05);">
                 <i class="fa-solid fa-plus"></i> Deposit
             </button>
-            <button class="btn btn-outline withdraw-btn" data-id="${account.accountId}"
-                ${["Pending", "Frozen", "Closed", "Rejected"].includes(account.status) ? "disabled" : ""} 
-                style="color: #ff4d4d; border-color: #ff4d4d;">
+            <button class="btn btn-outline withdraw-btn" data-id="${account.accountId}" ${isDisabled} style="flex: 1; min-width: 150px; max-width: 200px; color: #ff4d4d; border-color: rgba(255, 77, 77, 0.3); background: rgba(255, 77, 77, 0.05);">
                 <i class="fa-solid fa-minus"></i> Withdraw
             </button>
-            <button class="btn btn-outline transfer-btn" data-id="${account.accountId}"
-                ${["Pending", "Frozen", "Closed", "Rejected"].includes(account.status) ? "disabled" : ""}>
-            <i class="fa-solid fa-right-left"></i> Transfer
+            <button class="btn btn-outline transfer-btn" data-id="${account.accountId}" ${isDisabled} style="flex: 1; min-width: 150px; max-width: 200px;">
+                <i class="fa-solid fa-right-left"></i> Transfer
             </button>
         </div>
     `;
-            accountCards.appendChild(card);
-        });
 
         attachActionButtons();
     }
+
+    // Back Button Logic
+    document.getElementById('back-to-list-btn').addEventListener('click', () => {
+        localStorage.removeItem('active_nexus_account');
+        document.getElementById('account-detail-view').classList.add('hidden');
+        document.getElementById('accounts-grid').classList.remove('hidden');
+    });
 
 
     function attachActionButtons() {
@@ -464,11 +517,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const ddGroup = document.getElementById('dd-Amount-group');
     const ddInput = document.getElementById('dd-Amount');
-    document.getElementById('account-type').addEventListener('change',function (e) {
-        if(e.target.value === 'DailyDeposit'){
+    document.getElementById('account-type').addEventListener('change', function (e) {
+        if (e.target.value === 'DailyDeposit') {
             ddGroup.classList.remove('hidden');
-            ddInput.setAttribute('required','true');
-        }else{
+            ddInput.setAttribute('required', 'true');
+        } else {
             ddGroup.classList.add('hidden');
             ddInput.removeAttribute('required');
         }
@@ -487,9 +540,9 @@ document.addEventListener("DOMContentLoaded", () => {
             termduration = parseInt(document.getElementById("fd-duration").value);
         };
         let DailyDepositAmount = null;
-        if(!ddGroup.classList.contains("hidden")) {
+        if (!ddGroup.classList.contains("hidden")) {
             DailyDepositAmount = parseInt(document.getElementById('dd-Amount').value);
-        }; 
+        };
 
         const openaccount = {
             AccountType: type,
@@ -498,7 +551,7 @@ document.addEventListener("DOMContentLoaded", () => {
             NomineeName: nominee,
             NomineeRelationship: relation,
             TermDuration: termduration,
-            DailyAmount : DailyDepositAmount
+            DailyAmount: DailyDepositAmount
         };
         try {
             const response = await fetch(`${BaseUrl}/Account/create`, {
@@ -558,10 +611,13 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         const id = parseInt(document.getElementById("withdraw-account-id").value);
         const amount = parseFloat(document.getElementById("withdraw-amount").value);
+        const type = document.getElementById('detail-account-type').innerText;
         const withdrawData = {
             AccountId: id,
-            Amount: amount
+            Amount: amount,
+            AccountType: type
         }
+        console.log(withdrawData);
         try {
             const response = await fetch(`${BaseUrl}/Account/withdraw`, {
                 method: 'POST',
@@ -588,25 +644,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 1. We need this global variable so the OTP modal remembers what we are transferring!
     let pendingTransferPayload = null;
 
     transferForm?.addEventListener("submit", async e => {
         e.preventDefault();
 
-        // Grab the exact inputs from your HTML
         const sourceId = parseInt(document.getElementById("transfer-from-account-id").value);
         const targetNum = parseInt(document.getElementById("transfer-to-account").value);
         const amount = parseFloat(document.getElementById("transfer-amount").value);
 
-        // Save it to the global variable so Step 2 (OTP) can use it later
         pendingTransferPayload = {
             SourceAccountId: sourceId,
             TargetAccountNumber: targetNum,
             Amount: amount
         };
 
-        // Change the button text so the user knows it's loading
         const submitBtn = e.target.querySelector('button[type="submit"]');
         const originalBtnText = submitBtn.innerText;
         submitBtn.innerText = "Processing...";
@@ -647,7 +699,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error(error);
             alert("System error connecting to the bank.");
         } finally {
-            // Reset the button
             submitBtn.innerText = originalBtnText;
             submitBtn.disabled = false;
         }
@@ -1091,7 +1142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const clerkSignoutBtn = document.getElementById('clerk-signout-btn');
 
     userMenuBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
         userDropdown.classList.toggle('hidden');
     });
 
@@ -1116,7 +1167,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
     const manageModal = document.getElementById('manage-account-modal');
-    const manageBtn = document.getElementById('manage-account-btn'); 
+    const manageBtn = document.getElementById('manage-account-btn');
     const closeManageBtn = document.getElementById('close-manage-modal');
 
     manageBtn.addEventListener('click', () => {
@@ -1127,9 +1178,9 @@ document.addEventListener("DOMContentLoaded", () => {
     closeManageBtn.addEventListener('click', () => {
         manageModal.classList.add('hidden');
     });
-    const profileNavBtn = document.querySelectorAll('.settings-nav-item')[0];  
-    const personalNavBtn = document.querySelectorAll('.settings-nav-item')[1]; 
-    const securityNavBtn = document.querySelectorAll('.settings-nav-item')[2]; 
+    const profileNavBtn = document.querySelectorAll('.settings-nav-item')[0];
+    const personalNavBtn = document.querySelectorAll('.settings-nav-item')[1];
+    const securityNavBtn = document.querySelectorAll('.settings-nav-item')[2];
 
     const profileTitle = document.querySelector('.settings-content h2');
     const profileRows = document.querySelectorAll('.settings-row:not(#settings-view-security .settings-row):not(#settings-view-personal .settings-row)');

@@ -78,7 +78,7 @@ namespace AuthController.Controllers
             int userid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
             var result = await _customerService.GetProfile(userid);
             return Ok(new
-            { 
+            {
                 fullName = result.FullName,
                 email = result.Email,
                 phoneNumber = result.PhoneNumber,
@@ -135,7 +135,8 @@ namespace AuthController.Controllers
                     Response.Cookies.Append("temp_nexus_picture", pictureUrl, cookieOptions);
                 }
 
-                return Redirect($"http://localhost:5066/customer-dashboard.html");
+                // Send them back to the ngrok frontend tunnel!
+                return Redirect("/customer-dashboard.html");
             }
             else
             {

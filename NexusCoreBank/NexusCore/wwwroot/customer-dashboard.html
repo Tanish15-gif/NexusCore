@@ -93,7 +93,7 @@
                     </button>
                     <div id="user-dropdown" class="clerk-dropdown hidden">
                         <div class="dropdown-header">
-                            <img src="..." alt="User" id="dropdown-avatar" referrerpolicy="no-referrer">
+                            <img alt="User" id="dropdown-avatar" referrerpolicy="no-referrer">
                             <div class="dropdown-user-info">
                                 <span class="dropdown-user-name" id="dropdown-name">Customer</span>
                                 <span class="dropdown-user-email" id="dropdown-user-email">customer@nexuscore.com</span>
@@ -185,6 +185,34 @@
                         <div class="account-cards-container" id="account-cards">
                         </div>
                     </div>
+                    <div id="account-detail-view" class="hidden">
+                        <button id="back-to-list-btn" class="btn btn-outline" style="margin-bottom: 20px;">
+                            <i class="fa-solid fa-arrow-left"></i> Back to Accounts
+                        </button>
+
+                        <div class="action-card detail-card-hero" style=" padding: 20px 20px 40px;">
+                            <div
+                                style="display: flex; justify-content: space-between;  margin-bottom: 20px;">
+                                <h2 id="detail-account-type" style="margin: 0;">Account Type</h2>
+                                <span id="detail-account-status" class="account-status">Loading</span>
+                            </div>
+
+                            <p 
+                                style="color: var(--text-muted); font-family: monospace; font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 10px;">
+                                Account Number: <span id="detail-account-number">XXXX-XXXX-XXXX</span></p>
+                            <div id="extra-account-details"></div>
+
+                            <div class="detail-balance" style="margin-bottom: 40px; text-align: center;">
+                                <h3 style="color: var(--text-muted); font-weight: normal;">Available Balance</h3>
+                                <h1 id="detail-account-balance"
+                                    style="font-size: 3.5rem; margin: 10px 0;">₹0.00</h1>
+                            </div>
+
+                            <div id="detail-actions-container"
+                                style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="view-transactions" class="hidden">
@@ -262,7 +290,7 @@
                         <div class="form-group" style="margin-bottom: 1rem;">
                             <label>Account Type</label>
                             <select id="account-type" style="cursor: pointer;" required>
-                                <option value="" selected disabled hidden>Select Tier</option>
+                                <option value="" selected disabled hidden>Select Account</option>
                                 <option value="Savings">Savings Account</option>
                                 <option value="Current">Current Account</option>
                                 <option value="FixedDeposit">Fixed Deposit</option>
@@ -442,7 +470,7 @@
                 <div class="settings-row">
                     <div class="settings-label">Profile</div>
                     <div class="settings-value profile-val">
-                        <img src="..." id="manage-avatar" alt="Avatar" referrerpolicy="no-referrer">
+                        <img id="manage-avatar" alt="Avatar" referrerpolicy="no-referrer">
                         <div class="profile-name-group">
                             <span id="manage-name">Customer Name</span>
                         </div>

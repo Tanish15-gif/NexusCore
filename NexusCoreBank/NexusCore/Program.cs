@@ -14,6 +14,7 @@ using NexusCore.Services;
 using NexusCore.BackGroundServices;
 using QuestPDF.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 var openAiKey = builder.Configuration["AI:OpenAI:ApiKey"];
@@ -29,11 +30,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("http://localhost:5066")
+        policy.WithOrigins("http://localhost:5066","https://arbitrary-drank-jeep.ngrok-free.dev")
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();
     });
+});
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
 });
 builder.Services.AddAuthentication(options =>
 {
@@ -125,7 +132,7 @@ builder.Services.AddScoped<NexusCore.AiOperation.BudgetingService>();
 QuestPDF.Settings.License = LicenseType.Community;
 
 var app = builder.Build();
-
+app.UseForwardedHeaders();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -139,7 +146,10 @@ app.UseDefaultFiles();
 app.MapControllers();
 app.MapHub<NotificationHub>("/notificationHub");
 app.MapGet("/", () => Results.Redirect("/index.html"));
-
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 // string testpass = "123456";
 // string hash  = BCrypt.Net.BCrypt.HashPassword(testpass);
 // Console.WriteLine($"Copy this [{hash}]");

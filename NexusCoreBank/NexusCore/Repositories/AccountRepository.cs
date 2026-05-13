@@ -88,7 +88,7 @@ namespace NexusCore.AccountRepositories
                         {
                             string insertquery = @"
                                     Insert into CurrentDetails(AccountId,OverDraftLimit, OverdraftFee)
-                                    Values (@newAccid,0.00,500.00);
+                                    Values (@newAccid,50000.00,500.00);
                             ";
                             using (var savcmd = new SqlCommand(insertquery, connect, transaction))
                             {
@@ -206,10 +206,14 @@ namespace NexusCore.AccountRepositories
                             a.AccountNumber,
                             a.AccountType,
                             a.Balance,
-                            a.AccountStatus
+                            a.AccountStatus,
+                            ddd.DailyAmount,
+                            cd.OverDraftLimit
                             from Accounts a
                             join Users u on a.UserId = u.UserId
                             join CustomerProfiles c on u.UserId = c.UserId
+                            left join DailyDepositDetails ddd on a.AccountId = ddd.AccountId
+                            left join CurrentDetails cd on a.AccountId = cd.AccountId
                             where a.UserId = @uid;
                 ";
                 using (var cmd = new SqlCommand(sql, connect))
@@ -223,6 +227,8 @@ namespace NexusCore.AccountRepositories
                         int iAccountType = reader.GetOrdinal("AccountType");
                         int iBalance = reader.GetOrdinal("Balance");
                         int iStatus = reader.GetOrdinal("AccountStatus");
+                        int iDailyAmount = reader.GetOrdinal("DailyAmount");
+                        int iOverDraftLimit = reader.GetOrdinal("OverDraftLimit");
                         while (await reader.ReadAsync())
                         {
                             displayAccounts.Add(new DisplayAccount
@@ -232,7 +238,9 @@ namespace NexusCore.AccountRepositories
                                 AccountNumber = reader.GetInt64(iAccountNumber),
                                 AccountType = reader.GetString(iAccountType),
                                 Balance = reader.GetDecimal(iBalance),
-                                Status = reader.GetString(iStatus)
+                                Status = reader.GetString(iStatus),
+                                DailyAmount = reader.IsDBNull(iDailyAmount) ? 0m : reader.GetDecimal(iDailyAmount),
+                                OverDraftLimit = reader.IsDBNull(iOverDraftLimit) ? 0m : reader.GetDecimal(iOverDraftLimit)
                             });
                         }
                     }

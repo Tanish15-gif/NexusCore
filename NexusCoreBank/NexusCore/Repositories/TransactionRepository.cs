@@ -5,6 +5,7 @@ using NexusCore.AccountRepositories;
 using NexusCore.DepositDto;
 using NexusCore.TransactionDto;
 using NexusCore.TransferDto;
+using Org.BouncyCastle.Cms;
 using System.Collections.Generic;
 
 namespace NexusCore.TransactionRepositories
@@ -82,9 +83,9 @@ namespace NexusCore.TransactionRepositories
                     try
                     {
                         string UpdateSql = @"
-                                    Update Accounts 
-                                    set Balance = Balance + @amount 
-                                    where AccountId = @aid and UserId = @uid and AccountStatus = 'Active'
+                            Update Accounts 
+                            set Balance = Balance + @amount 
+                            where AccountId = @aid and UserId = @uid and AccountStatus = 'Active'
                         ";
                         using (var updatecmd = new SqlCommand(UpdateSql, connect, transaction))
                         {
@@ -126,7 +127,7 @@ namespace NexusCore.TransactionRepositories
                 }
             }
         }
-        public async Task<bool> WithdrawAmountAsync(int userid, DepositAmount amount)
+        public async Task<WithdrawAmountResult> WithdrawAmountAsync(int userid, DepositAmount amount)
         {
             using (var connect = new SqlConnection(conn))
             {
@@ -161,12 +162,12 @@ namespace NexusCore.TransactionRepositories
                                     await insertcmd.ExecuteNonQueryAsync();
                                 }
                                 await transaction.CommitAsync();
-                                return true;
+                                return WithdrawAmountResult.Success;
                             }
                             else
                             {
                                 await transaction.RollbackAsync();
-                                return false;
+                                return WithdrawAmountResult.Failed;
                             }
                         }
                     }
@@ -174,7 +175,74 @@ namespace NexusCore.TransactionRepositories
                     {
                         Console.WriteLine(ex.Message);
                         await transaction.RollbackAsync();
-                        return false;
+                        return WithdrawAmountResult.ServerError;
+                    }
+                }
+            }
+        }
+        public async Task<WithdrawAmountResult> CurrentAccountWithdrawalAsync(int userid, DepositAmount amount)
+        {
+            using (var connect = new SqlConnection(conn))
+            {
+                await connect.OpenAsync();
+                using (var transaction = (SqlTransaction)await connect.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        decimal OverdraftLimit;
+                        string sql = @"
+                                select OverDraftLimit from CurrentDetails where AccountId = @aid;
+                        ";
+                        using (var cmd = new SqlCommand(sql, connect, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@aid", amount.AccountId);
+                            var result = await cmd.ExecuteScalarAsync();
+                            if (result == null)
+                                return WithdrawAmountResult.Failed;
+                            OverdraftLimit = (decimal)result;
+                        }
+                        if (OverdraftLimit >= amount.Amount)
+                        {
+                            string updatesql = @"
+                                    Update Accounts Set Balance = Balance - @amount
+                                    where AccountId = @aid and UserId = @uid and AccountStatus = 'Active' AND (Balance - @amount) >= -@odlimit;;
+                            ";
+                            using (var updatecmd = new SqlCommand(updatesql, connect, transaction))
+                            {
+                                updatecmd.Parameters.AddWithValue("@aid", amount.AccountId);
+                                updatecmd.Parameters.AddWithValue("@uid", userid);
+                                updatecmd.Parameters.AddWithValue("@amount", amount.Amount);
+                                updatecmd.Parameters.AddWithValue("@odlimit", OverdraftLimit);
+                                int rows = await updatecmd.ExecuteNonQueryAsync();
+                                if (rows > 0)
+                                {
+                                    string insertsql = @"
+                                            Insert into Transactions(AccountId,TransactionType,Amount,Status,MerchantName)
+                                            Values(@aid,'Withdrawal',@amount,'Completed',@merchant);
+                                    ";
+                                    using (var insertcmd = new SqlCommand(insertsql, connect, transaction))
+                                    {
+                                        insertcmd.Parameters.AddWithValue("@aid", amount.AccountId);
+                                        insertcmd.Parameters.AddWithValue("@amount", amount.Amount);
+                                        insertcmd.Parameters.AddWithValue("@merchant", amount.MerchantName ?? "SYSTEM_WITHDRAW");
+
+                                        await insertcmd.ExecuteNonQueryAsync();
+                                    }
+                                    await transaction.CommitAsync();
+                                    return WithdrawAmountResult.Success;
+                                }
+                                else
+                                {
+                                    return WithdrawAmountResult.Failed;
+                                }
+                            }
+                        }
+                        return WithdrawAmountResult.OverDraftLimitExceeds;
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        return WithdrawAmountResult.ServerError;
                     }
                 }
             }
@@ -223,7 +291,7 @@ namespace NexusCore.TransactionRepositories
                             if (rows == 0)
                             {
                                 await transaction.RollbackAsync();
-                                return TransferResult.InsufficientFunds; //Insufficient Balance.
+                                return TransferResult.InsufficientFunds;
                             }
                             else
                             {
@@ -381,6 +449,7 @@ namespace NexusCore.TransactionRepositories
                                 AND a.AccountStatus = 'Active' 
                                 AND s.LastInterestAppliedDate < CAST(GETDATE() AS DATE);
 
+                            Declare @UpdatedRows INT = @@ROWCOUNT;
                             UPDATE s
                             SET s.LastInterestAppliedDate = CAST(GETDATE() AS DATE)
                             FROM SavingsDetails s
@@ -389,6 +458,7 @@ namespace NexusCore.TransactionRepositories
                                 AND a.AccountStatus = 'Active' 
                                 AND s.LastInterestAppliedDate < CAST(GETDATE() AS DATE);
                         COMMIT TRAN;
+                        Select @UpdatedRows;
                 ";
                 using (var cmd = new SqlCommand(sql, connect))
                 {
@@ -404,24 +474,29 @@ namespace NexusCore.TransactionRepositories
                 await connect.OpenAsync();
                 string sql = @"
                         Begin TRAN
-                        Update a
-                        Set a.Balance = a.Balance - d.DailyAmount 
-                        from Accounts a
-                        join DailyDepositDetails d on a.AccountId = d.AccountId
-                        where a.AccountType = 'DailyDeposit' 
-                            and a.AccountStatus = 'Active'
-                            and d.LastProcessedDate < CAST(GETDATE() as DATE);
+                            Update a
+                            Set a.Balance = a.Balance - d.DailyAmount 
+                            from Accounts a
+                            join DailyDepositDetails d on a.AccountId = d.AccountId
+                            where a.AccountType = 'DailyDeposit' 
+                                and a.AccountStatus = 'Active'
+                                and d.LastProcessedDate < CAST(GETDATE() as DATE);
 
-                        Update d
-                        Set d.LastProcessedDate	 = CAST(GETDATE() as DATE),d.TotalReceivedAmount += d.DailyAmount
-                        from DailyDepositDetails d
-                        join Accounts a on d.AccountId = a.AccountId
-                        where a.AccountType = 'DailyDeposit'
-                            and a.AccountStatus = 'Active'
-                            and d.LastProcessedDate < CAST(GETDATE() as DATE);
+                            Declare @UpdatedRows INT = @@ROWCOUNT;
+
+                            Update d
+                            Set d.LastProcessedDate	 = CAST(GETDATE() as DATE),
+                                d.TotalReceivedAmount = d.TotalReceivedAmount + d.DailyAmount
+                            from DailyDepositDetails d
+                            join Accounts a on d.AccountId = a.AccountId
+                            where a.AccountType = 'DailyDeposit'
+                                and a.AccountStatus = 'Active'
+                                AND d.LastProcessedDate < CAST(GETDATE() AS DATE); 
+                                
                         Commit Tran
+                        select @UpdatedRows;
                 ";
-                using (var cmd = new SqlCommand(sql,connect))
+                using (var cmd = new SqlCommand(sql, connect))
                 {
                     int rows = await cmd.ExecuteNonQueryAsync();
                     return rows;

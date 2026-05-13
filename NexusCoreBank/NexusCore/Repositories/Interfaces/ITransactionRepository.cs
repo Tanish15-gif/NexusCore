@@ -12,7 +12,8 @@ namespace NexusCore.AccountRepositories
         Task<int> GetDailyDepositCountAsync(int accountid);
 
         //Withdraw
-        Task<bool> WithdrawAmountAsync(int userid,DepositAmount amount);
+        Task<WithdrawAmountResult> WithdrawAmountAsync(int userid,DepositAmount amount);
+        Task<WithdrawAmountResult> CurrentAccountWithdrawalAsync(int userid,DepositAmount amount);
         //Transfer
         Task<TransferResult> TransferAccountAsync(int userid,TransferAmount transferAmount);
 
