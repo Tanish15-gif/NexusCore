@@ -15,6 +15,8 @@ using NexusCore.BackGroundServices;
 using QuestPDF.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
+using NexusCore.InvoiceRepositories;
+using NexusCore.InvoiceServices;
 
 var builder = WebApplication.CreateBuilder(args);
 var openAiKey = builder.Configuration["AI:OpenAI:ApiKey"];
@@ -113,6 +115,10 @@ builder.Services.AddHostedService<MidNightInterestRobot>();
 
 //Download Pdf Statement Pdf..
 builder.Services.AddScoped<PdfStatementService>();
+
+//Invoice Dependency Injection
+builder.Services.AddScoped<IInvoiceRepositories,InvoiceRepository>();
+builder.Services.AddScoped<InvoiceService>();
 
 builder.Services.AddScoped<NexusCore.EmployeeOperation.DisplayPendingAccount>();
 builder.Services.AddScoped<NexusCore.EmployeeOperation.Approval>();

@@ -4,6 +4,7 @@ using NexusCore.DepositDto;
 using NexusCore.OpenAccountsDto;
 using NexusCore.TransferDto;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace NexusCore.AccountServices
 {
@@ -29,6 +30,11 @@ namespace NexusCore.AccountServices
         public async Task<List<DisplayAccount>> GetAccountsAsync(int userid)
         {
             return await _accountRepository.GetAccount(userid);
+        }
+        public async Task<List<DisplayAccount>> GetActiveAccountAsync(int userid)
+        {
+            var accounts = await _accountRepository.GetAccount(userid);
+            return accounts.Where(a => a.Status == "Active").ToList();
         }
     }
 }

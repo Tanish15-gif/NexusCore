@@ -61,6 +61,9 @@
                 <a href="#" id="nav-transactions" class="nav-link">
                     <i class="fa-solid fa-money-check-dollar"></i> Recent Transactions
                 </a>
+                <a href="#" id="nav-invoices" class="nav-link">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Smart Invoices
+                </a>
                 <a href="#" id="nav-ai-advisor" class="nav-link">
                     <i class="fa-solid fa-robot"></i> AI Advisor
                 </a>
@@ -191,21 +194,19 @@
                         </button>
 
                         <div class="action-card detail-card-hero" style=" padding: 20px 20px 40px;">
-                            <div
-                                style="display: flex; justify-content: space-between;  margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between;  margin-bottom: 20px;">
                                 <h2 id="detail-account-type" style="margin: 0;">Account Type</h2>
                                 <span id="detail-account-status" class="account-status">Loading</span>
                             </div>
 
-                            <p 
+                            <p
                                 style="color: var(--text-muted); font-family: monospace; font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 10px;">
                                 Account Number: <span id="detail-account-number">XXXX-XXXX-XXXX</span></p>
                             <div id="extra-account-details"></div>
 
                             <div class="detail-balance" style="margin-bottom: 40px; text-align: center;">
                                 <h3 style="color: var(--text-muted); font-weight: normal;">Available Balance</h3>
-                                <h1 id="detail-account-balance"
-                                    style="font-size: 3.5rem; margin: 10px 0;">₹0.00</h1>
+                                <h1 id="detail-account-balance" style="font-size: 3.5rem; margin: 10px 0;">₹0.00</h1>
                             </div>
 
                             <div id="detail-actions-container"
@@ -238,6 +239,81 @@
                                     <td colspan="5" style="text-align: center; color: var(--text-muted);">No
                                         Transactions Yet</td>
                                 </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="view-invoices" class="hidden">
+
+                    <div class="section-header"
+                        style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px;">
+                        <div style="text-align: left;">
+                            <h2>Smart Invoicing</h2>
+                            <p>Manage your business billing and track payments.</p>
+                        </div>
+                        <button class="btn btn-primary" id="btn-create-invoice">
+                            <i class="fa-solid fa-plus"></i> Create New Invoice
+                        </button>
+                    </div>
+
+                    <div class="analytics-row"
+                        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px;">
+
+                        <div class="action-card" style="display: flex; align-items: center; gap: 15px; padding: 20px;">
+                            <div class="icon-box blue">
+                                <i class="fa-solid fa-money-bill-transfer"></i>
+                            </div>
+                            <div>
+                                <div class="label">Total Outstanding</div>
+                                <div class="value">₹45,000</div>
+                            </div>
+                        </div>
+
+                        <div class="action-card" style="display: flex; align-items: center; gap: 15px; padding: 20px;">
+                            <div class="icon-box red">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div>
+                                <div class="label">Overdue Invoices</div>
+                                <div class="value">2</div>
+                            </div>
+                        </div>
+
+                        <div class="action-card" style="display: flex; align-items: center; gap: 15px; padding: 20px;">
+                            <div class="icon-box green">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                            <div>
+                                <div class="label">Paid This Month</div>
+                                <div class="value">₹1,20,000</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="action-card" style="overflow-x: auto;">
+
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-dark);">
+                            <h3 style="margin: 0;">Recent Invoices</h3>
+
+                            <input type="text" placeholder="Search..."
+                                style="padding: 8px 12px; background: var(--bg-main); border: 1px solid var(--border-dark); color: var(--text-light); border-radius: 6px;">
+                        </div>
+
+                        <table class="nexus-table" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Client</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="invoices-body">
                             </tbody>
                         </table>
                     </div>
@@ -390,6 +466,75 @@
                             style="width: 100%; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); margin-top: 0.5rem;">
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Deposit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="invoice-modal" class="modal-overlay hidden"
+        style="z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div class="modal-content action-card"
+            style="max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto;">
+
+            <div class="modal-header"
+                style="border-bottom: 1px solid var(--border-dark); padding-bottom: 15px; margin-bottom: 20px;">
+                <h2 style="color: var(--text-light); margin: 0;">Create New Invoice</h2>
+                <button class="icon-btn" id="invoice-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="invoice-form">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem;">Deposit To Account</label>
+                            <select id="inv-account-id" required
+                                style="width: 100%; padding: 0.8rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); border-radius: 6px; margin-top: 5px;">
+                                <option value="" disabled selected>Select an account...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: var(--text-muted); font-size: 0.9rem;">Client Name</label>
+                            <input type="text" id="inv-client-name" required placeholder="Enter the Name of your Client"
+                                style="width: 100%; padding: 0.8rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); border-radius: 6px; margin-top: 5px;">
+                        </div>
+                        <div class="form-group">
+                            <label style="color: var(--text-muted); font-size: 0.9rem;">Client Email</label>
+                            <input type="email" id="inv-client-email" required placeholder="eg:client@gmail.com"
+                                style="width: 100%; padding: 0.8rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); border-radius: 6px; margin-top: 5px;">
+                        </div>
+                        <div class="form-group">
+                            <label style="color: var(--text-muted); font-size: 0.9rem;">Issue Date</label>
+                            <input type="date" id="inv-issue-date" required
+                                style="width: 100%; padding: 0.8rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); border-radius: 6px; margin-top: 5px;">
+                        </div>
+                        <div class="form-group">
+                            <label style="color: var(--text-muted); font-size: 0.9rem;">Due Date</label>
+                            <input type="date" id="inv-due-date" required
+                                style="width: 100%; padding: 0.8rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); border-radius: 6px; margin-top: 5px;">
+                        </div>
+                    </div>
+
+                    <h4 style="margin-bottom: 10px; color: var(--text-light);">Line Items</h4>
+                    <div id="inv-items-container"
+                        style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+                    </div>
+
+                    <button type="button" id="btn-add-item"
+                        style="background: transparent; border: 1px dashed #3b82f6; color: #3b82f6; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-bottom: 20px; width: 20%; transition: 0.2s;"
+                        onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'"
+                        onmouseout="this.style.background='transparent'">
+                        <i class="fa-solid fa-plus"></i> Add Item
+                    </button>
+
+                    <div class="total-wrapper">
+                        <div class="grand-total-box">
+                            <span>Grand Total:</span>
+                            <strong id="inv-grand-total">₹0.00</strong>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary"
+                        style="width: 100%; padding: 12px; font-size: 1rem;"><i class="fa-solid fa-paper-plane"></i>
+                        Generate & Send Invoice</button>
                 </form>
             </div>
         </div>

@@ -15,6 +15,9 @@ using NexusCore.TransactionServices;
 using System.Security.Claims;
 using NexusCore.TransactionStatementsDto;
 using NexusCore.Services;
+using NexusCore.InvoiceInsertDto;
+using NexusCore.InvoiceServices;
+using NexusCore.StatusUpdateDto;
 
 namespace AuthorizeController.Controllers
 {
@@ -26,17 +29,20 @@ namespace AuthorizeController.Controllers
         private readonly AccountService _accountService;
         private readonly TransactionService _transactionService;
         private readonly PdfStatementService _pdfStatementService;
+        private readonly InvoiceService _invoiceService;
         private readonly string? _connectionstring;
         public AccountController
         (
             AccountService accountService,
             TransactionService transactionService,
             PdfStatementService pdfStatementService,
+            InvoiceService invoiceService,
             IConfiguration config
         )
         {
             _accountService = accountService;
             _transactionService = transactionService;
+            _invoiceService = invoiceService;
             _pdfStatementService = pdfStatementService;
             _connectionstring = config.GetConnectionString("DefaultConnection");
         }
@@ -195,6 +201,13 @@ namespace AuthorizeController.Controllers
                 return StatusCode(500, "A Database Error Occured");
             }
         }
+        [HttpGet("get-activeAccounts")]
+        public async Task<IActionResult> GetActiveAccounts()
+        {
+            int userid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            var result = await _accountService.GetActiveAccountAsync(userid);
+            return Ok(result);
+        }
         [HttpPost("deduct-funds")]
         [AllowAnonymous]
         public async Task<IActionResult> PaytoMart([FromBody] DeductRequest deductRequest)
@@ -281,6 +294,40 @@ namespace AuthorizeController.Controllers
             var pdfBytes = _pdfStatementService.GenerateStatement(accountName, accountNumber, history);
 
             return File(pdfBytes, "application/pdf", $"NexusCore_Statement_{accountId}.pdf");
+        }
+        [HttpPost("newInvoice")]
+        public async Task<IActionResult> InsertNewInvoice(InsertInvoice insertInvoice)
+        {
+            int userid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            var result = await _invoiceService.NewInvoiceAsync(userid,insertInvoice);
+            if(result == true)
+            {
+                return Ok(new {message = "Invoice Added SuccessFully"});
+            }
+            else
+            {
+                return StatusCode(500, new {message = "Server Error"});
+            }
+        }
+        [HttpGet("showInvoice")]
+        public async Task<IActionResult> DisplayInvoiceDashboard()
+        {
+            int userid = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            var result = await _invoiceService.GetUserInvoiceAsync(userid);
+            return Ok(result);
+        }
+        [HttpPut("{invoiceNumber}/Invoicestatus")]
+        public async Task<IActionResult> ChangeInvoiceStatus(string invoiceNumber,[FromBody] StatusUpdate dto)
+        {
+            var result = await _invoiceService.UpdateInvoiceStatusAsync(invoiceNumber,dto.Status!);
+            if(result)
+            {
+                return Ok(new {message = "Status Update SuccessFully"});
+            }
+            else
+            {
+                return BadRequest(new {message = "Error Occured while changing the status"});
+            }
         }
     }
 }

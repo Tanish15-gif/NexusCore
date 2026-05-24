@@ -1,5 +1,6 @@
+const token = localStorage.getItem('nexus_token');
 document.addEventListener("DOMContentLoaded", () => {
-    const token = localStorage.getItem('nexus_token');
+
 
     if (token == null || token == undefined || token === "") {
         window.location.href = 'login.html';
@@ -760,20 +761,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // --- 4. STEP 2: VERIFY OTP AND EXECUTE ---
     document.getElementById('otp-form').addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        // 1. Lock the button to prevent double-clicking
         const verifyBtn = document.getElementById('verify-btn');
         verifyBtn.innerText = "Verifying...";
         verifyBtn.disabled = true;
 
-        // 2. Gather the 6-digit code
         let fullOtp = "";
         otpBoxes.forEach(box => fullOtp += box.value);
 
-        // 3. Build the payload matching your C# DTO
         const verifyPayload = {
             OtpCode: fullOtp,
             TransferDetails: pendingTransferPayload
@@ -792,62 +789,51 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if (response.ok && data.action === "COMPLETED") {
-                // SUCCESS!
                 document.getElementById('otp-modal').classList.add('hidden');
                 alert("Verification Successful! The money has been transferred.");
 
-                // Clear the boxes for next time
                 otpBoxes.forEach(box => box.value = '');
                 pendingTransferPayload = null;
-
-                // Trigger your UI balance update function here!
-
             } else {
                 alert("Verification Failed: " + data.message);
-                // Shake the boxes or turn them red here for a cool UX effect!
             }
         } catch (error) {
             console.error("API Error:", error);
         } finally {
-            // Unlock the button
             verifyBtn.innerText = "Verify & Transfer";
             verifyBtn.disabled = false;
         }
     });
 
-    let otpInterval; // Global variable so we can reset it
+    let otpInterval;
 
     function startOtpTimer() {
-        clearInterval(otpInterval); // Clear any old timers if they try again
+        clearInterval(otpInterval);
 
-        let timeLeft = 300; // 5 minutes (in seconds)
+        let timeLeft = 300;
         const display = document.getElementById('otp-countdown');
         const verifyBtn = document.getElementById('verify-btn');
 
-        // Reset the UI in case it was red/locked from a previous attempt
         display.style.color = "var(--accent-color)";
         verifyBtn.disabled = false;
         verifyBtn.innerText = "Verify & Transfer";
 
         otpInterval = setInterval(() => {
-            // Calculate minutes and seconds
             let minutes = Math.floor(timeLeft / 60);
             let seconds = timeLeft % 60;
 
-            // Format with leading zeros (e.g., 05:09)
             display.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-            // When time runs out!
             if (timeLeft <= 0) {
                 clearInterval(otpInterval);
                 display.innerText = "00:00";
-                display.style.color = "#ef4444"; // Turn red!
-                verifyBtn.disabled = true; // Lock the button so they can't submit
+                display.style.color = "#ef4444";
+                verifyBtn.disabled = true;
                 verifyBtn.innerText = "Code Expired";
             }
 
             timeLeft--;
-        }, 1000); // Ticks every 1000 milliseconds (1 second)
+        }, 1000);
     }
     async function fetchTransactions() {
         try {
@@ -897,7 +883,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const row = document.createElement("tr");
             const type = txn.transactionType ? txn.transactionType.toLowerCase() : "transfer";
 
-            // Grab the merchant name safely
             const merchant = txn.merchantName ? txn.merchantName.toUpperCase() : "";
             const displayDescription = formatDescription(txn.merchantName)
 
@@ -949,6 +934,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tbody.appendChild(row);
         });
     }
+
     document.getElementById('ai-send-btn').addEventListener('click', async function () {
         const inputField = document.getElementById('ai-chat-input');
         const chatHistory = document.getElementById('ai-chat-history');
@@ -1002,7 +988,6 @@ document.addEventListener("DOMContentLoaded", () => {
             chatHistory.innerHTML += `<div style="color: #ef4444;"><em>Network Error.</em></div>`;
         }
 
-        // Scroll to bottom again
         chatHistory.scrollTop = chatHistory.scrollHeight;
     });
 
@@ -1014,23 +999,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         totalWealth.innerText = "₹" + total.toFixed(2);
-
-        const userTierElement = document.querySelector('.tier-badge');
-        if (userTierElement) {
-            if (total >= 1000000) {
-                userTierElement.innerHTML = `<i class="fa-solid fa-gem"></i> Nexus Diamond`;
-                userTierElement.style.color = '#a855f7';
-                userTierElement.style.background = 'rgba(168, 85, 247, 0.2)';
-            } else if (total >= 500000) {
-                userTierElement.innerHTML = `<i class="fa-solid fa-star"></i> Nexus Gold`;
-                userTierElement.style.color = '#fbbf24';
-                userTierElement.style.background = 'rgba(251, 191, 36, 0.2)';
-            } else {
-                userTierElement.innerHTML = `Tier 1: Customer`;
-                userTierElement.style.color = '#3b82f6';
-                userTierElement.style.background = 'rgba(59, 130, 246, 0.2)';
-            }
-        }
     }
     if (token) {
         const connection = new signalR.HubConnectionBuilder()
@@ -1104,9 +1072,12 @@ document.addEventListener("DOMContentLoaded", () => {
         viewTransactions.classList.add("hidden");
         viewAiAdvisor.classList.add("hidden");
 
+        if (viewInvoices) viewInvoices.classList.add("hidden");
+
         navAccounts.classList.remove("active");
         navTransactions.classList.remove("active");
         navAiAdvisor.classList.remove("active");
+        if (navInvoices) navInvoices.classList.remove("active");
     }
 
     navAccounts.addEventListener("click", (e) => {
@@ -1219,7 +1190,293 @@ document.addEventListener("DOMContentLoaded", () => {
 
         securityView.classList.remove('hidden');
     });
-});
+
+
+    //Invoice logic start from Here
+    // -------- Invoice Logics Start from Here -------
+    const navInvoices = document.getElementById('nav-invoices');
+    const viewInvoices = document.getElementById('view-invoices');
+    const invoiceModal = document.getElementById('invoice-modal');
+
+    if (navInvoices) {
+        navInvoices.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllViews();
+            viewInvoices?.classList.remove('hidden');
+            navInvoices.classList.add('active');
+        });
+    }
+    async function LoadInvoiceAccounts() {
+        const accountdropdown = document.getElementById('inv-account-id');
+        if (!accountdropdown) return;
+        try {
+            const response = await fetch('/Account/get-activeAccounts', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer " + token
+                }
+            });
+            const accounts = await response.json();
+            accountdropdown.innerHTML = '<option value="" disabled selected>Select an account...</option>';
+
+            accounts.forEach(acc => {
+                if (acc.accountType === 'Savings' || acc.accountType === 'Current') {
+                    const option = document.createElement('option');
+
+                    option.value = acc.accountId;
+
+                    option.innerText = `${acc.accountType} (***${acc.accountNumber.toString().slice(-4)}) - ₹${acc.balance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+
+                    accountdropdown.appendChild(option);
+                }
+            });
+        } catch (error) {
+            console.error('Error loading accounts into dropdown:', error);
+            accountdropdown.innerHTML = '<option value="" disabled>Error loading accounts</option>';
+        }
+    }
+
+    // Open the Modal
+    document.getElementById('btn-create-invoice')?.addEventListener('click', () => {
+        LoadInvoiceAccounts();
+        invoiceModal?.classList.remove('hidden');
+
+        // Set default dates
+        const today = new Date().toISOString().split('T')[0];
+        const issueDateInput = document.getElementById('inv-issue-date');
+        if (issueDateInput) issueDateInput.value = today;
+
+        let due = new Date();
+        due.setDate(due.getDate() + 14);
+        const dueDateInput = document.getElementById('inv-due-date');
+        if (dueDateInput) dueDateInput.value = due.toISOString().split('T')[0];
+
+        // Add first item if empty
+        const itemsContainer = document.getElementById('inv-items-container');
+        if (itemsContainer && itemsContainer.children.length === 0) {
+            addInvoiceItem();
+        }
+    });
+    document.getElementById('invoice-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const accountId = document.getElementById('inv-account-id')?.value;
+        const clientName = document.getElementById('inv-client-name')?.value;
+        const clientemail = document.getElementById('inv-client-email')?.value;
+        const issueDate = document.getElementById('inv-issue-date')?.value;
+        const dueDate = document.getElementById('inv-due-date')?.value;
+
+        const invoiceItems = [];
+        const rows = document.getElementById('inv-items-container').children;
+        for (let row of rows) {
+            const description = row.querySelector('input[type="text"]').value;
+            const quantity = parseFloat(row.querySelector('.inv-qty').value) || 0;
+            const unitprice = parseFloat(row.querySelector('.inv-price').value) || 0;
+
+            invoiceItems.push({
+                Description: description,
+                Quantity: quantity,
+                UnitPrice: unitprice
+            });
+        }
+        const invoicePayload = {
+            AccountId: accountId,
+            ClientName: clientName,
+            ClientEmail: clientemail,
+            IssueDate: issueDate,
+            DueDate: dueDate,
+            Items: invoiceItems
+        };
+        try {
+            const response = await fetch('/Account/newInvoice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer " + token
+                },
+                body: JSON.stringify(invoicePayload)
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert("Success: " + data.message);
+                document.getElementById('invoice-close')?.click();
+                loadDashboardInvoices();
+            } else {
+                alert('Failed: ' + data.message);
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Server Error');
+        }
+    });
+
+    document.getElementById('invoice-close')?.addEventListener('click', () => {
+        invoiceModal?.classList.add('hidden');
+        document.getElementById('invoice-form')?.reset();
+        const itemsContainer = document.getElementById('inv-items-container');
+        if (itemsContainer) itemsContainer.innerHTML = '';
+        const grandTotal = document.getElementById('inv-grand-total');
+        if (grandTotal) grandTotal.innerText = '₹0.00';
+    });
+
+    invoiceModal?.addEventListener('click', (e) => {
+        if (e.target === invoiceModal) {
+            document.getElementById('invoice-close')?.click();
+        }
+    });
+
+    document.getElementById('btn-add-item')?.addEventListener('click', addInvoiceItem);
+
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.action-menu-btn') && !e.target.closest('.action-dropdown')) {
+            document.querySelectorAll('.action-dropdown').forEach(menu => {
+                menu.classList.add('hidden');
+            });
+        }
+    });
+
+    // -------- Invoice Logics End from Here -------
+    loadDashboardInvoices();
+}); // DOM Ended Here
+async function updateInvoiceStatus(invoiceNumber, newStatus) {
+
+    document.querySelectorAll('.action-dropdown').forEach(menu => menu.classList.add('hidden'));
+    try {
+        const response = await fetch(`/Account/${invoiceNumber}/Invoicestatus`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ status: newStatus })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert(data.message);
+            loadDashboardInvoices();
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error(error);
+        alert('Server Error');
+    }
+}
+async function loadDashboardInvoices() {
+    const tableBody = document.getElementById('invoices-body');
+    if (!tableBody) return;
+
+    try {
+        const response = await fetch('/Account/showInvoice', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to fetch invoices from the server.');
+        }
+
+        const invoices = await response.json();
+
+        tableBody.innerHTML = '';
+
+        invoices.forEach(inv => {
+            let statusBadge = '';
+            if (inv.status === 'Paid') {
+                statusBadge = `<span class="badge text-green" style="color: #10b981; font-weight: 500;">Paid</span>`;
+            } else if (inv.status === 'Overdue') {
+                statusBadge = `<span class="badge text-red" style="color: #ef4444; font-weight: 500;">Overdue</span>`;
+            } else if (inv.status === 'Sent') {
+                statusBadge = `<span class="badge text-yellow" style="color: #f59e0b; font-weight: 500;">Sent</span>`;
+            } else {
+                statusBadge = `<span class="badge" style="color: var(--text-muted);">${inv.status}</span>`;
+            }
+
+            const issueDate = new Date(inv.issueDate).toLocaleDateString('en-In', {
+                month: 'short', day: '2-digit', year: 'numeric'
+            });
+
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid var(--border-dark)';
+
+            tr.innerHTML = `
+                <td style="padding: 15px 20px; color: var(--text-muted);">${inv.invoiceNumber}</td>
+                <td style="padding: 15px 20px; font-weight: bold; color: var(--text-light);">${inv.clientName}</td>
+                <td style="padding: 15px 20px; color: var(--text-muted);">${issueDate}</td>
+                <td style="padding: 15px 20px; color: var(--text-light);">₹${inv.amount.toLocaleString('en-IN', { minimumFractionDigits: 0 })}</td>
+                <td style="padding: 15px 20px;">${statusBadge}</td>
+                
+                <td style="padding: 15px 20px; position: relative;">
+                    <button class="btn-icon action-menu-btn" onclick="toggleActionMenu('${inv.invoiceNumber}')" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 5px;">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    
+                    <div id="menu-${inv.invoiceNumber}" class="action-dropdown hidden">
+                        <button onclick="updateInvoiceStatus('${inv.invoiceNumber}', 'Sent')"><i class="fa-solid fa-paper-plane"></i> Mark as Sent</button>
+                        <button onclick="updateInvoiceStatus('${inv.invoiceNumber}', 'Paid')"><i class="fa-solid fa-check" style="color: #10b981;"></i> Mark as Paid</button>
+                        <button onclick="updateInvoiceStatus('${inv.invoiceNumber}', 'Cancelled')"><i class="fa-solid fa-ban" style="color: #ef4444;"></i> Cancel</button>
+                    </div>
+                </td>
+            `;
+
+            tableBody.appendChild(tr);
+        });
+
+    } catch (error) {
+        console.error("Error rendering invoice table:", error);
+        tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 20px;">Failed to load invoices.</td></tr>`;
+    }
+}
+async function toggleActionMenu(invoiceNumber) {
+
+    const menuId = `menu-${invoiceNumber}`; // ✅ correct
+
+    document.querySelectorAll('.action-dropdown').forEach(menu => {
+        if (menu.id !== menuId) {
+            menu.classList.add('hidden');
+        }
+    });
+
+    const targetMenu = document.getElementById(menuId);
+    if (targetMenu) {
+        targetMenu.classList.toggle('hidden');
+    }
+}
+function addInvoiceItem() {
+    const container = document.getElementById('inv-items-container');
+    const rowId = 'item_' + Date.now();
+
+    const rowHtml = `
+        <div id="${rowId}" style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" placeholder="Description" required style="flex: 3; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); border-radius: 6px;">
+            <input type="number" class="inv-qty" placeholder="Quantity" min="1" oninput="calculateInvoice()" style="flex: 1; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); border-radius: 6px;">
+            <input type="number" class="inv-price" placeholder="Price" min="0" step="0.01" oninput="calculateInvoice()" style="flex: 1; padding: 0.6rem; background: var(--bg-main); color: var(--text-light); border: 1px solid var(--border-dark); border-radius: 6px;">
+            <span class="inv-line-total" style="flex: 1; text-align: right; color: var(--text-light); font-weight: 500;">₹0.00</span>
+            <button type="button" onclick="document.getElementById('${rowId}').remove(); calculateInvoice();" style="background: transparent; border: none; color: #ef4444; cursor: pointer; padding: 8px;"><i class="fa-solid fa-trash"></i></button>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', rowHtml);
+}
+
+function calculateInvoice() {
+    let grandTotal = 0;
+    const rows = document.getElementById('inv-items-container').children;
+
+    for (let row of rows) {
+        const qty = parseFloat(row.querySelector('.inv-qty').value) || 0;
+        const price = parseFloat(row.querySelector('.inv-price').value) || 0;
+        const lineTotal = qty * price;
+
+        row.querySelector('.inv-line-total').innerText = `₹${lineTotal.toFixed(2)}`;
+        grandTotal += lineTotal;
+    }
+
+    document.getElementById('inv-grand-total').innerText = `₹${grandTotal.toFixed(2)}`;
+}
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const sidebar = document.querySelector('.sidebar');
 

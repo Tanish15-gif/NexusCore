@@ -44,7 +44,7 @@ namespace AiChatBotController.ControllerBase
             including income and expenses. Calculate the net balance,
             identify if they are in a deficit or surplus, 
             and give 2 specific pieces of advice to improve their financial health.
-            Be professional and encouraging. Data: " + json;
+            Be professional and encouraging.Note the Money is in Indian Rupees Data: " + json;
 
             var payload = new
             {
