@@ -136,10 +136,6 @@ namespace AuthController.Controllers
                     "urn:google:picture"
                 );
 
-            Console.WriteLine(
-                $"Google picture URL: {pictureUrl}"
-            );
-
             var dbResult =
                 _registerViaGoogle.RegisterGoogleUser(
                     email

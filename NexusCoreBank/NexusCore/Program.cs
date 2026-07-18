@@ -167,7 +167,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseDefaultFiles();
-app.UseStaticFiles();
 
 app.MapControllers();
 
@@ -175,8 +174,5 @@ app.MapHub<NotificationHub>(
     "/notificationHub"
 );
 
-app.MapGet("/", () =>
-    Results.Redirect("/index.html")
-);
 
 app.Run();
