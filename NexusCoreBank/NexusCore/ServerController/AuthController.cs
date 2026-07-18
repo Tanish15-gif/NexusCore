@@ -96,58 +96,130 @@ namespace AuthController.Controllers
         [HttpGet("google-callback")]
         public async Task<IActionResult> GoogleCallback()
         {
-            var authenticateResult = await HttpContext.AuthenticateAsync("Cookies");
-            if (!authenticateResult.Succeeded)
+            var authenticateResult =
+                await HttpContext.AuthenticateAsync(
+                    "Cookies"
+                );
+
+            if (
+                !authenticateResult.Succeeded ||
+                authenticateResult.Principal == null
+            )
             {
-                return BadRequest("Google authentication failed.");
+                return BadRequest(
+                    "Google authentication failed."
+                );
             }
-            var email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email);
 
-            var googleName = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name) ?? "Customer";
-            var safeGoogleName = Uri.EscapeDataString(googleName);
+            var principal =
+                authenticateResult.Principal;
 
-            var pictureUrl = authenticateResult.Principal.FindFirst("picture")?.Value;
+            var email =
+                principal.FindFirstValue(
+                    ClaimTypes.Email
+                );
 
-            var dbresult = _registerViaGoogle.RegisterGoogleUser(email!);
-
-            if (dbresult.Success)
+            if (string.IsNullOrWhiteSpace(email))
             {
-                string token = _tokenService.GenerateToken(dbresult.UserId, dbresult.Role, email!);
+                return BadRequest(
+                    "Google email was not received."
+                );
+            }
 
-                var cookieOptions = new CookieOptions
+            var googleName =
+                principal.FindFirstValue(
+                    ClaimTypes.Name
+                ) ?? "Customer";
+
+            var pictureUrl =
+                principal.FindFirstValue(
+                    "urn:google:picture"
+                );
+
+            Console.WriteLine(
+                $"Google picture URL: {pictureUrl}"
+            );
+
+            var dbResult =
+                _registerViaGoogle.RegisterGoogleUser(
+                    email
+                );
+
+            if (!dbResult.Success)
+            {
+                return StatusCode(
+                    500,
+                    new
+                    {
+                        message =
+                            "Something went wrong with the database."
+                    }
+                );
+            }
+
+            var token =
+                _tokenService.GenerateToken(
+                    dbResult.UserId,
+                    dbResult.Role,
+                    email
+                );
+
+            var cookieOptions =
+                new CookieOptions
                 {
                     HttpOnly = false,
                     Secure = false,
-                    Expires = DateTime.UtcNow.AddMinutes(10),
-
-                    Path = "/",
                     SameSite = SameSiteMode.Lax,
-
+                    Path = "/",
+                    Expires =
+                        DateTimeOffset.UtcNow.AddMinutes(
+                            10
+                        ),
                     IsEssential = true
                 };
 
-                Response.Cookies.Append("temp_nexus_token", token, cookieOptions);
+            Response.Cookies.Append(
+                "temp_nexus_token",
+                token,
+                cookieOptions
+            );
 
-                Response.Cookies.Append("temp_nexus_name", safeGoogleName, cookieOptions);
+            Response.Cookies.Append(
+                "temp_nexus_name",
+                googleName,
+                cookieOptions
+            );
 
-                if (!string.IsNullOrEmpty(pictureUrl))
-                {
-                    Response.Cookies.Append("temp_nexus_picture", pictureUrl, cookieOptions);
-                }
-
-                // Send them back to the ngrok frontend tunnel!
-                return Redirect("/customer-dashboard.html");
-            }
-            else
+            if (
+                !string.IsNullOrWhiteSpace(
+                    pictureUrl
+                )
+            )
             {
-                return BadRequest(new { Message = "Something went wrong with the database." });
+                Response.Cookies.Append(
+                    "temp_nexus_picture",
+                    pictureUrl,
+                    cookieOptions
+                );
             }
+
+            return Redirect(
+                "http://localhost:5173/dashboard/accounts"
+            );
         }
         [Authorize]
         [HttpPost("complete-profile")]
         public IActionResult CompleteRegister([FromBody] GoogleProfileRegistration googleProfile)
         {
-            int userid = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
+            var useridValue = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!;
+
+            if (!int.TryParse(useridValue, out int userid))
+            {
+                return Unauthorized(new
+                {
+                    message = "Invalid authentication token."
+                });
+            }
             bool result = _registerViaGoogle.CompleteProfile(userid, googleProfile);
             if (result == true)
             {

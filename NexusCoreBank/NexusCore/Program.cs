@@ -30,12 +30,13 @@ else
 }
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("ReactClient", policy =>
     {
-        policy.WithOrigins("http://localhost:5066","https://arbitrary-drank-jeep.ngrok-free.dev")
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
@@ -65,13 +66,13 @@ builder.Services.AddAuthentication(options =>
 
         ValidateLifetime = true
     };
-    options.Events  =new JwtBearerEvents
+    options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
         {
             var accessToken = context.Request.Query["access_token"];
             var path = context.HttpContext.Request.Path;
-            if(!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/notificationHub"))
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/notificationHub"))
             {
                 context.Token = accessToken;
             }
@@ -82,11 +83,23 @@ builder.Services.AddAuthentication(options =>
 .AddCookie("Cookies")
 .AddGoogle("Google", googleOptions =>
 {
-    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
-    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+    googleOptions.ClientId =
+        builder.Configuration[
+            "Authentication:Google:ClientId"
+        ]!;
+
+    googleOptions.ClientSecret =
+        builder.Configuration[
+            "Authentication:Google:ClientSecret"
+        ]!;
 
     googleOptions.Scope.Add("profile");
-    googleOptions.ClaimActions.MapJsonKey("picture", "picture", "url");
+
+    googleOptions.ClaimActions.MapJsonKey(
+        "urn:google:picture",
+        "picture",
+        "url"
+    );
 });
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
@@ -117,7 +130,7 @@ builder.Services.AddHostedService<MidNightInterestRobot>();
 builder.Services.AddScoped<PdfStatementService>();
 
 //Invoice Dependency Injection
-builder.Services.AddScoped<IInvoiceRepositories,InvoiceRepository>();
+builder.Services.AddScoped<IInvoiceRepositories, InvoiceRepository>();
 builder.Services.AddScoped<InvoiceService>();
 
 builder.Services.AddScoped<NexusCore.EmployeeOperation.DisplayPendingAccount>();
@@ -138,25 +151,32 @@ builder.Services.AddScoped<NexusCore.AiOperation.BudgetingService>();
 QuestPDF.Settings.License = LicenseType.Community;
 
 var app = builder.Build();
+
 app.UseForwardedHeaders();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-app.UseCors("AllowAll");
+
 app.UseHttpsRedirection();
+
+app.UseCors("ReactClient");
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseStaticFiles();
+
 app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
-app.MapHub<NotificationHub>("/notificationHub");
-app.MapGet("/", () => Results.Redirect("/index.html"));
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-});
-// string testpass = "123456";
-// string hash  = BCrypt.Net.BCrypt.HashPassword(testpass);
-// Console.WriteLine($"Copy this [{hash}]");
+
+app.MapHub<NotificationHub>(
+    "/notificationHub"
+);
+
+app.MapGet("/", () =>
+    Results.Redirect("/index.html")
+);
+
 app.Run();

@@ -1002,7 +1002,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (token) {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:5066/notificationHub", {
+            .withUrl("/notificationHub", {
                 accessTokenFactory: () => token
             })
             .withAutomaticReconnect()
@@ -1010,6 +1010,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         connection.on("ReceiveTransferNotification", (amount) => {
             showRealTimeToast(`Incoming Transfer! You just received ₹${amount}.`);
+            renderAccounts();
         });
 
         connection.start()
