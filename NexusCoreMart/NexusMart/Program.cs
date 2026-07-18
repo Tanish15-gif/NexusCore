@@ -16,6 +16,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+builder.Services.AddHttpClient();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

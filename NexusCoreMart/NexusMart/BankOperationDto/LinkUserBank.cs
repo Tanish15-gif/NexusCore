@@ -9,15 +9,17 @@ namespace NexusMart.BankAccountOperation
     public class LinkUserBank
     {
         private readonly string? conn;
-        public LinkUserBank(IConfiguration config)
+        private readonly IHttpClientFactory _httpClientFactory;
+        public LinkUserBank(IConfiguration config,IHttpClientFactory httpClientFactory)
         {
             conn = config.GetConnectionString("DefaultConnection");
+            _httpClientFactory = httpClientFactory;
         }
         public async Task<int> VerifyAndLinkBank(LinkBankAccount dto, int customerid)
         {
             try
             {
-                using var client = new HttpClient();
+                using var client = _httpClientFactory.CreateClient();
                 var json = JsonSerializer.Serialize(dto);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
