@@ -1,2 +1,4 @@
-NexusCoreBank/nexuscore-client/** linguist-vendored
-NexusCoreMartFrontend/** linguist-vendored
+NexusCoreBank/Frontend/nexuscore-client/**/*.ts linguist-detectable=false
+NexusCoreBank/Frontend/nexuscore-client/**/*.tsx linguist-detectable=false
+NexusCoreMart/Frontend/**/*.ts linguist-detectable=false
+NexusCoreMart/Frontend/**/*.tsx linguist-detectable=false

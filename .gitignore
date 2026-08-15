@@ -1,0 +1,38 @@
+# .NET
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# Logs
+logs/
+*.log
+
+# Secrets / environment
+.env
+.env.*
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# React / Node
+node_modules/
+dist/
+build/
+.vite/
+
+# Uploads
+wwwroot/uploads/
+uploads/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local tunnel tools
+ngrok.exe
+*.ngrok.exe.old
+.ngrok.exe.old
