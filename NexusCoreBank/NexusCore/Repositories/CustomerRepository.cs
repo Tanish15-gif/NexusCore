@@ -187,11 +187,11 @@ namespace NexusCore.CustomerRepositories
             }
             return register;
         }
-        public async Task<bool> UpdateLegalInfo(int userid,UpdatePersonalInfo updatePersonalInfo)
+        public async Task<bool> UpdateLegalInfo(int userid, UpdatePersonalInfo updatePersonalInfo)
         {
             try
             {
-                using(var connect = new SqlConnection(conn))
+                using (var connect = new SqlConnection(conn))
                 {
                     await connect.OpenAsync();
                     string sql = @"
@@ -199,13 +199,13 @@ namespace NexusCore.CustomerRepositories
                         FullName = @fullname , DateofBirth = @dob , Address = @address
                         where UserId = @uid
                     ";
-                    using (var cmd = new SqlCommand(sql,connect))
+                    using (var cmd = new SqlCommand(sql, connect))
                     {
-                        cmd.Parameters.AddWithValue("@uid",userid);
-                        cmd.Parameters.AddWithValue("@fullname",updatePersonalInfo!.LegalName);
-                        cmd.Parameters.AddWithValue("@dob",updatePersonalInfo.DOB);
-                        cmd.Parameters.AddWithValue("@address",updatePersonalInfo.Address);
-                        
+                        cmd.Parameters.AddWithValue("@uid", userid);
+                        cmd.Parameters.AddWithValue("@fullname", updatePersonalInfo!.LegalName);
+                        cmd.Parameters.AddWithValue("@dob", updatePersonalInfo.DOB);
+                        cmd.Parameters.AddWithValue("@address", updatePersonalInfo.Address);
+
                         int rows = await cmd.ExecuteNonQueryAsync();
                         return rows > 0;
                     }
