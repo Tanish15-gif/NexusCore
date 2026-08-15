@@ -157,10 +157,6 @@ The full schema (tables, indexes, constraints) is defined in `TanishElectronics.
 
 ![Customer Dashboard](screenshots/customer-dashboard.png)
 
-### Track Repair Status
-
-![Track Repair Status](screenshots/track-status.png)
-
 ### Branch Manager Dashboard
 
 ![Branch Manager Dashboard](screenshots/branch-manager.png)
